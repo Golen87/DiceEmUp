@@ -1,0 +1,12 @@
+.cache/
+.firebase/
+node_modules/
+
+build/
+dist/
+public/
+
+yarn-error.log
+*.zip
+
+NEW/

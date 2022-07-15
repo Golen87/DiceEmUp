@@ -1,0 +1,94 @@
+{
+  "name": "DiceEmUp",
+  "version": "1.0.0",
+  "description": "DESCRIPTION",
+  "main": "build/main.js",
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "download-phaser-typedef": "download --out typings https://raw.githubusercontent.com/photonstorm/phaser/master/types/phaser.d.ts",
+
+    "superclean": "rimraf .cache node_modules build dist public",
+    "clean": "rimraf build dist public",
+
+    "build": "rimraf build && parcel build src/electron.ts src/index.html --public-url ./ -d build --out-file=main --target=electron",
+    "watch": "rimraf build && parcel watch src/electron.ts src/index.html --public-url ./ -d build --out-file=main --target=electron",
+    "app": "cross-env ELECTRON_DEBUG=false electron build/main.js",
+    "debug": "cross-env ELECTRON_DEBUG=true electron --remote-debugging-port=9223 build/main.js",
+
+    "mac": "rimraf dist && yarn build && electron-builder --mac",
+    "windows": "rimraf dist && yarn build && electron-builder --windows",
+    "linux": "rimraf dist && yarn build && electron-builder --linux",
+
+    "serve": "webpack serve --config webpack/webpack.dev.js",
+    "public": "rimraf public && webpack --config webpack/webpack.prod.js"
+  },
+  "build": {
+    "appId": "diceemup",
+    "productName": "DiceEmUp",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./static/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": "deb"
+    },
+    "deb": {},
+    "files": [
+      "build/*"
+    ]
+  },
+  "keywords": [
+    "phaser",
+    "electron"
+  ],
+  "author": {
+    "name": "Måns Gezelius",
+    "email": "mansgez@gmail.com",
+    "url": "https://golen.nu/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "mathjs": "^9.4.1",
+    "numeric": "^1.2.6",
+    "phaser": "^3.54.0",
+    "phaser3-rex-plugins": "^1.1.51",
+    "yarn": "^1.22.10"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.6",
+    "download-cli": "^1.1.1",
+    "electron": "^9.2.1",
+    "electron-builder": "^22.10.5",
+    "electron-reload": "^1.5.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "javascript-obfuscator": "^2.13.0",
+    "node-sass": "^4.14.1",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.10.3",
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "rimraf": "^3.0.2",
+    "sass-loader": "^11.1.1",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^9.2.2",
+    "tslint": "^6.1.3",
+    "typescript": "^4.2.4",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3",
+    "webpack-obfuscator": "^3.3.1",
+    "workbox-webpack-plugin": "^6.1.5"
+  }
+}
