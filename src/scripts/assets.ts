@@ -127,8 +127,8 @@ import t_throw_felt_single_2 from "../assets/sounds/throw/Throw felt single 2.mp
 import t_throw_felt_single_3 from "../assets/sounds/throw/Throw felt single 3.mp3";
 import t_throw_felt_single_4 from "../assets/sounds/throw/Throw felt single 4.mp3";
 import t_throw_felt_single_5 from "../assets/sounds/throw/Throw felt single 5.mp3";
-import t_throw_felt_to_desk_1 from "../assets/sounds/throw/Throw felt to_desk 1.mp3";
-import t_throw_felt_to_desk_2 from "../assets/sounds/throw/Throw felt to_desk 2.mp3";
+import t_throw_felt_to_desk_1 from "../assets/sounds/throw/Throw felt to desk 1.mp3";
+import t_throw_felt_to_desk_2 from "../assets/sounds/throw/Throw felt to desk 2.mp3";
 
 /* Hand */
 import h_fondle_hard_1 from "../assets/sounds/hand/Fondle hard 1.mp3";
@@ -203,9 +203,9 @@ import c_swirl_cup_multiple_4 from "../assets/sounds/cup/swirl cup multiple 4.mp
 import c_swirl_cup_multiple_long_1 from "../assets/sounds/cup/swirl cup single long 1.mp3";
 import c_swirl_cup_multiple_long_2 from "../assets/sounds/cup/swirl cup single long 2.mp3";
 import c_swirl_cup_multiple_long_3 from "../assets/sounds/cup/swirl cup single long 3.mp3";
-import c_swirl_cup_single_short_1 from "../assets/sounds/cup/swirl cup single short 1.mp3";
-import c_swirl_cup_single_short_2 from "../assets/sounds/cup/swirl cup single short 2.mp3";
-import c_swirl_cup_single_short_3 from "../assets/sounds/cup/swirl cup single short 3.mp3";
+import c_swirl_cup_single_short_1 from "../assets/sounds/cup/Swirl cup single short 1.mp3";
+import c_swirl_cup_single_short_2 from "../assets/sounds/cup/Swirl cup single short 3.mp3";
+import c_swirl_cup_single_short_3 from "../assets/sounds/cup/Swirl cup single short 1.mp3";
 
 const audios: Audio[] = [
 	{ key: "t_place_multiple_1", path: t_place_multiple_1, volume: 1 },
