@@ -67,6 +67,7 @@ import u_disabled from "../assets/sounds/ui/Disabled.mp3";
 
 /* Enemy */
 import e_advance from "../assets/sounds/enemy/Enemy_Advance.mp3";
+import e_damage from "../assets/sounds/enemy/Enemy_Damage.mp3";
 
 /* Dragon */
 
@@ -218,16 +219,13 @@ import c_swirl_cup_single_short_1 from "../assets/sounds/cup/Swirl cup single sh
 import c_swirl_cup_single_short_2 from "../assets/sounds/cup/Swirl cup single short 3.mp3";
 import c_swirl_cup_single_short_3 from "../assets/sounds/cup/Swirl cup single short 1.mp3";
 
-/* Kiu */
-
-import Attack_Button from "../assets/sounds/ui/Attack_Button.mp3";
-import Enemy_Advance from "../assets/sounds/enemy/Enemy_Advance.mp3";
-import Enemy_Damage from "../assets/sounds/enemy/Enemy_Damage.mp3";
-
 const audios: Audio[] = [
 	{ key: "u_attack_button", path: u_attack_button, volume: 1 },
 	{ key: "u_disabled", path: u_disabled, volume: 1 },
+
 	{ key: "e_advance", path: e_advance, volume: 1 },
+	{ key: "e_damage", path: e_damage, volume: 1 },
+
 	{ key: "t_place_multiple_1", path: t_place_multiple_1, volume: 1 },
 	{ key: "t_place_multiple_2", path: t_place_multiple_2, volume: 1 },
 	{ key: "t_place_multiple_3", path: t_place_multiple_3, volume: 1 },
@@ -366,10 +364,6 @@ const audios: Audio[] = [
 	{ key: "c_swirl_cup_single_short_1", path: c_swirl_cup_single_short_1, volume: 1 },
 	{ key: "c_swirl_cup_single_short_2", path: c_swirl_cup_single_short_2, volume: 1 },
 	{ key: "c_swirl_cup_single_short_3", path: c_swirl_cup_single_short_3, volume: 1 },
-
-	{ key: "attack_button", path: Attack_Button, volume: 1 },
-	{ key: "enemy_advance", path: Enemy_Advance, volume: 1 },
-	{ key: "enemy_damage", path: Enemy_Damage, volume: 1 },
 ];
 
 
