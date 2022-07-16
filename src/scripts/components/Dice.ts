@@ -55,13 +55,13 @@ export class Dice extends Phaser.GameObjects.Container {
 
 		this.style = Phaser.Math.RND.pick(diceStyles);
 		this.value = Phaser.Math.Between(1, this.style.sides);
-		this.bounceValue = 0;
+		this.bounceValue = 1;
 
 		this.shadow = scene.add.sprite(0, 0, 'shadow');
 		this.shadow.setOrigin(0.5, 0.6);
 		this.add(this.shadow);
 
-		this.sprite = scene.add.sprite(0, 0, 'dice', 0);
+		this.sprite = scene.add.sprite(0, 0, 'dice', 6);
 		this.sprite.setOrigin(0.5, 0.5);
 		this.sprite.setTint(this.style.tint);
 		this.add(this.sprite);
@@ -102,6 +102,13 @@ export class Dice extends Phaser.GameObjects.Container {
 		const lift = 2.0 * this.bounceValue + 0.3 * this.holdSmooth;
 		this.sprite.setOrigin(0.5, 0.6 + lift);
 		this.shadow.setAlpha(0.5 - 0.2 * lift);
+
+		if (this.bounceValue > 0) {
+			this.sprite.setFrame(6 + Math.floor(30*timeMs/1000) % 3);
+		}
+		else {
+			this.sprite.setFrame(this.value-1);
+		}
 	}
 
 	onRelease() {
@@ -128,7 +135,7 @@ export class Dice extends Phaser.GameObjects.Container {
 			ease: 'Cubic.Out',
 			duration: duration,
 			onComplete: () => {
-				this.sprite.setFrame(this.value-1);
+				// this.sprite.setFrame(this.value-1);
 			},
 		});
 
