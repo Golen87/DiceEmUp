@@ -159,6 +159,14 @@ export class GameScene extends BaseScene {
 			enemy.update(timeMs, deltaMs);
 		}
 		this.particles.update(timeMs/1000, deltaMs/1000);
+
+		// Camera shake
+		if (this.cameraShakeValue > 0) {
+			this.cameras.main.x = this.cameraShakeValue*Math.sin(0.1*timeMs);
+		}
+		else {
+			this.cameras.main.x = 0;
+		}
 	}
 
 
@@ -269,6 +277,8 @@ export class GameScene extends BaseScene {
 		// });
 
 		// Explode dice
+		this.flash(3000, 0xFFAA77, 0.6);
+		this.shake(500, 4, 0);
 		this.grid.explodeGrid();
 		for (const dice of this.dices) {
 
