@@ -4,7 +4,7 @@ import { Grid } from "./../components/Grid";
 // import { Music } from "./../components/Music";
 // import { Background } from "../components/Background";
 // import { UI } from "../components/UI";
-// import { Particles } from "../components/Particles";
+import { Particles } from "../components/Particles";
 import { Player } from "../components/Player";
 import { Enemy } from "../components/Enemy";
 import { Dice } from "../components/Dice";
@@ -47,7 +47,7 @@ export class GameScene extends BaseScene {
 	// private enemies: Enemy[];
 
 	// Particles
-	// public particles: Particles;
+	public particles: Particles;
 
 	// public sounds: Map<string, Phaser.Sound.BaseSound>;
 	// public sounds: {[key: string]: Phaser.Sound.WebAudioSound};
@@ -102,8 +102,8 @@ export class GameScene extends BaseScene {
 
 		// this.enemies = [];
 
-		// this.particles = new Particles(this);
-		// this.particles.setDepth(9);
+		this.particles = new Particles(this);
+		this.particles.setDepth(1000);
 
 
 		// Touch controls
@@ -158,6 +158,7 @@ export class GameScene extends BaseScene {
 		for (const enemy of this.enemies) {
 			enemy.update(timeMs, deltaMs);
 		}
+		this.particles.update(timeMs/1000, deltaMs/1000);
 	}
 
 
@@ -237,16 +238,6 @@ export class GameScene extends BaseScene {
 			this.grid.addDice(coord, dice);
 		}
 
-		dice.on('dragstart', () => {
-			// this.grid.clear(dice.coord);
-			// dice.coord = null;
-		});
-		dice.on('dragend', () => {
-			// const coord = this.grid.getClosestCoord(dice.x, dice.y);
-			// if (coord) {
-				// this.grid.addDice(coord, dice);
-			// }
-		});
 		dice.on('drag', (x: number, y: number) => {
 			this.grid.snap(x, y, dice);
 		});
@@ -284,7 +275,11 @@ export class GameScene extends BaseScene {
 		// });
 
 		// Explode dice
+		this.grid.explodeGrid();
 		for (const dice of this.dices) {
+
+			this.particles.createExplosion(dice.x, dice.y, 0.8, 1.0);
+
 			this.grid.clear(dice.coord);
 			dice.destroy();
 		}

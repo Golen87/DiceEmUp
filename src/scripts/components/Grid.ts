@@ -181,6 +181,21 @@ export class Grid extends Phaser.GameObjects.Container {
 		}
 	}
 
+	explodeGrid() {
+		for (let j = 0; j < this.rows; j++) {
+			for (let i = 0; i < this.cols; i++) {
+
+				const cell = this.getCell({i, j});
+				const damage = this.getDamage({i, j});
+				const scaledDamage = Math.min(damage, 10) / 10;
+
+				if (damage > 0) {
+					this.scene.particles.createExplosion(cell.cx, cell.cy, 0.2 + 0.3 * scaledDamage, 0.6 + 0.3 * scaledDamage);
+				}
+			}
+		}
+	}
+
 
 	addDice(coord: Coord, dice: Dice) {
 		this.grid[coord.j][coord.i] = dice;
