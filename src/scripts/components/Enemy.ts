@@ -2,7 +2,9 @@ import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
 
 export enum EnemyType {
-	SQUIRE
+	SQUIRE,
+	SQUIRE_WAVE,
+	ENEMY_COUNT
 }
 
 interface EnemyBehaviour {
@@ -10,28 +12,53 @@ interface EnemyBehaviour {
 	move: (coord:Coord, moves: number) => Coord;
 	spawn: (scene:GameScene, grid:Grid) => Enemy[];
 	tint: number;
+	minHealth: number;
+	maxHealth: number;
 };
 
-export const EnemyKinds = new Map<EnemyType, EnemyBehaviour>([
-	[EnemyType.SQUIRE, {
-		type: EnemyType.SQUIRE,
-		move: (coord, moves) => {
-			return { i: coord.i-1, j: coord.j };
-		},
-		spawn: (scene, grid) => {
-			let ret: Enemy[] = [];
-			const coord = grid.getRandomRightFree();
-			const kind = EnemyKinds.get(EnemyType.SQUIRE);
-			if (coord && kind != null) {
-				const enemy = new Enemy(scene, coord.i, coord.j, kind);
-				grid.addEnemy(coord, enemy);
+export const EnemyKinds = new Map<EnemyType, EnemyBehaviour>();
+EnemyKinds.set(EnemyType.SQUIRE, {
+	type: EnemyType.SQUIRE,
+	move: (coord, moves) => {
+		return { i: coord.i-1, j: coord.j };
+	},
+	spawn: (scene, grid) => {
+		const ret: Enemy[] = [];
+		const coord = grid.getRandomRightFree();
+		const kind = EnemyKinds.get(EnemyType.SQUIRE);
+		if (coord && kind != null) {
+			const enemy = new Enemy(scene, coord.i, coord.j, kind);
+			grid.addEnemy(coord, enemy);
+			ret.push(enemy);
+		}
+		return ret;
+	},
+	tint: 0xFFFFFF,
+	minHealth: 3,
+	maxHealth: 9
+});
+
+EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
+	EnemyKinds.get(EnemyType.SQUIRE), {
+	spawn: (scene:GameScene, grid:Grid) => {
+		const ret: Enemy[] = [];
+		const kind = EnemyKinds.get(EnemyType.SQUIRE_WAVE);
+		if(!kind) return ret;
+
+		const right = grid.cols-1;
+
+		for( let j = 0; j < grid.rows; j++) {
+			if(!grid.grid[j][right]) {
+				const enemy = new Enemy(scene, right, j, kind);
+				grid.addEnemy({i: right, j: j}, enemy);
 				ret.push(enemy);
 			}
-			return ret;
-		},
-		tint: 0xFFFFFF
-	}]
-]);
+		}
+		return ret;
+	},
+	maxHealth: 3
+}));
+
 
 export class Enemy extends Phaser.GameObjects.Container {
 	public scene: GameScene;
@@ -59,7 +86,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 		this.scene = scene;
 		scene.add.existing(this);
 
-		this.maxHealth = Math.floor((3 + 13 * Math.random()));
+		this.maxHealth = Phaser.Math.Between(behaviour.minHealth, behaviour.maxHealth);
 		this.health = this.maxHealth;
 		this.hurtTimer = 0;
 		this.deathTimer = 0;

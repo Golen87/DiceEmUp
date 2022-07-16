@@ -215,9 +215,9 @@ export class GameScene extends BaseScene {
 	}
 
 	addEnemy() {
-		let squire = EnemyKinds.get(EnemyType.SQUIRE);
-		if( squire != null ) {
-			const spawned = squire.spawn(this, this.grid);
+		let spawner = EnemyKinds.get(Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.ENEMY_COUNT-1));
+		if( spawner != null ) {
+			const spawned = spawner.spawn(this, this.grid);
 			this.enemies.push(...spawned);
 		}
 	}
