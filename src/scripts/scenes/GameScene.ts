@@ -8,6 +8,7 @@ import { Grid } from "./../components/Grid";
 import { Player } from "../components/Player";
 import { Enemy } from "../components/Enemy";
 import { Dice } from "../components/Dice";
+import { Button } from "../components/Button";
 // import { Minion } from "../components/Minion";
 // import { Boss } from "../components/Boss";
 // import { Bullet } from "../components/Bullet";
@@ -19,12 +20,22 @@ import { Dice } from "../components/Dice";
 // import { EnemyParams, BulletParams } from "../interfaces";
 
 
+enum State {
+	MoveDice,
+	DamagePhase,
+	MovementPhase,
+}
+
+
 export class GameScene extends BaseScene {
+	public state: State;
+
 	// Background
 	// public background: Background;
 	public grid: Grid;
 	public dices: Dice[];
 	public enemies: Enemy[];
+	public button: Button;
 
 	// UI texts
 	// private ui: UI;
@@ -54,6 +65,8 @@ export class GameScene extends BaseScene {
 	create(): void {
 		this.fade(false, 1000, 0x000000);
 
+		this.state = State.MoveDice;
+
 		// Backgrounds
 		// this.background = new Background(this);
 		// this.background.setDepth(BACKGROUND_LAYER);
@@ -70,13 +83,11 @@ export class GameScene extends BaseScene {
 		this.dices = [];
 		this.enemies = [];
 
-		for (let i = 0; i < 2; i++) {
-			this.addEnemy();
-		}
-		for (let i = 0; i < 4; i++) {
-			this.addDice();
-		}
+		this.button = new Button(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - 50);
+		this.button.on('click', this.onAttack, this);
 
+
+		this.onNewRound();
 
 		// UI
 		// this.ui = new UI(this);
@@ -132,10 +143,12 @@ export class GameScene extends BaseScene {
 	}
 
 	update(timeMs: number, deltaMs: number) {
-		// for (const dice of this.dices) {
-			// if (dice.dragging) {
-			// }
-		// }
+		for (const dice of this.dices) {
+			dice.update(timeMs, deltaMs);
+		}
+		for (const enemy of this.enemies) {
+			enemy.update(timeMs, deltaMs);
+		}
 	}
 
 
@@ -169,6 +182,56 @@ export class GameScene extends BaseScene {
 		const coord = this.grid.getRandomRightFree();
 		if (coord) {
 			this.grid.addEnemy(coord, enemy);
+		}
+
+		// enemy.on('destroy', () => {
+			// this.grid.clear(enemy.coord);
+			// this.enemies.splice(this.enemies.indexOf(enemy), 1);
+		// });
+	}
+
+	onAttack() {
+		this.state = State.DamagePhase;
+		this.button.setVisible(false);
+
+		for (const enemy of this.enemies) {
+			if (enemy.coord) {
+				enemy.damage( this.grid.getDamage(enemy.coord) );
+			}
+		}
+
+		this.addEvent(1000, this.onMove);
+	}
+
+	onMove() {
+		this.state = State.MovementPhase;
+
+		for (const enemy of this.enemies) {
+			if (!enemy.alive) {
+				this.grid.clear(enemy.coord);
+				enemy.destroy();
+			}
+		}
+		this.enemies = this.enemies.filter(enemy => enemy.alive);
+
+		for (const dice of this.dices) {
+			this.grid.clear(dice.coord);
+			dice.destroy();
+		}
+		this.grid.updateGrid();
+		this.dices = [];
+
+		this.grid.moveEnemies();
+		this.addEvent(1000, this.onNewRound);
+	}
+
+	onNewRound() {
+		this.state = State.MoveDice;
+		this.button.setVisible(true);
+
+		this.addEnemy();
+		for (let i = 0; i < 3; i++) {
+			this.addDice();
 		}
 	}
 

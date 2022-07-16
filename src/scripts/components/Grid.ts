@@ -202,7 +202,7 @@ export class Grid extends Phaser.GameObjects.Container {
 
 	addEnemy(coord: Coord, enemy: Enemy) {
 		this.grid[coord.j][coord.i] = enemy;
-		enemy.move(this.getCell(coord));
+		enemy.move(coord, this.getCell(coord));
 		this.updateGrid();
 	}
 
@@ -218,13 +218,27 @@ export class Grid extends Phaser.GameObjects.Container {
 		if (coord && dice.coord) {
 			const cell = this.getCell(coord);
 			if (dice.coord.i != coord.i || dice.coord.j != coord.j) {
-				console.log(dice.coord, '->', coord);
-
 				this.grid[coord.j][coord.i] = dice;
 				this.grid[dice.coord.j][dice.coord.i] = null;
 				this.updateGrid();
 
 				dice.move(coord, cell);
+			}
+		}
+	}
+
+	moveEnemies() {
+		for (let i = 1; i < this.cols; i++) {
+			for (let j = 0; j < this.rows; j++) {
+				if (this.grid[j][i] instanceof Enemy) {
+					if (!this.grid[j][i-1]) {
+						this.grid[j][i-1] = this.grid[j][i];
+						this.grid[j][i] = null;
+
+						const coord = { i: i-1, j };
+						this.grid[j][i-1].move(coord, this.getCell(coord));
+					}
+				}
 			}
 		}
 	}
