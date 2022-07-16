@@ -35,6 +35,7 @@ const diceStyles: DiceStyle[] = [
 export class Dice extends Phaser.GameObjects.Container {
 	public scene: GameScene;
 
+	public shadow: Phaser.GameObjects.Sprite;
 	public sprite: Phaser.GameObjects.Sprite;
 	public text: Phaser.GameObjects.Text;
 	public style: DiceStyle;
@@ -43,6 +44,8 @@ export class Dice extends Phaser.GameObjects.Container {
 	public dragging: boolean;
 	public coord: Coord | null;
 
+	private bounceValue: number;
+
 	constructor(scene: GameScene, x: number, y: number) {
 		super(scene, x, y);
 		this.scene = scene;
@@ -50,6 +53,11 @@ export class Dice extends Phaser.GameObjects.Container {
 
 		this.style = Phaser.Math.RND.pick(diceStyles);
 		this.value = Phaser.Math.Between(1, this.style.sides);
+		this.bounceValue = 0;
+
+		this.shadow = scene.add.sprite(0, 0, 'shadow');
+		this.shadow.setOrigin(0.5, 0.6);
+		this.add(this.shadow);
 
 		this.sprite = scene.add.sprite(0, 0, 'd6');
 		this.sprite.setOrigin(0.5, 0.6);
@@ -78,23 +86,56 @@ export class Dice extends Phaser.GameObjects.Container {
 		// this.scene.input.enableDebug(this.sprite);
 	}
 
+	update(timeMs: number, deltaMs: number) {
+		super.update(timeMs, deltaMs);
+
+		this.sprite.setOrigin(0.5, 0.6 + 2.0 * this.bounceValue);
+		this.shadow.setAlpha(0.5 - 0.2 * this.bounceValue);
+	}
+
 	throw(coord: Coord, cell: Cell) {
 		this.sprite.setScale(0.8 * cell.width / this.sprite.width);
+		this.shadow.setScale(0.8 * cell.width / this.sprite.width);
 		this.sprite.setTexture('d6_roll');
 		this.setDepth(10 + cell.y + 0.01*cell.x);
 
 		this.coord = coord;
 
+		const duration = Phaser.Math.RND.between(1200, 1600);
+
+		// Movement animation
 		this.scene.tweens.add({
 			targets: this,
 			x: { from: this.x, to: cell.cx },
 			y: { from: this.y, to: cell.cy },
 			ease: 'Cubic.Out',
-			duration: 1000,
+			duration: duration,
 			onComplete: () => {
 				this.sprite.setTexture('d6');
-				this.scene.sound.play(`t_throw_desk_multiple_${Phaser.Math.Between(1,5)}`);
 			},
+		});
+
+		// Bounce animation
+		this.scene.tweens.add({
+			targets: this,
+			bounceValue: { from: 0, to: 1 },
+			ease: 'Cubic.Out',
+			duration: 0.25 * duration,
+
+			// At peak of throw
+			onComplete: () => {
+				this.scene.tweens.add({
+					targets: this,
+					bounceValue: { from: 1, to: 0 },
+					ease: 'Bounce.Out',
+					duration: 0.75 * duration
+				});
+			}
+		});
+
+		// Dice rolling audio
+		this.scene.addEvent(0.4 * duration, () => {
+			this.scene.sound.play(`t_throw_desk_multiple_${Phaser.Math.Between(1,5)}`);
 		});
 	}
 

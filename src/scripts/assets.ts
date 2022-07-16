@@ -27,6 +27,7 @@ import background from "../assets/images/background.png";
 import concept from "../assets/images/dragon_concept2.png";
 import d6 from "../assets/images/d6.png";
 import d6_roll from "../assets/images/d6_roll.png";
+import shadow from "../assets/images/shadow.png";
 import button from "../assets/images/button.png";
 
 const images: Asset[] = [
@@ -37,6 +38,7 @@ const images: Asset[] = [
 	// { key: "enemy2",		path: enemy2 },
 	{ key: "d6",			path: d6 },
 	{ key: "d6_roll",		path: d6_roll },
+	{ key: "shadow",		path: shadow },
 	{ key: "button",		path: button },
 ];
 
