@@ -89,11 +89,12 @@ class Particle extends Phaser.GameObjects.Sprite {
 	}
 
 	explosion(x: number, y: number, scale: number, duration: number) {
-		this.init(x, y, "explosion");
+		this.init(x, y, "fire");
 
 		this.setData("scale", scale);
 		this.setScale(this.getData("scale"));
 		this.setFrame(0);
+		this.setOrigin(0.46, 0.76);
 
 		this.lifeTime = duration * (0.8 + 0.2*Math.random());
 	}
@@ -128,8 +129,9 @@ class Particle extends Phaser.GameObjects.Sprite {
 			}
 		}
 
-		if (this.myType == "explosion") {
-			let frame = Math.floor(17 * (this.life / this.lifeTime));
+		if (this.myType == "fire") {
+			// let frame = Math.floor(17 * (this.life / this.lifeTime));
+			let frame = Math.floor(6 * (this.life / this.lifeTime));
 			this.setFrame(frame);
 		}
 

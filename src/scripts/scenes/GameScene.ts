@@ -272,7 +272,7 @@ export class GameScene extends BaseScene {
 		this.grid.explodeGrid();
 		for (const dice of this.dices) {
 
-			this.particles.createExplosion(dice.x, dice.y, 0.8, 1.0);
+			// this.particles.createExplosion(dice.x, dice.y, 0.8, 1.0);
 
 			this.grid.clear(dice.coord);
 			dice.destroy();

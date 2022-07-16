@@ -191,7 +191,7 @@ export class Grid extends Phaser.GameObjects.Container {
 				const scaledDamage = Math.min(damage, 10) / 10;
 
 				if (damage > 0) {
-					this.scene.particles.createExplosion(cell.cx, cell.cy, 0.2 + 0.3 * scaledDamage, 0.6 + 0.3 * scaledDamage);
+					this.scene.particles.createExplosion(cell.cx, cell.cy, 0.3 + 0.3 * scaledDamage, 0.6 + 0.3 * scaledDamage);
 				}
 			}
 		}
