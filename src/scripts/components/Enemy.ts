@@ -188,10 +188,23 @@ export class Enemy extends Phaser.GameObjects.Container {
 	}
 
 	damage(amount: number=1) {
+		const previousHealth = this.health;
+		const healthDifference = Math.abs(previousHealth - this.health);
 		this.health -= amount;
 		this.hurtTimer = 1000;
 
-		this.text.setText(this.health.toString());
+		// this.text.setText(this.health.toString());
+		this.scene.tweens.add({
+			targets: this.text,
+			text: { from: previousHealth, to: this.health },
+			ease: 'Cubic.Out',
+			duration: 500 + (healthDifference * 80),
+			onUpdate: tween => {
+				const tweenedHealth = parseFloat(this.text.text);
+				this.text.setText(Math.floor(tweenedHealth).toString());
+				if (tweenedHealth < 1) this.text.setColor("#700");
+			}
+		});
 
 		if (this.health <= 0) {
 			this.emit("death");
