@@ -105,6 +105,8 @@ export class Enemy extends Phaser.GameObjects.Container {
 		this.text.setOrigin(0.6);
 		this.text.setStroke("#FFFFFF", 5);
 		this.add(this.text);
+
+		this.setPosition(scene.W+200, scene.H/2);
 	}
 
 	update(timeMs: number, deltaMs: number) {
