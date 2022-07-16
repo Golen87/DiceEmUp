@@ -144,7 +144,16 @@ export class Enemy extends Phaser.GameObjects.Container {
 		const previousHealth = this.health;
 		const healthDifference = Math.abs(previousHealth - this.health);
 		this.health -= amount;
-		this.hurtTimer = 1000;
+		if (amount > 0) {
+			this.hurtTimer = 1000;
+			this.scene.sound.play("e_damage", {
+				volume: 0.2,
+				// https://www.desmos.com/calculator/lf1eosjjdd
+				pan: (this.x / this.scene.W - 0.5) * 1.1 - 0.18,
+				rate: Phaser.Math.RND.realInRange(0.95, 1.05),
+				delay: Phaser.Math.RND.realInRange(0.0, 0.05)
+			});
+		}
 
 		// this.text.setText(this.health.toString());
 		this.scene.tweens.add({
