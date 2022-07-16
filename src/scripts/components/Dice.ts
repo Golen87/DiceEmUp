@@ -42,6 +42,7 @@ export class Dice extends Phaser.GameObjects.Container {
 	public value: number;
 
 	public dragging: boolean;
+	public hovering: boolean;
 	public holdSmooth: number;
 	public coord: Coord | null;
 	public lastDragSound: number;
@@ -75,20 +76,28 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.lastDragSound = Date.now();
 
 		this.dragging = false;
+		this.hovering = false;
 		this.holdSmooth = 0;
 
 		const padding = 10;
 		this.sprite.setInteractive({ hitArea: this.sprite, useHandCursor: true, draggable: true })
 			.on('pointerdown', () => {
+				if (this.bounceValue > 0) return; // Abort if flying
 				this.dragging = true;
 				this.emit('dragstart');
 				this.scene.sound.play(`h_fondle_hard_${Phaser.Math.Between(1,3)}`);
 			}, this)
 			.on('drag', (pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => {
+				if (this.bounceValue > 0) return; // Abort if flying
 				this.emit('drag', pointer.x, pointer.y);
 			}, this)
 			.on('pointerover', () => {
+				if (this.bounceValue > 0) return; // Abort if flying
 				this.scene.sound.play(`d_dice_tap_short_${Phaser.Math.Between(1,5)}`);
+				this.hovering = true;
+			}, this)
+			.on('pointerout', () => {
+				this.hovering = false;
 			}, this);
 		// this.sprite.input.hitArea.setTo(-padding, -padding, this.sprite.width+2*padding, this.sprite.height+2*padding);
 		// this.scene.input.enableDebug(this.sprite);
@@ -97,7 +106,7 @@ export class Dice extends Phaser.GameObjects.Container {
 	update(timeMs: number, deltaMs: number) {
 		super.update(timeMs, deltaMs);
 
-		this.holdSmooth += 0.75 * ((this.dragging ? 1 : 0) - this.holdSmooth);
+		this.holdSmooth += 0.75 * ((this.dragging ? 1 : this.hovering ? 0.2 : 0) - this.holdSmooth);
 
 		const lift = 2.0 * this.bounceValue + 0.3 * this.holdSmooth;
 		this.sprite.setOrigin(0.5, 0.6 + lift);
