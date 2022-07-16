@@ -1,5 +1,6 @@
 import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
+import { audios } from "../assets";
 
 interface DiceStyle {
 	sides: number;
@@ -92,6 +93,7 @@ export class Dice extends Phaser.GameObjects.Container {
 			duration: 1000,
 			onComplete: () => {
 				this.sprite.setTexture('d6');
+				this.scene.sound.play(`t_throw_desk_multiple_${Phaser.Math.Between(1,5)}`);
 			},
 		});
 	}
@@ -101,6 +103,7 @@ export class Dice extends Phaser.GameObjects.Container {
 
 		this.coord = coord;
 
+		this.scene.sound.play(`t_slide_single_${Phaser.Math.Between(1,5)}`);
 		this.scene.tweens.add({
 			targets: this,
 			x: { from: this.x, to: cell.cx },
