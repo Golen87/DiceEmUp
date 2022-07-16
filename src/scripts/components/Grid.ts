@@ -219,12 +219,12 @@ export class Grid extends Phaser.GameObjects.Container {
 		for (let i = 1; i < this.cols; i++) {
 			for (let j = 0; j < this.rows; j++) {
 				if (this.grid[j][i] instanceof Enemy) {
-					if (!this.grid[j][i-1]) {
-						this.grid[j][i-1] = this.grid[j][i];
+					const enemy = this.grid[j][i];
+					const next = enemy.getNextMove({i: i, j: j});
+					if (!this.grid[next.j][next.i]) {
+						this.grid[next.j][next.i] = enemy;
 						this.grid[j][i] = null;
-
-						const coord = { i: i-1, j };
-						this.grid[j][i-1].move(coord, this.getCell(coord));
+						enemy.move(next, this.getCell(next));
 					}
 				}
 			}
