@@ -28,7 +28,9 @@ import concept from "../assets/images/dragon_concept2.png";
 import d6 from "../assets/images/d6.png";
 import d6_roll from "../assets/images/d6_roll.png";
 import shadow from "../assets/images/shadow.png";
-import button from "../assets/images/button.png";
+
+import ui_button from "../assets/images/ui/ui_button.png";
+import ui_healthbar from "../assets/images/ui/ui_healthbar.png";
 
 const images: Asset[] = [
 	{ key: "background",	path: background },
@@ -39,7 +41,10 @@ const images: Asset[] = [
 	{ key: "d6",			path: d6 },
 	{ key: "d6_roll",		path: d6_roll },
 	{ key: "shadow",		path: shadow },
-	{ key: "button",		path: button },
+
+	// UI
+	{ key: "ui_button",		path: ui_button },
+	{ key: "ui_healthbar",		path: ui_healthbar },
 ];
 
 

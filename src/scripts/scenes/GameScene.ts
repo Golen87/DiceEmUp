@@ -25,6 +25,7 @@ enum State {
 	MoveDice,
 	DamagePhase,
 	MovementPhase,
+	AttackPhase,
 }
 
 
@@ -88,6 +89,7 @@ export class GameScene extends BaseScene {
 		this.button.on('click', this.onAttack, this);
 
 
+		this.initAnimations();
 		this.onNewRound();
 
 		// UI
@@ -151,6 +153,40 @@ export class GameScene extends BaseScene {
 		for (const enemy of this.enemies) {
 			enemy.update(timeMs, deltaMs);
 		}
+	}
+
+
+	initAnimations() {
+		this.anims.create({
+			key: 'enemy_idle',
+			frames: [
+				{ key: 'enemy', frame: 0, duration: 500 },
+				{ key: 'enemy', frame: 1, duration: 500 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'enemy_walk',
+			frames: [
+				{ key: 'enemy', frame: 2, duration: 100 },
+				{ key: 'enemy', frame: 0, duration: 100 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'enemy_attack',
+			frames: [
+				{ key: 'enemy', frame: 0, duration: 100 },
+				{ key: 'enemy', frame: 2, duration: 100 },
+				{ key: 'enemy', frame: 3, duration: 100 },
+				{ key: 'enemy', frame: 0, duration: 100 },
+				{ key: 'enemy', frame: 2, duration: 100 },
+				{ key: 'enemy', frame: 3, duration: 100 },
+				{ key: 'enemy', frame: 0, duration: 100 },
+				{ key: 'enemy', frame: 2, duration: 100 },
+				{ key: 'enemy', frame: 3, duration: 100 },
+			]
+		});
 	}
 
 
@@ -233,16 +269,48 @@ export class GameScene extends BaseScene {
 				volume: this.enemies.length == 1 ? 0.3 : 0.5
 			});
 		}
-		this.addEvent(1000, this.onNewRound);
+		for (let enemy of this.enemies) {
+			enemy.playWalk();
+		}
+		this.addEvent(1000, this.onEnemyAttack);
+	}
+
+	onEnemyAttack() {
+		let attackingEnemies = this.enemies.filter(enemy => enemy.coord && enemy.coord.i == 0);
+
+		for (let enemy of this.enemies) {
+			enemy.playIdle();
+		}
+
+		if (attackingEnemies.length > 0) {
+
+			for (let enemy of attackingEnemies) {
+				enemy.playAttack();
+			}
+
+			this.addEvent(500, () => {
+				this.dragon.damage(1);
+			});
+
+			this.addEvent(1000, this.onNewRound);
+		}
+		else {
+			this.onNewRound();
+		}
 	}
 
 	onNewRound() {
 		this.state = State.MoveDice;
 
+		this.button.setVisible(false);
 		this.dragon.throw();
 		// Animation -> this.onDragonThrow
 
 		this.addEnemy();
+
+		for (let enemy of this.enemies) {
+			enemy.playIdle();
+		}
 	}
 
 	onDragonThrow() {

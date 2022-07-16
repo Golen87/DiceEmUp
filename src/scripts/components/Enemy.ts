@@ -132,7 +132,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 	update(timeMs: number, deltaMs: number) {
 		super.update(timeMs, deltaMs);
 
-		this.sprite.setFrame(Math.floor(timeMs/400) % 2);
+		// this.sprite.setFrame(Math.floor(timeMs/400) % 2);
 
 		// Hurt animation
 		this.hurtTimer -= deltaMs;
@@ -171,6 +171,18 @@ export class Enemy extends Phaser.GameObjects.Container {
 				// this.destroy();
 			}
 		}
+	}
+
+	playIdle() {
+		this.sprite.play({ key: 'enemy_idle' });
+	}
+
+	playWalk() {
+		this.sprite.play({ key: 'enemy_walk' });
+	}
+
+	playAttack() {
+		this.sprite.play({ key: 'enemy_attack' });
 	}
 
 	move(coord: Coord, cell: Cell) {

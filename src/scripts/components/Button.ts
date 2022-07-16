@@ -15,7 +15,7 @@ export class Button extends Phaser.GameObjects.Container {
 
 		this.enabled = true;
 
-		this.sprite = scene.add.sprite(0, 0, 'button');
+		this.sprite = scene.add.sprite(0, 0, 'ui_button');
 		this.sprite.setScale(0.4);
 		this.sprite.setTint(0xFFCCCC);
 		this.add(this.sprite);
