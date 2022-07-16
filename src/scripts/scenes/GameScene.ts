@@ -69,6 +69,7 @@ export class GameScene extends BaseScene {
 		this.fade(false, 1000, 0x000000);
 
 		this.state = State.MoveDice;
+		this.initAnimations();
 
 		// Backgrounds
 		// this.background = new Background(this);
@@ -89,7 +90,6 @@ export class GameScene extends BaseScene {
 		this.button.on('click', this.onAttack, this);
 
 
-		this.initAnimations();
 		this.onNewRound();
 
 		// UI
@@ -157,6 +157,39 @@ export class GameScene extends BaseScene {
 
 
 	initAnimations() {
+		this.anims.create({
+			key: 'dragon_idle',
+			frames: [
+				{ key: 'dragon', frame: 0, duration: 600 },
+				{ key: 'dragon', frame: 1, duration: 400 },
+				{ key: 'dragon', frame: 2, duration: 600 },
+				{ key: 'dragon', frame: 1, duration: 400 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'dragon_throw',
+			frames: [
+				{ key: 'dragon', frame: 0, duration: 200 },
+				{ key: 'dragon', frame: 4, duration: 200 },
+				{ key: 'dragon', frame: 5, duration: 200 },
+			],
+		});
+		this.anims.create({
+			key: 'dragon_return',
+			frames: [
+				{ key: 'dragon', frame: 6, duration: 300 },
+				{ key: 'dragon', frame: 7, duration: 700 },
+			],
+		});
+		this.anims.create({
+			key: 'dragon_hurt',
+			frames: [
+				{ key: 'dragon', frame: 3, duration: 1000 },
+			],
+			repeat: -1
+		});
+
 		this.anims.create({
 			key: 'enemy_idle',
 			frames: [
@@ -234,15 +267,27 @@ export class GameScene extends BaseScene {
 		this.state = State.DamagePhase;
 		this.button.setVisible(false);
 
-		this.addEvent(200, () => {
-			for (const enemy of this.enemies) {
-				if (enemy.coord) {
-					enemy.damage( this.grid.getDamage(enemy.coord) );
+		// this.addEvent(200, () => {
+		for (const enemy of this.enemies) {
+			if (enemy.coord) {
+				const dmg = this.grid.getDamage(enemy.coord);
+				if (dmg > 0) {
+					enemy.damage(dmg);
 				}
 			}
+		}
+		// });
 
-			this.addEvent(1000, this.onMove);
-		});
+		// Explode dice
+		for (const dice of this.dices) {
+			this.grid.clear(dice.coord);
+			dice.destroy();
+		}
+		this.grid.updateGrid();
+		this.dices = [];
+
+
+		this.addEvent(1000, this.onMove);
 	}
 
 	onMove() {
@@ -255,13 +300,6 @@ export class GameScene extends BaseScene {
 			}
 		}
 		this.enemies = this.enemies.filter(enemy => enemy.alive);
-
-		for (const dice of this.dices) {
-			this.grid.clear(dice.coord);
-			dice.destroy();
-		}
-		this.grid.updateGrid();
-		this.dices = [];
 
 		if (this.enemies.length > 0) {
 			this.grid.moveEnemies();
