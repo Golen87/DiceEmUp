@@ -197,16 +197,20 @@ export class GameScene extends BaseScene {
 	}
 
 	onAttack() {
+		this.sound.play("u_attack_button", {volume: 0.5});
+
 		this.state = State.DamagePhase;
 		this.button.setVisible(false);
 
-		for (const enemy of this.enemies) {
-			if (enemy.coord) {
-				enemy.damage( this.grid.getDamage(enemy.coord) );
+		this.addEvent(200, () => {
+			for (const enemy of this.enemies) {
+				if (enemy.coord) {
+					enemy.damage( this.grid.getDamage(enemy.coord) );
+				}
 			}
-		}
 
-		this.addEvent(1000, this.onMove);
+			this.addEvent(1000, this.onMove);
+		});
 	}
 
 	onMove() {
@@ -227,7 +231,12 @@ export class GameScene extends BaseScene {
 		this.grid.updateGrid();
 		this.dices = [];
 
-		this.grid.moveEnemies();
+		if (this.enemies.length > 0) {
+			this.grid.moveEnemies();
+			this.sound.play("e_advance", {
+				volume: this.enemies.length == 1 ? 0.3 : 0.5
+			});
+		}
 		this.addEvent(1000, this.onNewRound);
 	}
 

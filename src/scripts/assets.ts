@@ -61,6 +61,15 @@ const spritesheets: SpriteSheet[] = [
 
 /* Sounds */
 
+/* UI */
+import u_attack_button from "../assets/sounds/ui/Attack_Button.mp3";
+import u_disabled from "../assets/sounds/ui/Disabled.mp3";
+
+/* Enemy */
+import e_advance from "../assets/sounds/enemy/Enemy_Advance.mp3";
+
+/* Dragon */
+
 /* Tray */
 import t_place_multiple_1 from "../assets/sounds/tray/Place multiple 1.mp3";
 import t_place_multiple_2 from "../assets/sounds/tray/Place multiple 2.mp3";
@@ -210,6 +219,9 @@ import c_swirl_cup_single_short_2 from "../assets/sounds/cup/Swirl cup single sh
 import c_swirl_cup_single_short_3 from "../assets/sounds/cup/Swirl cup single short 1.mp3";
 
 const audios: Audio[] = [
+	{ key: "u_attack_button", path: u_attack_button, volume: 1 },
+	{ key: "u_disabled", path: u_disabled, volume: 1 },
+	{ key: "e_advance", path: e_advance, volume: 1 },
 	{ key: "t_place_multiple_1", path: t_place_multiple_1, volume: 1 },
 	{ key: "t_place_multiple_2", path: t_place_multiple_2, volume: 1 },
 	{ key: "t_place_multiple_3", path: t_place_multiple_3, volume: 1 },
