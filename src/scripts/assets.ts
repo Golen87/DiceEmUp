@@ -25,8 +25,9 @@ interface Audio {
 import background from "../assets/images/background.png";
 // import dragon from "../assets/images/dragon.png";
 import concept from "../assets/images/dragon_concept2.png";
-import d6 from "../assets/images/d6.png";
-import d6_roll from "../assets/images/d6_roll.png";
+
+import d6 from "../assets/images/dice/d6.png";
+import d6_roll from "../assets/images/dice/d6_roll.png";
 import shadow from "../assets/images/shadow.png";
 
 import ui_button from "../assets/images/ui/ui_button.png";
@@ -44,7 +45,7 @@ const images: Asset[] = [
 
 	// UI
 	{ key: "ui_button",		path: ui_button },
-	{ key: "ui_healthbar",		path: ui_healthbar },
+	{ key: "ui_healthbar",	path: ui_healthbar },
 ];
 
 
@@ -55,12 +56,13 @@ const images: Asset[] = [
 import explosion from "../assets/images/explosion.png";
 import dragon from "../assets/images/dragon_spritesheet.png";
 import enemy from "../assets/images/enemy.png";
+import dice from "../assets/images/dice/dice.png"
 
 const spritesheets: SpriteSheet[] = [
-	{ key: "dragon",	path: dragon,			width: 840/2,	height: 1080/2 },
-	{ key: "enemy",		path: enemy,			width: 420,	height: 540 },
-
-	{ key: "explosion",	path: explosion,		width: 200,	height: 282 },
+	{ key: "dragon",	path: dragon,		width: 840/2,	height: 1080/2 },
+	{ key: "enemy",		path: enemy,		width: 420,	height: 540 },
+	{ key: "dice",		path: dice,			width: 512/2,	height: 512/2 },
+	{ key: "explosion",	path: explosion,	width: 200,	height: 282 },
 ];
 
 

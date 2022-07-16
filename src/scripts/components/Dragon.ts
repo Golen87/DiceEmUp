@@ -43,33 +43,6 @@ export class Dragon extends Phaser.GameObjects.Container {
 		this.add(this.text);
 
 
-		this.scene.anims.create({
-			key: 'dragon_idle',
-			frames: [
-				{ key: 'dragon', frame: 0, duration: 600 },
-				{ key: 'dragon', frame: 1, duration: 400 },
-				{ key: 'dragon', frame: 2, duration: 600 },
-				{ key: 'dragon', frame: 1, duration: 400 },
-			],
-			repeat: -1
-		});
-		this.scene.anims.create({
-			key: 'dragon_throw',
-			frames: [
-				{ key: 'dragon', frame: 0, duration: 200 },
-				{ key: 'dragon', frame: 4, duration: 200 },
-				{ key: 'dragon', frame: 5, duration: 200 },
-			],
-		});
-		this.scene.anims.create({
-			key: 'dragon_return',
-			frames: [
-				{ key: 'dragon', frame: 6, duration: 300 },
-				{ key: 'dragon', frame: 7, duration: 700 },
-			],
-		});
-
-
 		this.sprite.play({ key: 'dragon_idle' });
 		this.sprite.on('animationcomplete', () => {
 			if (this.sprite.anims.currentAnim.key == 'dragon_throw') {
@@ -179,6 +152,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 	damage(amount: number=1) {
 		this.health -= amount;
 		this.hurtTimer = 1000;
+		this.sprite.play({ key: 'dragon_hurt' });
 
 		this.text.setText(this.health.toString());
 
