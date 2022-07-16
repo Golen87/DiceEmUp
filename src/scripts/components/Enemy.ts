@@ -61,7 +61,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 		this.deathDuration = 1000;
 
 		// Create player sprite
-		this.sprite = scene.add.sprite(0, 0, Phaser.Math.RND.pick(["enemy", "enemy2"]));
+		this.sprite = scene.add.sprite(0, 0, Phaser.Math.RND.pick(["enemy"]), 0);
 		this.sprite.setOrigin(0.5, 0.65);
 		// this.sprite.setScale(0.25);
 		this.add(this.sprite);
@@ -131,6 +131,8 @@ export class Enemy extends Phaser.GameObjects.Container {
 
 	update(timeMs: number, deltaMs: number) {
 		super.update(timeMs, deltaMs);
+
+		this.sprite.setFrame(Math.floor(timeMs/400) % 2);
 
 		// Hurt animation
 		this.hurtTimer -= deltaMs;

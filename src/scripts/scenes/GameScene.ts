@@ -9,6 +9,7 @@ import { Player } from "../components/Player";
 import { Enemy } from "../components/Enemy";
 import { Dice } from "../components/Dice";
 import { Button } from "../components/Button";
+import { Dragon } from "../components/Dragon";
 // import { Minion } from "../components/Minion";
 // import { Boss } from "../components/Boss";
 // import { Bullet } from "../components/Bullet";
@@ -35,6 +36,7 @@ export class GameScene extends BaseScene {
 	public grid: Grid;
 	public dices: Dice[];
 	public enemies: Enemy[];
+	public dragon: Dragon;
 	public button: Button;
 
 	// UI texts
@@ -73,9 +75,12 @@ export class GameScene extends BaseScene {
 		let bg = this.add.image(this.CX, this.CY, 'background');
 		this.containToScreen(bg);
 
-		let dragon = this.add.image(0, this.CY, 'dragon');
-		dragon.setOrigin(0, 0.5);
-		this.containToScreen(dragon);
+		this.dragon = new Dragon(this, 0, this.CY);
+		this.dragon.on('throw', () => {
+			for (let i = 0; i < 3; i++) {
+				this.addDice();
+			}
+		});
 
 		// Grid
 		this.grid = new Grid(this);
@@ -143,6 +148,7 @@ export class GameScene extends BaseScene {
 	}
 
 	update(timeMs: number, deltaMs: number) {
+		this.dragon.update(timeMs, deltaMs);
 		for (const dice of this.dices) {
 			dice.update(timeMs, deltaMs);
 		}
@@ -153,7 +159,7 @@ export class GameScene extends BaseScene {
 
 
 	addDice() {
-		const dice = new Dice(this, 200, 500)
+		const dice = new Dice(this, 300, this.CY)
 		this.dices.push(dice);
 
 		const coord = this.grid.getRandomFree();
@@ -229,10 +235,9 @@ export class GameScene extends BaseScene {
 		this.state = State.MoveDice;
 		this.button.setVisible(true);
 
+		this.dragon.throw();
+
 		this.addEnemy();
-		for (let i = 0; i < 3; i++) {
-			this.addDice();
-		}
 	}
 
 
