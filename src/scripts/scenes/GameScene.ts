@@ -125,6 +125,11 @@ export class GameScene extends BaseScene {
 			// }
 		});
 		this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+			for (let dice of this.dices) {
+				if (dice.dragging) {
+					dice.onRelease();
+				}
+			}
 			// if (touchId == pointer.id && touchButton == pointer.button) {
 			// 	// this.ui.debug.setText(`${new Date().getTime()} - id:${pointer.id} button:${pointer.button}`);
 			// 	this.player.touchEnd(pointer.x, pointer.y);
