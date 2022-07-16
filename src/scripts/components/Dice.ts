@@ -114,7 +114,7 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.sprite.setScale(0.9 * cell.width / this.sprite.width);
 		this.shadow.setScale(1.5 * cell.width / this.sprite.width);
 		// this.sprite.setTexture('d6_roll');
-		this.setDepth(10 + cell.y + 0.01*cell.x);
+		this.setDepth(10 + cell.y/100 + cell.x/1000);
 
 		this.coord = coord;
 

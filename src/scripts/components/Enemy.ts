@@ -128,7 +128,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 
 	move(coord: Coord, cell: Cell) {
 		this.sprite.setScale(cell.width / this.sprite.height);
-		this.setDepth(10 + cell.y);
+		this.setDepth(10 + cell.y/100);
 		this.coord = coord;
 
 		this.scene.tweens.add({
