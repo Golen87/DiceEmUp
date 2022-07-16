@@ -97,12 +97,12 @@ export class Enemy extends Phaser.GameObjects.Container {
 		// Create player sprite
 		this.sprite = scene.add.sprite(0, 0, "enemy", 0);
 		this.sprite.setTint(behaviour.tint);
-		this.sprite.setOrigin(0.5, 0.65);
+		this.sprite.setOrigin(0.6, 0.65);
 		// this.sprite.setScale(0.25);
 		this.add(this.sprite);
 
 		this.text = scene.createText(0, 0, 25, "#007", this.health.toString());
-		this.text.setOrigin(0.5);
+		this.text.setOrigin(0.6);
 		this.text.setStroke("#FFFFFF", 5);
 		this.add(this.text);
 	}
@@ -118,12 +118,12 @@ export class Enemy extends Phaser.GameObjects.Container {
 			let blink = (Math.sin(0.03*timeMs) > 0);
 			this.sprite.setTint(blink ? 0xFF7777 : this.behaviour.tint);
 			this.sprite.setAlpha(0.5);
-			this.sprite.setOrigin(0.5 + 0.05 * Math.sin(35*timeMs/1000), 0.65);
+			this.sprite.setOrigin(0.6 + 0.05 * Math.sin(35*timeMs/1000), 0.65);
 		}
 		else {
 			this.sprite.setTint(this.behaviour.tint);
 			this.sprite.setAlpha(1);
-			// this.sprite.setOrigin(0.5, 0.5);
+			// this.sprite.setOrigin(0.6, 0.5);
 		}
 
 		// Death animation
@@ -135,7 +135,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 			let deathEase2 = Phaser.Math.Easing.Sine.Out(x);
 
 			this.setScale(1 - deathEase);
-			this.sprite.setOrigin(0.5 + deathEase2 * 0.15 * Math.sin(100*timeMs/1000), 0.65);
+			this.sprite.setOrigin(0.6 + deathEase2 * 0.15 * Math.sin(100*timeMs/1000), 0.65);
 			// this.setAlpha(1 - deathEase);
 
 			let blink = (Math.sin(50*timeMs/1000) > 0);
