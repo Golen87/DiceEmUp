@@ -23,6 +23,7 @@ interface Audio {
 /* Images */
 
 import background from "../assets/images/background.png";
+import dragon from "../assets/images/dragon.png";
 import concept from "../assets/images/dragon_concept2.png";
 import enemy from "../assets/images/enemy.png";
 import enemy2 from "../assets/images/enemy2.png";
@@ -31,6 +32,7 @@ import d6_roll from "../assets/images/d6_roll.png";
 
 const images: Asset[] = [
 	{ key: "background",	path: background },
+	{ key: "dragon",		path: dragon },
 	{ key: "concept",		path: concept },
 	{ key: "enemy",			path: enemy },
 	{ key: "enemy2",		path: enemy2 },

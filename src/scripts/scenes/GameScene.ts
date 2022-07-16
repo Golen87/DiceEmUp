@@ -60,6 +60,10 @@ export class GameScene extends BaseScene {
 		let bg = this.add.image(this.CX, this.CY, 'background');
 		this.containToScreen(bg);
 
+		let dragon = this.add.image(0, this.CY, 'dragon');
+		dragon.setOrigin(0, 0.5);
+		this.containToScreen(dragon);
+
 		// Grid
 		this.grid = new Grid(this);
 
@@ -144,6 +148,16 @@ export class GameScene extends BaseScene {
 			this.grid.addDice(coord, dice);
 		}
 
+		dice.on('dragstart', () => {
+			// this.grid.clear(dice.coord);
+			// dice.coord = null;
+		});
+		dice.on('dragend', () => {
+			// const coord = this.grid.getClosestCoord(dice.x, dice.y);
+			// if (coord) {
+				// this.grid.addDice(coord, dice);
+			// }
+		});
 		dice.on('drag', (x: number, y: number) => {
 			this.grid.snap(x, y, dice);
 		});

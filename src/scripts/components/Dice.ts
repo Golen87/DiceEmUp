@@ -1,5 +1,5 @@
 import { GameScene } from "../scenes/GameScene";
-import { Grid, Cell } from "./Grid";
+import { Grid, Coord, Cell } from "./Grid";
 
 export class Dice extends Phaser.GameObjects.Container {
 	public scene: GameScene;
@@ -10,6 +10,7 @@ export class Dice extends Phaser.GameObjects.Container {
 	public value: number;
 
 	public dragging: boolean;
+	public coord: Coord | null;
 
 	constructor(scene: GameScene, x: number, y: number) {
 		super(scene, x, y);
@@ -33,21 +34,25 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.sprite.setInteractive({ hitArea: this.sprite, useHandCursor: true, draggable: true })
 			.on('pointerdown', () => {
 				this.dragging = true;
+				this.emit('dragstart');
 			}, this)
 			.on('pointerup', () => {
 				this.dragging = false;
+				this.emit('dragend');
 			}, this)
 			.on('drag', (pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => {
 				this.emit('drag', pointer.x, pointer.y);
 			}, this);
 		// this.sprite.input.hitArea.setTo(-padding, -padding, this.sprite.width+2*padding, this.sprite.height+2*padding);
-		this.scene.input.enableDebug(this.sprite);
+		// this.scene.input.enableDebug(this.sprite);
 	}
 
-	throw(cell: Cell) {
+	throw(coord: Coord, cell: Cell) {
 		this.sprite.setScale(0.8 * cell.width / this.sprite.width);
 		this.sprite.setTexture('d6_roll');
 		this.setDepth(10 + cell.y + 0.01*cell.x);
+
+		this.coord = coord;
 
 		this.scene.tweens.add({
 			targets: this,
@@ -58,6 +63,20 @@ export class Dice extends Phaser.GameObjects.Container {
 			onComplete: () => {
 				this.sprite.setTexture('d6');
 			},
+		});
+	}
+
+	move(coord: Coord, cell: Cell) {
+		this.setDepth(10 + cell.y + 0.01*cell.x);
+
+		this.coord = coord;
+
+		this.scene.tweens.add({
+			targets: this,
+			x: { from: this.x, to: cell.cx },
+			y: { from: this.y, to: cell.cy },
+			ease: 'Cubic.Out',
+			duration: 100
 		});
 	}
 }

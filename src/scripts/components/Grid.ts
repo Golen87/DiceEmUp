@@ -26,7 +26,7 @@ export class Grid extends Phaser.GameObjects.Container {
 	public left: number = 400;
 	public top: number = 190;
 	public width: number = 80;
-	public height: number = 57;
+	public height: number = 62;
 	public wPad: number = 2;
 	public hPad: number = 2;
 
@@ -80,6 +80,29 @@ export class Grid extends Phaser.GameObjects.Container {
 		};
 	}
 
+	getClosest(coord: Coord):Coord {
+		const x = Math.floor((coord.i-this.left)/this.width);
+		const y = Math.floor((coord.j-this.top)/this.height);
+		const minmax = (n, min, max) => Math.max(Math.min(n, max), min);
+		return {i: minmax(x, 0, this.cols), j: minmax(y, 0, this.rows)};
+	}
+
+	getClosestCoord(x: number, y: number, dice?: Dice): Coord | null {
+		let coord: Coord | null = null;
+		let record = Infinity;
+		for (let j = 0; j < this.rows; j++) {
+			for (let i = 0; i < this.cols; i++) {
+				const cell = this.getCell({i, j});
+				const dist = Math.abs(x-cell.cx) + Math.abs(y-cell.cy);
+				if (dist < record && (!this.grid[j][i] || dice == this.grid[j][i])) {
+					record = dist;
+					coord = { i, j };
+				}
+			}
+		}
+		return coord;
+	}
+
 	getRandomFree(): Coord | null {
 		let free: Coord[] = [];
 		for (let j = 0; j < this.rows; j++) {
@@ -124,9 +147,9 @@ export class Grid extends Phaser.GameObjects.Container {
 			},
 		];
 
-		if (this.grid[coord.j][coord.i] instanceof Dice) {
-			return 0;
-		}
+		// if (this.grid[coord.j][coord.i] instanceof Dice) {
+			// return 0;
+		// }
 
 		let sum = 0;
 		for (let j = 0; j < this.rows; j++) {
@@ -173,7 +196,7 @@ export class Grid extends Phaser.GameObjects.Container {
 
 	addDice(coord: Coord, dice: Dice) {
 		this.grid[coord.j][coord.i] = dice;
-		dice.throw(this.getCell(coord));
+		dice.throw(coord, this.getCell(coord));
 		this.updateGrid();
 	}
 
@@ -183,21 +206,26 @@ export class Grid extends Phaser.GameObjects.Container {
 		this.updateGrid();
 	}
 
+	clear(coord: Coord | null) {
+		if (coord) {
+			this.grid[coord.j][coord.i] = null;
+		}
+	}
+
 	snap(x: number, y: number, dice: Dice) {
-		let closest: any = null;
-		let record = Infinity;
-		for (let j = 0; j < this.rows; j++) {
-			for (let i = 0; i < this.cols; i++) {
-				const cell = this.getCell({i, j});
-				const dist = Math.abs(x-cell.cx) + Math.abs(y-cell.cy);
-				if (dist < record) {
-					record = dist;
-					closest = { x: cell.cx, y: cell.cy };
-				}
+		const coord = this.getClosestCoord(x, y, dice);
+
+		if (coord && dice.coord) {
+			const cell = this.getCell(coord);
+			if (dice.coord.i != coord.i || dice.coord.j != coord.j) {
+				console.log(dice.coord, '->', coord);
+
+				this.grid[coord.j][coord.i] = dice;
+				this.grid[dice.coord.j][dice.coord.i] = null;
+				this.updateGrid();
+
+				dice.move(coord, cell);
 			}
 		}
-
-		dice.x = closest.x;
-		dice.y = closest.y;
 	}
 }
