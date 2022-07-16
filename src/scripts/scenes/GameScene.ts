@@ -76,11 +76,7 @@ export class GameScene extends BaseScene {
 		this.containToScreen(bg);
 
 		this.dragon = new Dragon(this, 0, this.CY);
-		this.dragon.on('throw', () => {
-			for (let i = 0; i < 3; i++) {
-				this.addDice();
-			}
-		});
+		this.dragon.on('throw', this.onDragonThrow, this);
 
 		// Grid
 		this.grid = new Grid(this);
@@ -242,11 +238,23 @@ export class GameScene extends BaseScene {
 
 	onNewRound() {
 		this.state = State.MoveDice;
-		this.button.setVisible(true);
 
 		this.dragon.throw();
+		// Animation -> this.onDragonThrow
 
 		this.addEnemy();
+	}
+
+	onDragonThrow() {
+		// Throwing animation finished
+		for (let i = 0; i < 3; i++) {
+			this.addDice();
+		}
+
+		// Show attack button after a while
+		this.addEvent(1800, () => {
+			this.button.setVisible(true);
+		});
 	}
 
 
