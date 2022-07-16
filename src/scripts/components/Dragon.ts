@@ -14,6 +14,12 @@ export class Dragon extends Phaser.GameObjects.Container {
 	private deathTimer: number;
 	private deathDuration;
 
+	private healthCont: Phaser.GameObjects.Container;
+	private healthBox: Phaser.GameObjects.Image;
+	private healthBg: Phaser.GameObjects.Rectangle;
+	private healthBar: Phaser.GameObjects.Rectangle;
+	private healthFlash: number;
+
 	constructor(scene: GameScene, x: number, y: number) {
 		super(scene, x, y);
 		this.scene = scene;
@@ -35,6 +41,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 		this.text.setOrigin(0.5);
 		this.text.setStroke("#FFFFFF", 5);
 		this.add(this.text);
+
 
 		this.scene.anims.create({
 			key: 'dragon_idle',
@@ -62,6 +69,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 			],
 		});
 
+
 		this.sprite.play({ key: 'dragon_idle' });
 		this.sprite.on('animationcomplete', () => {
 			if (this.sprite.anims.currentAnim.key == 'dragon_throw') {
@@ -72,6 +80,33 @@ export class Dragon extends Phaser.GameObjects.Container {
 				this.sprite.play({ key: 'dragon_idle' });
 			}
 		});
+
+
+		// Health bar
+
+		// this.healthCont = scene.add.container();
+		// this.healthCont.setVisible(false);
+		// this.add(this.healthCont);
+
+		// this.healthBox = scene.add.image(cx, 0.06*cy, "ui_healthbar");
+		// this.healthBox.setScale(0.5);
+		// this.healthCont.add(this.healthBox);
+
+		// const w = this.healthBox.displayWidth - 5;
+		// const h = this.healthBox.displayHeight - 5;
+
+		// this.healthBg = scene.add.rectangle(this.healthBox.x - w/2, this.healthBox.y - h/2, w, h, 0);
+		// this.healthBg.setOrigin(0);
+		// this.healthBg.setAlpha(0.6);
+		// this.healthCont.add(this.healthBg);
+
+		// this.healthBar = scene.add.rectangle(this.healthBox.x - w/2, this.healthBox.y - h/2, w, h, 0);
+		// this.healthBar.setOrigin(0);
+		// this.healthCont.add(this.healthBar);
+
+		// this.healthCont.bringToTop(this.healthBox);
+
+		// this.healthFlash = 0;
 	}
 
 	update(timeMs: number, deltaMs: number) {
@@ -116,6 +151,25 @@ export class Dragon extends Phaser.GameObjects.Container {
 				// this.destroy();
 			}
 		}
+
+
+		// Health
+
+		// if (this.boss) {
+		// 	this.healthBar.width = this.boss.healthPerc * (this.healthBox.displayWidth - 5);
+		// }
+
+		// this.healthFlash += -0.3 * this.healthFlash;
+
+		// this.clockBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
+		// this.heartsBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
+		// this.highscoreBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
+		// this.scoreBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
+
+		// this.background.setTint( interpolateColor(0xb8c5ff, 0xf7e3af, dayTimeSmooth) );
+		// this.healthBox.setTint( interpolateColor(0xDDEEFF, 0x110900, dayTimeSmooth) );
+		// this.healthBar.fillColor = interpolateColor( interpolateColor(0xd81b60, 0x43a047, dayTimeSmooth), 0xFFFFFF, this.healthFlash );
+		// this.healthBg.fillColor = interpolateColor(0, 0xAABBFF, dayTimeSmooth);
 	}
 
 	throw() {
@@ -132,6 +186,12 @@ export class Dragon extends Phaser.GameObjects.Container {
 			this.emit("death");
 		}
 	}
+
+	// onBossDamage(boss: Boss) {
+		// if (this.boss == boss) {
+			// this.healthFlash = 1;
+		// }
+	// }
 
 	get alive() {
 		return this.health > 0;
