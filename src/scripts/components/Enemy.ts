@@ -118,7 +118,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 			let blink = (Math.sin(0.03*timeMs) > 0);
 			this.sprite.setTint(blink ? 0xFF7777 : this.behaviour.tint);
 			this.sprite.setAlpha(0.5);
-			// this.sprite.setOrigin(0.5 + 0.01 * Math.sin(35*time), 0.5);
+			this.sprite.setOrigin(0.5 + 0.05 * Math.sin(35*timeMs/1000), 0.65);
 		}
 		else {
 			this.sprite.setTint(this.behaviour.tint);
@@ -135,10 +135,10 @@ export class Enemy extends Phaser.GameObjects.Container {
 			let deathEase2 = Phaser.Math.Easing.Sine.Out(x);
 
 			this.setScale(1 - deathEase);
-			this.sprite.setOrigin(0.5 + deathEase2 * 0.15 * Math.sin(100*timeMs), 0.5);
+			this.sprite.setOrigin(0.5 + deathEase2 * 0.15 * Math.sin(100*timeMs/1000), 0.65);
 			// this.setAlpha(1 - deathEase);
 
-			let blink = (Math.sin(50*timeMs) > 0);
+			let blink = (Math.sin(50*timeMs/1000) > 0);
 			this.sprite.setTint(blink ? 0xFFBBBB : 0xFFFFFF);
 
 			// End prematurely
@@ -169,7 +169,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 
 	move(coord: Coord, cell: Cell) {
 		this.sprite.setScale(cell.width / this.sprite.height);
-		this.setDepth(10 + cell.y);
+		this.setDepth(10 + cell.y/100);
 		this.coord = coord;
 
 		this.scene.tweens.add({
@@ -185,7 +185,16 @@ export class Enemy extends Phaser.GameObjects.Container {
 		const previousHealth = this.health;
 		const healthDifference = Math.abs(previousHealth - this.health);
 		this.health -= amount;
-		this.hurtTimer = 1000;
+		if (amount > 0) {
+			this.hurtTimer = 1000;
+			this.scene.sound.play("e_damage", {
+				volume: 0.2,
+				// https://www.desmos.com/calculator/lf1eosjjdd
+				pan: (this.x / this.scene.W - 0.5) * 1.1 - 0.18,
+				rate: Phaser.Math.RND.realInRange(0.95, 1.05),
+				delay: Phaser.Math.RND.realInRange(0.0, 0.05)
+			});
+		}
 
 		// this.text.setText(this.health.toString());
 		this.scene.tweens.add({

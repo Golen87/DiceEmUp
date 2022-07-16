@@ -42,6 +42,7 @@ export class Dice extends Phaser.GameObjects.Container {
 	public value: number;
 
 	public dragging: boolean;
+	public holdSmooth: number;
 	public coord: Coord | null;
 	public lastDragSound: number;
 
@@ -60,17 +61,21 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.shadow.setOrigin(0.5, 0.6);
 		this.add(this.shadow);
 
-		this.sprite = scene.add.sprite(0, 0, 'd6');
-		this.sprite.setOrigin(0.5, 0.6);
+		this.sprite = scene.add.sprite(0, 0, 'dice', 0);
+		this.sprite.setOrigin(0.5, 0.5);
 		this.sprite.setTint(this.style.tint);
 		this.add(this.sprite);
 
 		this.text = scene.createText(0, 0, 25, "#000", this.value.toString());
 		this.text.setOrigin(0.5);
+		this.text.setVisible(false);
 		this.text.setStroke("#FFFFFF", 5);
 		this.add(this.text);
 
 		this.lastDragSound = Date.now();
+
+		this.dragging = false;
+		this.holdSmooth = 0;
 
 		const padding = 10;
 		this.sprite.setInteractive({ hitArea: this.sprite, useHandCursor: true, draggable: true })
@@ -78,11 +83,6 @@ export class Dice extends Phaser.GameObjects.Container {
 				this.dragging = true;
 				this.emit('dragstart');
 				this.scene.sound.play(`h_fondle_hard_${Phaser.Math.Between(1,3)}`);
-			}, this)
-			.on('pointerup', () => {
-				this.dragging = false;
-				this.emit('dragend');
-				this.scene.sound.play(`t_place_single_short_${Phaser.Math.Between(1,5)}`); // Phaser.Math.RND.pick(["long", "short"])
 			}, this)
 			.on('drag', (pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => {
 				this.emit('drag', pointer.x, pointer.y);
@@ -97,15 +97,24 @@ export class Dice extends Phaser.GameObjects.Container {
 	update(timeMs: number, deltaMs: number) {
 		super.update(timeMs, deltaMs);
 
-		this.sprite.setOrigin(0.5, 0.6 + 2.0 * this.bounceValue);
-		this.shadow.setAlpha(0.5 - 0.2 * this.bounceValue);
+		this.holdSmooth += 0.75 * ((this.dragging ? 1 : 0) - this.holdSmooth);
+
+		const lift = 2.0 * this.bounceValue + 0.3 * this.holdSmooth;
+		this.sprite.setOrigin(0.5, 0.6 + lift);
+		this.shadow.setAlpha(0.5 - 0.2 * lift);
+	}
+
+	onRelease() {
+		this.dragging = false;
+		this.emit('dragend');
+		this.scene.sound.play(`t_place_single_short_${Phaser.Math.Between(1,5)}`); // Phaser.Math.RND.pick(["long", "short"])
 	}
 
 	async throw(coord: Coord, cell: Cell) {
-		this.sprite.setScale(0.8 * cell.width / this.sprite.width);
-		this.shadow.setScale(0.8 * cell.width / this.sprite.width);
-		this.sprite.setTexture('d6_roll');
-		this.setDepth(10 + cell.y + 0.01*cell.x);
+		this.sprite.setScale(0.9 * cell.width / this.sprite.width);
+		this.shadow.setScale(1.5 * cell.width / this.sprite.width);
+		// this.sprite.setTexture('d6_roll');
+		this.setDepth(10 + cell.y/100 + cell.x/1000);
 
 		this.coord = coord;
 
@@ -119,7 +128,7 @@ export class Dice extends Phaser.GameObjects.Container {
 			ease: 'Cubic.Out',
 			duration: duration,
 			onComplete: () => {
-				this.sprite.setTexture('d6');
+				this.sprite.setFrame(this.value-1);
 			},
 		});
 

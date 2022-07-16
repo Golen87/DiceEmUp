@@ -4,7 +4,7 @@ import { Grid } from "./../components/Grid";
 // import { Music } from "./../components/Music";
 // import { Background } from "../components/Background";
 // import { UI } from "../components/UI";
-// import { Particles } from "../components/Particles";
+import { Particles } from "../components/Particles";
 import { Player } from "../components/Player";
 import { Enemy, EnemyKinds, EnemyType } from "../components/Enemy";
 import { Dice } from "../components/Dice";
@@ -47,7 +47,7 @@ export class GameScene extends BaseScene {
 	// private enemies: Enemy[];
 
 	// Particles
-	// public particles: Particles;
+	public particles: Particles;
 
 	// public sounds: Map<string, Phaser.Sound.BaseSound>;
 	// public sounds: {[key: string]: Phaser.Sound.WebAudioSound};
@@ -69,6 +69,7 @@ export class GameScene extends BaseScene {
 		this.fade(false, 1000, 0x000000);
 
 		this.state = State.MoveDice;
+		this.initAnimations();
 
 		// Backgrounds
 		// this.background = new Background(this);
@@ -89,7 +90,6 @@ export class GameScene extends BaseScene {
 		this.button.on('click', this.onAttack, this);
 
 
-		this.initAnimations();
 		this.onNewRound();
 
 		// UI
@@ -102,8 +102,8 @@ export class GameScene extends BaseScene {
 
 		// this.enemies = [];
 
-		// this.particles = new Particles(this);
-		// this.particles.setDepth(9);
+		this.particles = new Particles(this);
+		this.particles.setDepth(1000);
 
 
 		// Touch controls
@@ -125,6 +125,11 @@ export class GameScene extends BaseScene {
 			// }
 		});
 		this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+			for (let dice of this.dices) {
+				if (dice.dragging) {
+					dice.onRelease();
+				}
+			}
 			// if (touchId == pointer.id && touchButton == pointer.button) {
 			// 	// this.ui.debug.setText(`${new Date().getTime()} - id:${pointer.id} button:${pointer.button}`);
 			// 	this.player.touchEnd(pointer.x, pointer.y);
@@ -153,10 +158,44 @@ export class GameScene extends BaseScene {
 		for (const enemy of this.enemies) {
 			enemy.update(timeMs, deltaMs);
 		}
+		this.particles.update(timeMs/1000, deltaMs/1000);
 	}
 
 
 	initAnimations() {
+		this.anims.create({
+			key: 'dragon_idle',
+			frames: [
+				{ key: 'dragon', frame: 0, duration: 600 },
+				{ key: 'dragon', frame: 1, duration: 400 },
+				{ key: 'dragon', frame: 2, duration: 600 },
+				{ key: 'dragon', frame: 1, duration: 400 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'dragon_throw',
+			frames: [
+				{ key: 'dragon', frame: 0, duration: 200 },
+				{ key: 'dragon', frame: 4, duration: 200 },
+				{ key: 'dragon', frame: 5, duration: 200 },
+			],
+		});
+		this.anims.create({
+			key: 'dragon_return',
+			frames: [
+				{ key: 'dragon', frame: 6, duration: 300 },
+				{ key: 'dragon', frame: 7, duration: 700 },
+			],
+		});
+		this.anims.create({
+			key: 'dragon_hurt',
+			frames: [
+				{ key: 'dragon', frame: 3, duration: 1000 },
+			],
+			repeat: -1
+		});
+
 		this.anims.create({
 			key: 'enemy_idle',
 			frames: [
@@ -199,16 +238,6 @@ export class GameScene extends BaseScene {
 			this.grid.addDice(coord, dice);
 		}
 
-		dice.on('dragstart', () => {
-			// this.grid.clear(dice.coord);
-			// dice.coord = null;
-		});
-		dice.on('dragend', () => {
-			// const coord = this.grid.getClosestCoord(dice.x, dice.y);
-			// if (coord) {
-				// this.grid.addDice(coord, dice);
-			// }
-		});
 		dice.on('drag', (x: number, y: number) => {
 			this.grid.snap(x, y, dice);
 		});
@@ -228,15 +257,31 @@ export class GameScene extends BaseScene {
 		this.state = State.DamagePhase;
 		this.button.setVisible(false);
 
-		this.addEvent(200, () => {
-			for (const enemy of this.enemies) {
-				if (enemy.coord) {
-					enemy.damage( this.grid.getDamage(enemy.coord) );
+		// this.addEvent(200, () => {
+		for (const enemy of this.enemies) {
+			if (enemy.coord) {
+				const dmg = this.grid.getDamage(enemy.coord);
+				if (dmg > 0) {
+					enemy.damage(dmg);
 				}
 			}
+		}
+		// });
 
-			this.addEvent(1000, this.onMove);
-		});
+		// Explode dice
+		this.grid.explodeGrid();
+		for (const dice of this.dices) {
+
+			this.particles.createExplosion(dice.x, dice.y, 0.8, 1.0);
+
+			this.grid.clear(dice.coord);
+			dice.destroy();
+		}
+		this.grid.updateGrid();
+		this.dices = [];
+
+
+		this.addEvent(1000, this.onMove);
 	}
 
 	onMove() {
@@ -249,13 +294,6 @@ export class GameScene extends BaseScene {
 			}
 		}
 		this.enemies = this.enemies.filter(enemy => enemy.alive);
-
-		for (const dice of this.dices) {
-			this.grid.clear(dice.coord);
-			dice.destroy();
-		}
-		this.grid.updateGrid();
-		this.dices = [];
 
 		if (this.enemies.length > 0) {
 			this.grid.moveEnemies();
