@@ -1,24 +1,37 @@
 import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
 
-enum EnemyType {
-	SQUIRE,
-	KNIGHT
+export enum EnemyType {
+	SQUIRE
 }
 
 interface EnemyBehaviour {
 	type: EnemyType;
 	move: (coord:Coord, moves: number) => Coord;
+	spawn: (scene:GameScene, grid:Grid) => Enemy[];
+	tint: number;
 };
 
-const enemyKinds = {
-	[EnemyType.SQUIRE]: {
+export const EnemyKinds = new Map<EnemyType, EnemyBehaviour>([
+	[EnemyType.SQUIRE, {
 		type: EnemyType.SQUIRE,
-		move: (coord:Coord, moves: number) => {
+		move: (coord, moves) => {
 			return { i: coord.i-1, j: coord.j };
-		}
-	}
-};
+		},
+		spawn: (scene, grid) => {
+			let ret: Enemy[] = [];
+			const coord = grid.getRandomRightFree();
+			const kind = EnemyKinds.get(EnemyType.SQUIRE);
+			if (coord && kind != null) {
+				const enemy = new Enemy(scene, coord.i, coord.j, kind);
+				grid.addEnemy(coord, enemy);
+				ret.push(enemy);
+			}
+			return ret;
+		},
+		tint: 0xFFFFFF
+	}]
+]);
 
 export class Enemy extends Phaser.GameObjects.Container {
 	public scene: GameScene;
@@ -41,7 +54,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 
 	private behaviour: EnemyBehaviour;
 
-	constructor(scene: GameScene, x: number, y: number) {
+	constructor(scene: GameScene, x: number, y: number, behaviour: EnemyBehaviour) {
 		super(scene, x, y);
 		this.scene = scene;
 		scene.add.existing(this);
@@ -52,10 +65,11 @@ export class Enemy extends Phaser.GameObjects.Container {
 		this.deathTimer = 0;
 		this.deathDuration = 1000;
 		this.moves = 0;
-		this.behaviour = enemyKinds[EnemyType.SQUIRE];
+		this.behaviour = behaviour;
 
 		// Create player sprite
-		this.sprite = scene.add.sprite(0, 0, Phaser.Math.RND.pick(["enemy"]), 0);
+		this.sprite = scene.add.sprite(0, 0, "enemy", 0);
+		this.sprite.setTint(behaviour.tint);
 		this.sprite.setOrigin(0.5, 0.65);
 		// this.sprite.setScale(0.25);
 		this.add(this.sprite);
@@ -75,12 +89,12 @@ export class Enemy extends Phaser.GameObjects.Container {
 		this.hurtTimer -= deltaMs;
 		if (this.hurtTimer > 0 || !this.alive) {
 			let blink = (Math.sin(0.03*timeMs) > 0);
-			this.sprite.setTint(blink ? 0xFF7777 : 0xFFFFFF);
+			this.sprite.setTint(blink ? 0xFF7777 : this.behaviour.tint);
 			this.sprite.setAlpha(0.5);
 			// this.sprite.setOrigin(0.5 + 0.01 * Math.sin(35*time), 0.5);
 		}
 		else {
-			this.sprite.setTint(0xFFFFFF);
+			this.sprite.setTint(this.behaviour.tint);
 			this.sprite.setAlpha(1);
 			// this.sprite.setOrigin(0.5, 0.5);
 		}

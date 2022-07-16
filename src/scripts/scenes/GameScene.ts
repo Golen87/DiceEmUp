@@ -6,7 +6,7 @@ import { Grid } from "./../components/Grid";
 // import { UI } from "../components/UI";
 // import { Particles } from "../components/Particles";
 import { Player } from "../components/Player";
-import { Enemy } from "../components/Enemy";
+import { Enemy, EnemyKinds, EnemyType } from "../components/Enemy";
 import { Dice } from "../components/Dice";
 import { Button } from "../components/Button";
 import { Dragon } from "../components/Dragon";
@@ -215,17 +215,11 @@ export class GameScene extends BaseScene {
 	}
 
 	addEnemy() {
-		const enemy = new Enemy(this, 900, 300)
-		this.enemies.push(enemy);
-		const coord = this.grid.getRandomRightFree();
-		if (coord) {
-			this.grid.addEnemy(coord, enemy);
+		let squire = EnemyKinds.get(EnemyType.SQUIRE);
+		if( squire != null ) {
+			const spawned = squire.spawn(this, this.grid);
+			this.enemies.push(...spawned);
 		}
-
-		// enemy.on('destroy', () => {
-			// this.grid.clear(enemy.coord);
-			// this.enemies.splice(this.enemies.indexOf(enemy), 1);
-		// });
 	}
 
 	onAttack() {
