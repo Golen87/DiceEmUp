@@ -86,7 +86,7 @@ export class GameScene extends BaseScene {
 		this.dices = [];
 		this.enemies = [];
 
-		this.button = new Button(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - 50);
+		this.button = new Button(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - 60);
 		this.button.on('click', this.onAttack, this);
 
 
@@ -158,6 +158,7 @@ export class GameScene extends BaseScene {
 		for (const enemy of this.enemies) {
 			enemy.update(timeMs, deltaMs);
 		}
+		this.button.update(timeMs, deltaMs);
 		this.particles.update(timeMs/1000, deltaMs/1000);
 
 		// Camera shake

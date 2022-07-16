@@ -3,6 +3,7 @@ import { GameScene } from "../scenes/GameScene";
 export class Button extends Phaser.GameObjects.Container {
 	public scene: GameScene;
 
+	public fire: Phaser.GameObjects.Sprite;
 	public sprite: Phaser.GameObjects.Sprite;
 	public text: Phaser.GameObjects.Text;
 
@@ -15,20 +16,38 @@ export class Button extends Phaser.GameObjects.Container {
 
 		this.enabled = true;
 
-		this.sprite = scene.add.sprite(0, 0, 'ui_button');
-		this.sprite.setScale(0.4);
-		this.sprite.setTint(0xFFCCCC);
+		this.fire = scene.add.sprite(0, -30, 'fire_button', 0);
+		this.fire.setScale(0.6);
+		this.add(this.fire);
+
+		this.sprite = scene.add.sprite(0, 0, 'attack_button', 0);
+		this.sprite.setScale(0.3);
+		// this.sprite.setTint(0xFFCCCC);
 		this.add(this.sprite);
 
-		this.text = scene.createText(0, 0, 25, "#000", "Attack");
+		this.text = scene.createText(0, 0, 20, "#FFF", "Attack");
 		this.text.setOrigin(0.5);
-		this.text.setStroke("#FFFFFF", 5);
+		this.text.setStroke("#000", 4);
 		this.add(this.text);
 
 		this.sprite.setInteractive({ hitArea: this.sprite, useHandCursor: this.enabled })
 		this.sprite.input.hitArea.setTo(-20, -20, this.sprite.width+2*20, this.sprite.height+2*20);
-		this.sprite.on('pointerover', () => { this.sprite.setTint(0xFFEEEE); });
-		this.sprite.on('pointerout', () => { this.sprite.setTint(0xFFCCCC); });
-		this.sprite.on('pointerdown', () => { this.enabled ? this.emit('click') : this.scene.sound.play("u_disabled"); });
+		this.sprite.on('pointerover', () => {
+			// this.sprite.setTint(0xFFEEEE);
+			this.sprite.setFrame(1);
+		});
+		this.sprite.on('pointerout', () => {
+			// this.sprite.setTint(0xFFCCCC);
+			this.sprite.setFrame(0);
+		});
+		this.sprite.on('pointerdown', () => {
+			this.enabled ? this.emit('click') : this.scene.sound.play("u_disabled");
+		});
+	}
+
+	update(timeMs: number, deltaMs: number) {
+		super.update(timeMs, deltaMs);
+
+		this.fire.setFrame(Math.floor(10*timeMs/1000) % 8);
 	}
 }

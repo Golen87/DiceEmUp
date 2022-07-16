@@ -29,7 +29,6 @@ import d6 from "../assets/images/dice/d6.png";
 import d6_roll from "../assets/images/dice/d6_roll.png";
 import shadow from "../assets/images/shadow.png";
 
-import ui_button from "../assets/images/ui/ui_button.png";
 import ui_healthbar from "../assets/images/ui/ui_healthbar.png";
 
 const images: Asset[] = [
@@ -40,7 +39,6 @@ const images: Asset[] = [
 	{ key: "shadow",		path: shadow },
 
 	// UI
-	{ key: "ui_button",		path: ui_button },
 	{ key: "ui_healthbar",	path: ui_healthbar },
 ];
 
@@ -55,6 +53,8 @@ import enemy from "../assets/images/enemy.png";
 import tank from "../assets/images/tank.png";
 import dice from "../assets/images/dice/dice.png"
 import fire from "../assets/images/bad_fire.png"
+import attack_button from "../assets/images/ui/button.png";
+import fire_button from "../assets/images/ui/fire_button.png";
 
 const spritesheets: SpriteSheet[] = [
 	{ key: "dragon",	path: dragon,		width: 840/2,	height: 1080/2 },
@@ -63,6 +63,8 @@ const spritesheets: SpriteSheet[] = [
 	{ key: "dice",		path: dice,			width: 512/2,	height: 512/2 },
 	{ key: "fire",		path: fire,			width: 512,	height: 512 },
 	{ key: "explosion",	path: explosion,	width: 200,	height: 282 },
+	{ key: "attack_button",	path: attack_button,	width: 532,	height: 219  },
+	{ key: "fire_button",	path: fire_button,	width: 512,	height: 256  },
 ];
 
 
