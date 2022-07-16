@@ -135,18 +135,6 @@ export class Grid extends Phaser.GameObjects.Container {
 
 	getDamage(coord: Coord) {
 
-		const patternCheck = [
-			(i, j) => {
-				return Math.abs(coord.i - i) + Math.abs(coord.j - j) <= 1;
-			},
-			(i, j) => {
-				return coord.j == j;
-			},
-			(i, j) => {
-				return coord.i == i;
-			},
-		];
-
 		// if (this.grid[coord.j][coord.i] instanceof Dice) {
 			// return 0;
 		// }
@@ -155,7 +143,7 @@ export class Grid extends Phaser.GameObjects.Container {
 		for (let j = 0; j < this.rows; j++) {
 			for (let i = 0; i < this.cols; i++) {
 				if (this.grid[j][i] instanceof Dice) {
-					if (patternCheck[this.grid[j][i].pattern](i, j)) {
+					if (this.grid[j][i].style.pattern(coord, i, j)) {
 						sum += this.grid[j][i].value;
 					}
 				}

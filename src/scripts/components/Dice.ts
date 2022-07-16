@@ -1,12 +1,42 @@
 import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
 
+interface DiceStyle {
+	sides: number;
+	tint: number;
+	pattern: (coord:Coord, x:number, y:number) => boolean;
+}
+
+const diceStyles: DiceStyle[] = [
+	{
+		sides: 6,
+		tint: 0xFF7777,
+		pattern: (coord, x, y) => {
+			return Math.abs(coord.i - x) + Math.abs(coord.j - y) <= 1;
+		}
+	},
+	{
+		sides: 6,
+		tint: 0x77FF77,
+		pattern: (coord, x, y) => {
+			return coord.j == y;
+		}
+	},
+	{
+		sides: 6,
+		tint: 0x7777FF,
+		pattern: (coord, x, y) => {
+			return coord.i == x;
+		}
+	}
+];
+
 export class Dice extends Phaser.GameObjects.Container {
 	public scene: GameScene;
 
 	public sprite: Phaser.GameObjects.Sprite;
 	public text: Phaser.GameObjects.Text;
-	public pattern: number;
+	public style: DiceStyle;
 	public value: number;
 
 	public dragging: boolean;
@@ -17,12 +47,12 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.scene = scene;
 		scene.add.existing(this);
 
-		this.pattern = Phaser.Math.RND.pick([0, 1, 2]);
-		this.value = Phaser.Math.RND.pick([1, 2, 3, 4, 5, 6]);
+		this.style = Phaser.Math.RND.pick(diceStyles);
+		this.value = Phaser.Math.Between(1, this.style.sides);
 
 		this.sprite = scene.add.sprite(0, 0, 'd6');
 		this.sprite.setOrigin(0.5, 0.6);
-		this.sprite.setTint([0xFF7777, 0x77FF77, 0x7777FF][this.pattern]);
+		this.sprite.setTint(this.style.tint);
 		this.add(this.sprite);
 
 		this.text = scene.createText(0, 0, 25, "#000", this.value.toString());
