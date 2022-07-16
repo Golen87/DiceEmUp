@@ -167,8 +167,9 @@ export class Grid extends Phaser.GameObjects.Container {
 
 				const cell = this.getCell({i, j});
 				const damage = this.getDamage({i, j});
+				const scaledDamage = ((damage > 0 ? 2 : 0) + Math.min(damage, 8)) / 10;
 
-				this.graphics.fillStyle(interpolateColor(0xFFFFFF, 0xFF0000, Math.min(damage/10, 1)), 0.7);
+				this.graphics.fillStyle(interpolateColor(0xFFFFFF, 0xFF0000, scaledDamage), 0.7);
 				this.graphics.fillRect(
 					cell.x,
 					cell.y,
