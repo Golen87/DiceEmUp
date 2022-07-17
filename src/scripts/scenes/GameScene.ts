@@ -60,6 +60,8 @@ export class GameScene extends BaseScene {
 	// Score
 	public score: number;
 	public highscore: number;
+	public initialHighscore: number;
+	public highscoreFanfarePlayed: boolean;
 
 	public round: number;
 
@@ -188,6 +190,7 @@ export class GameScene extends BaseScene {
 
 		this.score = 0;
 		this.highscore = 0;
+		this.highscoreFanfarePlayed = false;
 		this.loadHighscore();
 		this.onNewRound();
 	}
@@ -622,6 +625,7 @@ export class GameScene extends BaseScene {
 
 				if (data.highscore && !isNaN(parseInt(data.highscore))) {
 					this.highscore = Phaser.Math.Clamp(data.highscore, 0, 99999999);
+					this.initialHighscore = this.highscore;
 					this.ui.setScore(this.score, this.highscore);
 				}
 			}
@@ -644,6 +648,10 @@ export class GameScene extends BaseScene {
 		this.ui.setScore(this.score, this.highscore);
 
 		this.saveHighscore();
+		if (this.score > this.highscore && !this.highscoreFanfarePlayed && this.initialHighscore > 10) {
+			this.sound.play("j_trumpet", { volume: 0.5 });
+			this.highscoreFanfarePlayed = true;
+		}
 	}
 
 	setStageName(name: string) {
