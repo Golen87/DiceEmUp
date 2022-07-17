@@ -1,3 +1,4 @@
+import { GameScene } from './../scenes/GameScene';
 import { EnemyType } from './Enemy';
 
 const S = EnemyType.SQUIRE;
@@ -8,18 +9,28 @@ const P = EnemyType.PEASANT;
 
 interface RoundData {
   group: EnemyType[];
-  event?: () => {}
+  event?: (scene: GameScene) => void;
 }
 
 const blanks: RoundData[] = new Array(20).fill({group: []});
 
 const rounds: RoundData[] = [
-  {group: [P]},
+  {
+    group: [P],
+    event: (scene) => {
+      scene.setStageName("A minor anoyance");
+    }
+  },
   ...blanks,
   {group: [P]},
   {group: [P,P]},
   ...blanks,
-  {group: [S]},
+  {
+    group: [S],
+    event: (scene) => {
+      scene.setStageName("Brittle confidence");
+    }
+  },
   ...blanks,
   {group: [S]},
   {group: [P,P]},
@@ -29,12 +40,22 @@ const rounds: RoundData[] = [
   {group: [S]},
   {group: [S,S,P]},
   ...blanks,
-  {group: [W]},
+  {
+    group: [W],
+    event: (scene) => {
+      scene.setStageName("All out attack");
+    }
+  },
   ...blanks,
   {group: [S]},
   {group: [S,S]},
   ...blanks,
-  {group: [T]},
+  {
+    group: [T],
+    event: (scene) => {
+      scene.setStageName("Tough meat");
+    }
+  },
   ...blanks,
   {group: [S,T]},
   ...blanks,
@@ -42,12 +63,22 @@ const rounds: RoundData[] = [
   {group: [S]},
   ...blanks,
   {group: [W]},
-  {group: [T]},
+  {
+    group: [T],
+    event: (scene) => {
+      scene.setStageName("Tough confidence");
+    }
+  },
   ...blanks,
   {group: [S]},
   {group: [P]},
   ...blanks,
-  {group: [H]},
+  {
+    group: [H],
+    event: (scene) => {
+      scene.setStageName("Honse... MAN");
+    }
+  },
   ...blanks,
   {group: [S,H]},
   ...blanks,
@@ -55,7 +86,11 @@ const rounds: RoundData[] = [
   {group: [H]},
   ...blanks,
   {group: [W]},
-  {group: [H]},
+  {group: [H],
+    event: (scene) => {
+      scene.setStageName("Side dish");
+    }
+  },
   ...blanks,
   {group: [T]},
   {group: [P,P,H]},
@@ -63,13 +98,31 @@ const rounds: RoundData[] = [
   {group: [S]},
   ...blanks,
   {group: [P,P,P,P,P]},
-  {group: [H,H]},
+  {
+    group: [H,H],
+    event: (scene) => {
+      scene.setStageName("Peasant party");
+    }
+  },
   ...blanks,
-  {group: [T,T,T,T,T]},
+  {group: [P]},
+  ...blanks,
+  {
+    group: [T,T,T,T,T],
+    event: (scene) => {
+      scene.setStageName("The kings platter");
+    }
+  },
   ...blanks,
   {group: [W]},
   {group: [H,H]},
   ...blanks,
+  {
+    group: [P],
+    event: (scene) => {
+      scene.setStageName("Infinite food");
+    }
+  },
 ];
 
 export default rounds;

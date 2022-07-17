@@ -107,7 +107,6 @@ export class GameScene extends BaseScene {
 		}, this);
 
 
-		this.onNewRound();
 
 		// UI
 		this.ui = new UI(this);
@@ -174,6 +173,7 @@ export class GameScene extends BaseScene {
 		this.score = 0;
 		this.highscore = 0;
 		this.loadHighscore();
+		this.onNewRound();
 	}
 
 	update(timeMs: number, deltaMs: number) {
@@ -427,26 +427,28 @@ export class GameScene extends BaseScene {
 			});
 		} else {
 			this.addScore(100);
-			this.overlayText.setColor("#fd0");
-			this.overlayText.setText("Perfect Clear!");
-			this.sound.play("m_sparkle", { volume: 0.7, pan: -0.2 });
+			if(level.length <= this.round) {
+				this.overlayText.setColor("#fd0");
+				this.overlayText.setText("Perfect Clear!");
+				this.sound.play("m_sparkle", { volume: 0.7, pan: -0.2 });
+				this.tweens.add({
+					targets: this.overlayText,
+					duration: 200,
+					ease: "Cubic.Out",
+					alpha: { from: 0, to: 1 },
+					scale: { from: 2, to: 1 },
+				})
+				this.tweens.add({
+					targets: this.overlayText,
+					delay: 1400,
+					duration: 800,
+					ease: "Linear",
+					alpha: { from: 1, to: 0 }
+				})
+			}
 			this.dragon.heal(1);
 			switchDelay = 1500;
 			playScatterSound = true;
-			this.tweens.add({
-				targets: this.overlayText,
-				duration: 200,
-				ease: "Cubic.Out",
-				alpha: { from: 0, to: 1 },
-				scale: { from: 2, to: 1 },
-			})
-			this.tweens.add({
-				targets: this.overlayText,
-				delay: 1400,
-				duration: 800,
-				ease: "Linear",
-				alpha: { from: 1, to: 0 }
-			})
 		}
 		for (let enemy of this.enemies) {
 			enemy.playWalk();
@@ -491,6 +493,7 @@ export class GameScene extends BaseScene {
 		do {
 			const roundData = level[this.round++];
 			if(roundData) {
+				if(roundData.event) roundData.event(this);
 				roundData.group.forEach( type => {
 					this.addEnemy(type);
 				})
@@ -606,5 +609,26 @@ export class GameScene extends BaseScene {
 		this.ui.setScore(this.score, this.highscore);
 
 		this.saveHighscore();
+	}
+
+	setStageName(name: string) {
+		console.log("Stage:", name);
+		this.sound.play("j_timpani", { volume: 0.9, pan: -0.2 });
+		this.overlayText.setColor("#0df");
+		this.overlayText.setText(name);
+		this.tweens.add({
+			targets: this.overlayText,
+			duration: 200,
+			ease: "Cubic.Out",
+			alpha: { from: 0, to: 1 },
+			scale: { from: 2, to: 1 },
+		})
+		this.tweens.add({
+			targets: this.overlayText,
+			delay: 3000,
+			duration: 800,
+			ease: "Linear",
+			alpha: { from: 1, to: 0 }
+		})
 	}
 }

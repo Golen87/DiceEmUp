@@ -110,12 +110,12 @@ EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 }));
 
 EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
-	EnemyKinds.get(EnemyType.SQUIRE), {
+	EnemyKinds.get(EnemyType.PEASANT), {
 	type: EnemyType.TROJAN_MINION,
 	minHealth: 1,
 	maxHealth: 3,
 	score: 5,
-	sprite: "peasent",
+	sprite: "peasant",
 	spawn: (scene:GameScene, grid:Grid, coord:Coord) => {
 		const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
 		if(!minionKind) return;
