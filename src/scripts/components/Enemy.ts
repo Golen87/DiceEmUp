@@ -2,9 +2,11 @@ import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
 
 export enum EnemyType {
-	SQUIRE,
+	SQUIRE = 1,
 	SQUIRE_WAVE,
-	ENEMY_COUNT
+	TROJAN_HORSE,
+	SPAWNABLE_COUNT,
+	TROJAN_MINION
 }
 
 interface EnemyBehaviour {
@@ -27,7 +29,7 @@ EnemyKinds.set(EnemyType.SQUIRE, {
 		const coord = grid.getRandomRightFree();
 		const kind = EnemyKinds.get(EnemyType.SQUIRE);
 		if (coord && kind != null) {
-			const enemy = new Enemy(scene, coord.i, coord.j, kind);
+			const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
 			grid.addEnemy(coord, enemy);
 			ret.push(enemy);
 		}
@@ -49,7 +51,7 @@ EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 
 		for( let j = 0; j < grid.rows; j++) {
 			if(!grid.grid[j][right]) {
-				const enemy = new Enemy(scene, right, j, kind);
+				const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
 				grid.addEnemy({i: right, j: j}, enemy);
 				ret.push(enemy);
 			}
@@ -58,6 +60,44 @@ EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 	},
 	maxHealth: 3
 }));
+
+EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
+	EnemyKinds.get(EnemyType.SQUIRE), {
+	type: EnemyType.TROJAN_MINION,
+	minHealth: 2,
+	maxHealth: 2
+}));
+
+EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
+	EnemyKinds.get(EnemyType.SQUIRE), {
+	spawn: (scene:GameScene, grid:Grid) => {
+		const ret: Enemy[] = [];
+		const coord = grid.getRandomRightFree();
+		const kind = EnemyKinds.get(EnemyType.TROJAN_HORSE);
+		if (coord && kind != null) {
+			const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
+			grid.addEnemy(coord, enemy);
+			ret.push(enemy);
+
+			enemy.on("death", () => {
+				const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
+				const grave = enemy.coord;
+				if(!grave) return;
+				if(!minionKind) return;
+				const cell = grid.getCell(grave);
+				const minion = new Enemy(scene, cell.cx, cell.cy, minionKind);
+				minion.moves = -1;
+				grid.addEnemy(grave, minion);
+				scene.enemies.push(minion);
+			});
+		}
+		return ret;
+	},
+	minHealth: 5,
+	maxHealth: 5,
+	tint: 0x62261A
+}));
+
 
 
 export class Enemy extends Phaser.GameObjects.Container {
@@ -105,8 +145,6 @@ export class Enemy extends Phaser.GameObjects.Container {
 		this.text.setOrigin(0.6);
 		this.text.setStroke("#FFFFFF", 5);
 		this.add(this.text);
-
-		this.setPosition(scene.W+200, scene.H/2);
 	}
 
 	update(timeMs: number, deltaMs: number) {
@@ -141,7 +179,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 			// this.setAlpha(1 - deathEase);
 
 			let blink = (Math.sin(50*timeMs/1000) > 0);
-			this.sprite.setTint(blink ? 0xFFBBBB : 0xFFFFFF);
+			this.sprite.setTint(blink ? 0xFFBBBB : this.behaviour.tint);
 
 			// End prematurely
 			if (this.deathTimer > 0.95 * this.deathDuration) {
@@ -170,6 +208,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 	}
 
 	move(coord: Coord, cell: Cell) {
+		this.moves++;
 		this.sprite.setScale(cell.width / this.sprite.height);
 		this.setDepth(10 + cell.y/100);
 		this.coord = coord;
@@ -184,6 +223,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 	}
 
 	damage(amount: number=1) {
+		if( this.behaviour.type == EnemyType.TROJAN_MINION && this.moves < 1) return;
 		const previousHealth = this.health;
 		const healthDifference = Math.abs(previousHealth - this.health);
 		this.health -= amount;
@@ -212,6 +252,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 		});
 
 		if (this.health <= 0) {
+			this.scene.grid.clear(this.coord);
 			this.emit("death");
 		}
 	}

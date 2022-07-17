@@ -252,12 +252,15 @@ export class GameScene extends BaseScene {
 		});
 	}
 
-	addEnemy() {
-		let spawner = EnemyKinds.get(Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.ENEMY_COUNT-1));
+	addEnemy(kind: EnemyType) {
+		console.log("Spawn kind", kind)
+		let spawner = EnemyKinds.get(kind);
 		if( spawner != null ) {
 			const spawned = spawner.spawn(this, this.grid);
 			this.enemies.push(...spawned);
+			return spawned;
 		}
+		return [];
 	}
 
 	onAttack() {
@@ -300,7 +303,6 @@ export class GameScene extends BaseScene {
 
 		for (const enemy of this.enemies) {
 			if (!enemy.alive) {
-				this.grid.clear(enemy.coord);
 				enemy.destroy();
 			}
 		}
@@ -349,7 +351,7 @@ export class GameScene extends BaseScene {
 		this.dragon.throw();
 		// Animation -> this.onDragonThrow
 
-		this.addEnemy();
+		this.addEnemy(Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.SPAWNABLE_COUNT-1));
 
 		for (let enemy of this.enemies) {
 			enemy.playIdle();
