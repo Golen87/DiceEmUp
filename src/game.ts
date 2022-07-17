@@ -1,6 +1,7 @@
 import "phaser";
 import { PreloadScene } from "./scripts/scenes/PreloadScene";
 import { MenuScene } from "./scripts/scenes/MenuScene";
+import { GameoverScene } from "./scripts/scenes/GameoverScene";
 import { OverworldScene } from "./scripts/scenes/OverworldScene";
 import { GameScene } from "./scripts/scenes/GameScene";
 
@@ -18,6 +19,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		MenuScene,
 		OverworldScene,
 		GameScene,
+		GameoverScene,
 	],
 	plugins: {
 		global: [

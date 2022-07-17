@@ -175,6 +175,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 
 		if (this.health <= 0) {
 			this.emit("death");
+			this.healthCont.setVisible(false);
 			this.scene.tweens.add({
 				targets: this.scene.bg_shadow,
 				delay: 300,

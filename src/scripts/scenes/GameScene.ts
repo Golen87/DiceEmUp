@@ -12,6 +12,7 @@ import { Button } from "../components/Button";
 import { MiniButton } from "../components/MiniButton";
 import { Dragon } from "../components/Dragon";
 import { interpolateColor } from "../utils";
+import { GrayScalePostFilter } from "../pipelines/GrayScalePostFilter";
 
 import level from "../components/Levels";
 
@@ -76,6 +77,8 @@ export class GameScene extends BaseScene {
 
 		this.state = State.MoveDice;
 		this.initAnimations();
+
+		this.cameras.main.resetPostPipeline();
 
 		// Backgrounds
 		// this.background = new Background(this);
@@ -214,7 +217,7 @@ export class GameScene extends BaseScene {
 
 		// Game over text flash
 		if (this.state == State.GameOverPhase) {
-			this.overlayText.setTint(interpolateColor(0xFF7777, 0XFFFFFF, Math.sin(0.005*timeMs)*0.5+0.5));
+			// this.overlayText.setTint(interpolateColor(0xFF7777, 0XFFFFFF, Math.sin(0.005*timeMs)*0.5+0.5));
 		}
 	}
 
@@ -561,21 +564,33 @@ export class GameScene extends BaseScene {
 		}
 
 		this.state = State.GameOverPhase;
-		this.overlayText.setColor("#fff");
-		this.overlayText.setText("Game Over");
-		this.tweens.add({
-			targets: this.overlayText,
-			duration: 400,
-			ease: "Elastic.Out",
-			alpha: { from: 0, to: 1 },
-			scale: { from: 0, to: 1 },
-		})
+		// this.overlayText.setColor("#fff");
+		// this.overlayText.setText("Game Over");
+		// this.tweens.add({
+		// 	targets: this.overlayText,
+		// 	duration: 400,
+		// 	ease: "Elastic.Out",
+		// 	alpha: { from: 0, to: 1 },
+		// 	scale: { from: 0, to: 1 },
+		// })
 
-		this.music_isFull = false;
-		if (this.musicButton.active) {
-			this.music.volume = 0.001;
-			this.music_light.volume = 0.25;
-		}
+		// this.music_isFull = false;
+		// if (this.musicButton.active) {
+		// 	this.music.volume = 0.001;
+		// 	this.music_light.volume = 0.25;
+		// }
+
+		this.cameras.main.setPostPipeline(GrayScalePostFilter);
+		this.music.stop();
+		this.music_light.stop();
+
+		this.addEvent(2000, () => {
+			this.fade(true, 1000, 0x000000);
+			this.addEvent(1050, () => {
+				this.ambience.stop();
+				this.scene.start("GameoverScene");
+			});
+		});
 	}
 
 

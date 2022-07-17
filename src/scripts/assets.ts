@@ -27,6 +27,7 @@ import bg from "../assets/images/BG.png";
 import bgs from "../assets/images/BGS.png";
 import fg from "../assets/images/FG.png";
 import concept from "../assets/images/dragon_concept2.png";
+import gameover from "../assets/images/gameover.png";
 
 import d6 from "../assets/images/dice/d6.png";
 import d6_roll from "../assets/images/dice/d6_roll.png";
@@ -53,6 +54,7 @@ const images: Asset[] = [
 	{ key: "bgs",	path: bgs },
 	{ key: "fg",	path: fg },
 	{ key: "concept",		path: concept },
+	{ key: "gameover",		path: gameover },
 	{ key: "d6",			path: d6 },
 	{ key: "d6_roll",		path: d6_roll },
 	{ key: "shadow",		path: shadow },
