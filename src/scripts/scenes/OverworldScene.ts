@@ -64,7 +64,7 @@ export class OverworldScene extends BaseScene {
 		this.graphics.fillStyle(0xEEEEDD, 1.0);
 
 
-		this.title = this.createText(this.CX, 0.43*this.H, 3*40, "#FA4", "Dice 'Em Up").setOrigin(0.5).setStroke("#732", 6);
+		this.title = this.createText(this.CX, 0.43*this.H, 3*40, "#FA4", "Fire and Dice").setOrigin(0.5).setStroke("#732", 6);
 		this.title.setPostPipeline(BendWaves2);
 		this.title.setVisible(false);
 

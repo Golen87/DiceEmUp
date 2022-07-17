@@ -95,7 +95,7 @@ export class MenuScene extends BaseScene {
 		this.hands.y += 50;
 
 
-		this.title = this.createText(this.CX, this.H-75, 60, "#000", "Dice 'Em Up");
+		this.title = this.createText(this.CX, this.H-75, 60, "#000", "Fire and Dice");
 		this.title.setOrigin(0.5, 1.0);
 		this.title.setStroke("#FFF", 8);
 		this.title.setVisible(false);

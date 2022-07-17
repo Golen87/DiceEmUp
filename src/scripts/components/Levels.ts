@@ -19,7 +19,7 @@ const rounds: RoundData[] = [
   {
     group: [P],
     event: (scene) => {
-      scene.setStageName("A minor annoyance");
+      scene.setStageName("Move the dice to attack");
     }
   },
   ...blanks,
