@@ -1,7 +1,7 @@
 import { BaseScene } from "./BaseScene";
 import { RoundRectangle } from "../components/RoundRectangle";
 import { Grid } from "./../components/Grid";
-// import { Music } from "./../components/Music";
+import { Music } from "./../components/Music";
 // import { Background } from "../components/Background";
 // import { UI } from "../components/UI";
 import { Particles } from "../components/Particles";
@@ -9,6 +9,7 @@ import { Player } from "../components/Player";
 import { Enemy, EnemyKinds, EnemyType } from "../components/Enemy";
 import { Dice } from "../components/Dice";
 import { Button } from "../components/Button";
+import { MiniButton } from "../components/MiniButton";
 import { Dragon } from "../components/Dragon";
 import { interpolateColor } from "../utils";
 // import { Minion } from "../components/Minion";
@@ -41,6 +42,8 @@ export class GameScene extends BaseScene {
 	public enemies: Enemy[];
 	public dragon: Dragon;
 	public button: Button;
+	public musicButton: MiniButton;
+	public audioButton: MiniButton;
 
 	// UI texts
 	// private ui: UI;
@@ -54,7 +57,8 @@ export class GameScene extends BaseScene {
 
 	// public sounds: Map<string, Phaser.Sound.BaseSound>;
 	// public sounds: {[key: string]: Phaser.Sound.WebAudioSound};
-	// public music: Music;
+	public music: Music;
+	public ambience: Music;
 
 	// Score
 	public score: number;
@@ -93,6 +97,18 @@ export class GameScene extends BaseScene {
 
 		this.button = new Button(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - 60);
 		this.button.on('click', this.onAttack, this);
+
+		const bsize = 35;
+		this.musicButton = new MiniButton(this, this.W-2.5*bsize, bsize, 'music');
+		this.musicButton.on('click', (active: boolean) => {
+			this.musicButton.toggle();
+			this.music.volume = (this.musicButton.active ? 0.25 : 0);
+		}, this);
+		this.audioButton = new MiniButton(this, this.W-bsize, bsize, 'audio');
+		this.audioButton.on('click', (active: boolean) => {
+			this.audioButton.toggle();
+			this.sound.mute = !this.audioButton.active;
+		}, this);
 
 
 		this.onNewRound();
@@ -152,7 +168,10 @@ export class GameScene extends BaseScene {
 		// Sounds
 
 		// this.loadSounds();
-		// this.musicDay.play();
+		this.music = new Music(this, 'm_main_music', { volume: 0.25 });
+		this.ambience = new Music(this, 'm_city_ambience', { volume: 0.4 });
+		this.music.play();
+		this.ambience.play();
 
 
 		// this.score = 0;
@@ -169,6 +188,8 @@ export class GameScene extends BaseScene {
 			enemy.update(timeMs, deltaMs);
 		}
 		this.button.update(timeMs, deltaMs);
+		this.musicButton.update(timeMs, deltaMs);
+		this.audioButton.update(timeMs, deltaMs);
 		this.particles.update(timeMs/1000, deltaMs/1000);
 
 		// Camera shake

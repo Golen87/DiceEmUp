@@ -101,16 +101,16 @@ export class MenuScene extends BaseScene {
 		// Music
 
 		if (!this.musicTitle) {
-			this.musicTitle = new Music(this, "music_title", { volume: 0.25 });
+			this.musicTitle = new Music(this, "m_city_ambience", { volume: 0.25 });
 			this.musicTitle.on('bar', this.onBar, this);
 			this.musicTitle.on('beat', this.onBeat, this);
 
-			this.select = this.sound.add("dayShift", { volume: 0.8, rate: 1.0 }) as Phaser.Sound.WebAudioSound;
-			this.select2 = this.sound.add("nightShift", { volume: 0.8, rate: 1.0 }) as Phaser.Sound.WebAudioSound;
+			// this.select = this.sound.add("dayShift", { volume: 0.8, rate: 1.0 }) as Phaser.Sound.WebAudioSound;
+			// this.select2 = this.sound.add("nightShift", { volume: 0.8, rate: 1.0 }) as Phaser.Sound.WebAudioSound;
 
-			this.wind = this.sound.add("wind", { volume: 0.5, rate: 1.0 }) as Phaser.Sound.WebAudioSound;
-			this.wind.setLoop(true);
-			this.wind.play();
+			// this.wind = this.sound.add("wind", { volume: 0.5, rate: 1.0 }) as Phaser.Sound.WebAudioSound;
+			// this.wind.setLoop(true);
+			// this.wind.play();
 		}
 		this.musicTitle.play();
 
@@ -175,8 +175,8 @@ export class MenuScene extends BaseScene {
 		}
 
 		else if (!this.isStarting) {
-			this.select.play();
-			this.select2.play();
+			// this.select.play();
+			// this.select2.play();
 			this.isStarting = true;
 			this.musicTitle.stop();
 			this.flash(3000, 0xFFFFFF, 0.6);
