@@ -18,7 +18,7 @@ const rounds: RoundData[] = [
   {
     group: [P],
     event: (scene) => {
-      scene.setStageName("A minor anoyance");
+      scene.setStageName("A minor annoyance");
     }
   },
   ...blanks,
@@ -110,7 +110,7 @@ const rounds: RoundData[] = [
   {
     group: [T,T,T,T,T],
     event: (scene) => {
-      scene.setStageName("The kings platter");
+      scene.setStageName("The king's platter");
     }
   },
   ...blanks,
