@@ -89,6 +89,14 @@ import d_damage from "../assets/sounds/dragon/Dragon_Damage.mp3";
 import m_main_music from "../assets/music/main.mp3";
 import m_city_ambience from "../assets/music/City_Ambience.mp3";
 
+/* Jingles */
+import j_fanfare from "../assets/sounds/jingle/jingle fanfare.mp3";
+import j_defeat from "../assets/sounds/jingle/jingle defeat.mp3";
+import j_orchestra from "../assets/sounds/jingle/jingle orchestra.mp3";
+import j_strings from "../assets/sounds/jingle/jingle strings.mp3";
+import j_timpani from "../assets/sounds/jingle/jingle timpani.mp3";
+import j_trumpet from "../assets/sounds/jingle/jingle trumpet.mp3";
+
 /* Misc */
 import m_sparkle from "../assets/sounds/misc/Sparkle.mp3";
 import m_scatter from "../assets/sounds/misc/Scatter.mp3";
@@ -270,6 +278,13 @@ const audios: Audio[] = [
 
 	{ key: "m_main_music", path: m_main_music, volume: 1 },
 	{ key: "m_city_ambience", path: m_city_ambience, volume: 1 },
+
+	{ key: "j_fanfare", path: j_fanfare, volume: 1 },
+	{ key: "j_defeat", path: j_defeat, volume: 1 },
+	{ key: "j_orchestra", path: j_orchestra, volume: 1 },
+	{ key: "j_strings", path: j_strings, volume: 1 },
+	{ key: "j_timpani", path: j_timpani, volume: 1 },
+	{ key: "j_trumpet", path: j_trumpet, volume: 1 },
 
 	{ key: "m_sparkle", path: m_sparkle, volume: 1 },
 	{ key: "m_scatter", path: m_scatter, volume: 1 },
