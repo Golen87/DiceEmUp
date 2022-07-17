@@ -12,15 +12,8 @@ import { Button } from "../components/Button";
 import { MiniButton } from "../components/MiniButton";
 import { Dragon } from "../components/Dragon";
 import { interpolateColor } from "../utils";
-// import { Minion } from "../components/Minion";
-// import { Boss } from "../components/Boss";
-// import { Bullet } from "../components/Bullet";
-// import { PlayerBullet } from "../components/PlayerBullet";
-// import { EnemyBullet } from "../components/EnemyBullet";
-// import { audios } from "../assets";
-// import { levelData } from "../levels";
-// import { interpolateColor } from "../utils";
-// import { EnemyParams, BulletParams } from "../interfaces";
+
+import level from "../components/Levels";
 
 
 enum State {
@@ -64,9 +57,12 @@ export class GameScene extends BaseScene {
 	public score: number;
 	public highscore: number;
 
+	public round: number;
+
 
 	constructor() {
 		super({key: "GameScene"});
+		this.round = 0;
 	}
 
 	init(data): void {
@@ -459,11 +455,23 @@ export class GameScene extends BaseScene {
 	}
 
 	onNewRound() {
+
+
 		this.state = State.MoveDice;
 
 		this.button.setVisible(false);
 
-		this.addEnemy(Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.SPAWNABLE_COUNT-1));
+		do {
+			const roundData = level[this.round++];
+			if(roundData) {
+				roundData.group.forEach( type => {
+					this.addEnemy(type);
+				})
+			} else {
+				this.addEnemy(Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.SPAWNABLE_COUNT-1));
+			}
+		} while (this.enemies.filter(enemy => enemy.alive).length < 1);
+
 		for (let enemy of this.enemies) {
 			enemy.playIdle();
 		}
