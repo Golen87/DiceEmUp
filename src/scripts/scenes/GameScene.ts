@@ -364,7 +364,7 @@ export class GameScene extends BaseScene {
 			this.addDice();
 		}
 
-		this.shake(200, 2, 0);
+		this.shake(300, 2, 0);
 
 		// Show attack button after a while
 		this.addEvent(1800, () => {
