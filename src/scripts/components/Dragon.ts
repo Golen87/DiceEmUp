@@ -41,6 +41,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 		this.text = scene.createText(0, 0, 25, "#000", "");
 		this.text.setOrigin(0.5);
 		this.text.setStroke("#FFFFFF", 5);
+		this.text.setVisible(false);
 		this.add(this.text);
 
 
@@ -151,6 +152,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 	damage(amount: number=1) {
 		this.healthCont.setVisible(true);
 		this.health -= amount;
+		this.health = Math.max(this.health, 0);
 		this.hurtTimer = 1000;
 		this.healthFlash = 1;
 		this.sprite.play({ key: 'dragon_hurt' });
@@ -174,6 +176,27 @@ export class Dragon extends Phaser.GameObjects.Container {
 		if (this.health <= 0) {
 			this.emit("death");
 		}
+	}
+
+	heal(amount: number=1) {
+		this.health += amount;
+		this.health = Math.min(this.health, this.maxHealth);
+		this.healthFlash = 1;
+
+		this.scene.tweens.add({
+			targets: this.healthBar,
+			duration: 200,
+			ease: "Cubic.Out",
+			width: {
+				from: this.healthBar.width,
+				to: Math.max( // Prevent it from spilling out the box from the left
+					(this.health / this.maxHealth) * (this.healthBox.displayWidth - 5),
+					this.healthBox.getBounds().left
+				)
+			}
+		});
+
+		this.text.setText(this.health.toString());
 	}
 
 	get alive() {

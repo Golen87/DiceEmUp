@@ -317,6 +317,32 @@ export class GameScene extends BaseScene {
 			],
 			repeat: -1
 		});
+
+		this.anims.create({
+			key: 'peasant_idle',
+			frames: [
+				{ key: 'peasant', frame: 0, duration: 500 },
+				{ key: 'peasant', frame: 1, duration: 500 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'peasant_walk',
+			frames: [
+				{ key: 'peasant', frame: 2, duration: 100 },
+				{ key: 'peasant', frame: 0, duration: 100 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'peasant_attack',
+			frames: [
+				{ key: 'peasant', frame: 1, duration: 100 },
+				{ key: 'peasant', frame: 2, duration: 100 },
+				{ key: 'peasant', frame: 3, duration: 100 },
+			],
+			repeat: -1
+		});
 	}
 
 
@@ -404,6 +430,7 @@ export class GameScene extends BaseScene {
 			this.overlayText.setColor("#fd0");
 			this.overlayText.setText("Perfect Clear!");
 			this.sound.play("m_sparkle", { volume: 0.7, pan: -0.2 });
+			this.dragon.heal(1);
 			switchDelay = 1500;
 			playScatterSound = true;
 			this.tweens.add({
