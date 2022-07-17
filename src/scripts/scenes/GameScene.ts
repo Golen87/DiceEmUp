@@ -51,6 +51,8 @@ export class GameScene extends BaseScene {
 	// public sounds: Map<string, Phaser.Sound.BaseSound>;
 	// public sounds: {[key: string]: Phaser.Sound.WebAudioSound};
 	public music: Music;
+	public music_light: Music;
+	public music_isFull: Boolean;
 	public ambience: Music;
 
 	// Score
@@ -101,7 +103,8 @@ export class GameScene extends BaseScene {
 		this.musicButton = new MiniButton(this, this.W-2.5*bsize, 0.8*bsize, 'music');
 		this.musicButton.on('click', (active: boolean) => {
 			this.musicButton.toggle();
-			this.music.volume = (this.musicButton.active ? 0.25 : 0);
+			this.music.volume 			= (this.musicButton.active ? (this.music_isFull ? 0.25 : 0.0001) : 0);
+			this.music_light.volume = (this.musicButton.active ? (this.music_isFull ? 0.0001 : 0.25) : 0);
 			this.ambience.volume = (this.musicButton.active ? 0.35 : 0);
 		}, this);
 		this.audioButton = new MiniButton(this, this.W-bsize, 0.8*bsize, 'audio');
@@ -168,10 +171,13 @@ export class GameScene extends BaseScene {
 		// Sounds
 
 		// this.loadSounds();
-		this.music = new Music(this, 'm_main_music', { volume: 0.25 });
+		this.music = new Music(this, 'm_main_music', { volume: 0.00001 });
+		this.music_light = new Music(this, 'm_main_music_light', { volume: 0.25 });
 		this.ambience = new Music(this, 'm_city_ambience', { volume: 0.35 });
 		this.music.play();
+		this.music_light.play();
 		this.ambience.play();
+		this.music_isFull = false;
 
 
 		this.score = 0;
@@ -561,6 +567,12 @@ export class GameScene extends BaseScene {
 			alpha: { from: 0, to: 1 },
 			scale: { from: 0, to: 1 },
 		})
+
+		this.music_isFull = false;
+		if (this.musicButton.active) {
+			this.music.volume = 0.001;
+			this.music_light.volume = 0.25;
+		}
 	}
 
 
