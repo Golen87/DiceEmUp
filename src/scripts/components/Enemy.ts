@@ -5,6 +5,7 @@ const inrange = (n:number, min:number, max:number) => n >= min && n <= max;
 
 export enum EnemyType {
 	SQUIRE = 1,
+	PEASANT,
 	TANK,
 	TROJAN_HORSE,
 	SQUIRE_WAVE,
@@ -47,6 +48,24 @@ EnemyKinds.set(EnemyType.SQUIRE, {
 		return ret;
 	}
 });
+
+EnemyKinds.set(EnemyType.PEASANT, Object.assign({},
+	EnemyKinds.get(EnemyType.SQUIRE), {
+	minHealth: 2,
+	maxHealth: 5,
+	sprite: "peasant",
+	spawn: (scene:GameScene, grid:Grid) => {
+		const ret: Enemy[] = [];
+		const coord = grid.getRandomRightFree();
+		const kind = EnemyKinds.get(EnemyType.PEASANT);
+		if (coord && kind != null) {
+			const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
+			grid.addEnemy(coord, enemy);
+			ret.push(enemy);
+		}
+		return ret;
+	}
+}));
 
 EnemyKinds.set(EnemyType.TANK, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
@@ -96,6 +115,7 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 	minHealth: 1,
 	maxHealth: 3,
 	score: 5,
+	sprite: "peasent",
 	spawn: (scene:GameScene, grid:Grid, coord:Coord) => {
 		const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
 		if(!minionKind) return;
