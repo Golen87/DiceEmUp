@@ -103,6 +103,7 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 			grid.addEnemy(pos, minion);
 			scene.enemies.push(minion);
 			ret.push(minion);
+			scene.sound.play("e_jump_out", { volume: 0.25, delay: 0.3 });
 		}
 		for(let j = coord.j-1; j <= coord.j+1; j++) {
 			if(inrange(j, 0, grid.rows-1)) {

@@ -80,6 +80,7 @@ import u_hover from "../assets/sounds/ui/Wii hover.mp3";
 /* Enemy */
 import e_advance from "../assets/sounds/enemy/Enemy_Advance.mp3";
 import e_damage from "../assets/sounds/enemy/Enemy_Damage.mp3";
+import e_jump_out from "../assets/sounds/enemy/Enemy jump out.mp3";
 
 /* Dragon */
 import d_damage from "../assets/sounds/dragon/Dragon_Damage.mp3";
@@ -263,6 +264,7 @@ const audios: Audio[] = [
 
 	{ key: "e_advance", path: e_advance, volume: 1 },
 	{ key: "e_damage", path: e_damage, volume: 1 },
+	{ key: "e_jump_out", path: e_jump_out, volume: 1 },
 
 	{ key: "d_damage", path: d_damage, volume: 1 },
 
