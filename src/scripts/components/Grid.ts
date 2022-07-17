@@ -33,6 +33,7 @@ export class Grid extends Phaser.GameObjects.Container {
 	public bg: Phaser.GameObjects.Image;
 	public grid: any[][];
 	public gridTiles: Phaser.GameObjects.Image[][];
+	public gridHighlights: Phaser.GameObjects.Rectangle[][];
 	public gridText: Phaser.GameObjects.Text[][];
 
 	constructor(scene: GameScene) {
@@ -47,17 +48,19 @@ export class Grid extends Phaser.GameObjects.Container {
 		this.add(this.bg);
 
 		// Debug graphics
-		this.graphics = scene.add.graphics();
+		// this.graphics = scene.add.graphics();
 		// this.graphics.setVisible(false);
-		this.add(this.graphics);
+		// this.add(this.graphics);
 
 		this.grid = [];
 		this.gridText = [];
 		this.gridTiles = [];
+		this.gridHighlights = [];
 		for (let j = 0; j < this.rows; j++) {
 			this.grid.push([]);
 			this.gridText.push([]);
 			this.gridTiles.push([]);
+			this.gridHighlights.push([]);
 			for (let i = 0; i < this.cols; i++) {
 				this.grid[j].push(null);
 
@@ -68,6 +71,10 @@ export class Grid extends Phaser.GameObjects.Container {
 				this.add(tile);
 				this.gridTiles[j][i] = tile;
 
+				let tile2 = scene.add.rectangle(cell.cx, cell.cy, cell.width, cell.height+1, 0xFFFF99, 1.0);
+				this.add(tile2);
+				this.gridHighlights[j][i] = tile2;
+
 				const text = scene.createText(cell.x+cell.width, cell.y, 18, "#B71C1C", "")
 				text.setStroke("#FFFFFF", 3);
 				text.setOrigin(1.05, 0.15);
@@ -77,6 +84,17 @@ export class Grid extends Phaser.GameObjects.Container {
 		}
 
 		this.updateGrid();
+	}
+
+	update(time: number, delta: number) {
+		for (let j = 0; j < this.rows; j++) {
+			for (let i = 0; i < this.cols; i++) {
+				this.gridHighlights[j][i].setAlpha(0);
+				if (this.getHighlight({ i, j })) {
+					this.gridHighlights[j][i].setAlpha( 0.4 + 0.1 * Math.sin(10*time) );
+				}
+			}
+		}
 	}
 
 	getCell(coord: Coord): Cell {
@@ -149,6 +167,21 @@ export class Grid extends Phaser.GameObjects.Container {
 		return null;
 	}
 
+	getHighlight(coord: Coord) {
+		for (let j = 0; j < this.rows; j++) {
+			for (let i = 0; i < this.cols; i++) {
+				if (this.grid[j][i] instanceof Dice) {
+					if (this.grid[j][i].style.pattern(coord, i, j)) {
+						if (this.grid[j][i].hovering || this.grid[j][i].dragging) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	getDamage(coord: Coord) {
 		let sum = 0;
 		for (let j = 0; j < this.rows; j++) {
@@ -175,14 +208,14 @@ export class Grid extends Phaser.GameObjects.Container {
 	}
 
 	updateGrid() {
-		this.graphics.clear();
+		// this.graphics.clear();
 
-		this.graphics.fillStyle(0x000000, 0.5);
-		this.graphics.fillRect(
-			this.left,
-			this.top,
-			this.cols*this.width,
-			this.rows*this.height);
+		// this.graphics.fillStyle(0x000000, 0.5);
+		// this.graphics.fillRect(
+		// 	this.left,
+		// 	this.top,
+		// 	this.cols*this.width,
+		// 	this.rows*this.height);
 
 		for (let j = 0; j < this.rows; j++) {
 			for (let i = 0; i < this.cols; i++) {
@@ -191,15 +224,17 @@ export class Grid extends Phaser.GameObjects.Container {
 				const damage = this.getDamage({i, j});
 				const scaledDamage = ((damage > 0 ? 2 : 0) + Math.min(damage, 8)) / 10;
 
-				this.graphics.fillStyle(interpolateColor(0xFFFFFF, 0xFF0000, scaledDamage), 0.7);
-				this.graphics.fillRect(
-					cell.x,
-					cell.y,
-					cell.width,
-					cell.height);
+				// this.graphics.fillStyle(interpolateColor(0xFFFFFF, 0xFF0000, scaledDamage), 0.7);
+				// this.graphics.fillRect(
+				// 	cell.x,
+				// 	cell.y,
+				// 	cell.width,
+				// 	cell.height);
 
 				this.gridText[j][i].setText(damage.toString());
 				this.gridText[j][i].setVisible(damage > 0);
+
+				this.gridTiles[j][i].setTint(interpolateColor(0xFFFFFF, 0xFF0000, scaledDamage));
 			}
 		}
 	}

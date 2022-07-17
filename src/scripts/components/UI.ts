@@ -175,7 +175,7 @@ export class UI extends Phaser.GameObjects.Container {
 		this.add(sLabel);
 
 		// ty += 1.2 * FONT_SIZE;
-		this.score = scene.createText(hx + 140, ty+4, FONT_SIZE, "#FFF", "0");
+		this.score = scene.createText(hx + 140, ty+5, FONT_SIZE, "#FFF", "0");
 		this.score.setOrigin(0, 0);
 		// this.score.setStroke("#FFFFFF", STROKE);
 		this.add(this.score);
@@ -193,7 +193,7 @@ export class UI extends Phaser.GameObjects.Container {
 		hsLabel.setStroke("#FFFFFF", STROKE);
 		this.add(hsLabel);
 
-		this.highscore = scene.createText(hx + 140, ty+4, FONT_SIZE, "#FFF", "0");
+		this.highscore = scene.createText(hx + 140, ty+5, FONT_SIZE, "#FFF", "0");
 		this.highscore.setOrigin(0, 0);
 		// this.highscore.setStroke("#FFFFFF", STROKE);
 		this.add(this.highscore);

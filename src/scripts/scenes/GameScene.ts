@@ -193,6 +193,7 @@ export class GameScene extends BaseScene {
 		this.audioButton.update(timeMs, deltaMs);
 		this.particles.update(timeMs/1000, deltaMs/1000);
 		this.ui.update(timeMs/1000, deltaMs/1000);
+		this.grid.update(timeMs/1000, deltaMs/1000);
 
 		// Camera shake
 		if (this.cameraShakeValue > 0) {
@@ -511,7 +512,7 @@ export class GameScene extends BaseScene {
 		}
 
 		if (this.grid.needMoreEnemies()) {
-			this.addEvent(1000, this.onMove);
+			this.addEvent(600, this.onMove);
 		}
 		else {
 			this.dragon.throw();
