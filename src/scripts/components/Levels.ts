@@ -15,7 +15,6 @@ interface RoundData {
 const blanks: RoundData[] = new Array(20).fill({group: []});
 
 const rounds: RoundData[] = [
-  ...blanks,
   {
     group: [P],
     event: (scene) => {
