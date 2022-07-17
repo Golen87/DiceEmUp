@@ -31,11 +31,12 @@ const rounds: RoundData[] = [
       scene.setStageName("Brittle confidence");
     }
   },
-  ...blanks,
+  {group: []},
+  // ...blanks,
   {group: [S]},
   {group: [S,S]},
-  {group: [S]},
   {group: [S,S,P]},
+  {group: [S,P]},
   ...blanks,
   {
     group: [W],
@@ -43,9 +44,10 @@ const rounds: RoundData[] = [
       scene.setStageName("All out attack");
     }
   },
-  ...blanks,
-  {group: [S]},
+  {group: []},
+  // ...blanks,
   {group: [S,S]},
+  {group: [S,P,P,P]},
   ...blanks,
   {
     group: [T],
@@ -53,29 +55,33 @@ const rounds: RoundData[] = [
       scene.setStageName("Tough meat");
     }
   },
-  ...blanks,
+  {group: []},
+  // ...blanks,
   {group: [S,T]},
-  ...blanks,
-  {group: [W]},
-  {
-    group: [T],
-    event: (scene) => {
-      scene.setStageName("Tough confidence");
-    }
-  },
-  ...blanks,
-  {group: [S]},
-  {group: [P]},
+  {group: [S,P,P]},
   ...blanks,
   {
     group: [H],
     event: (scene) => {
-      scene.setStageName("Horse... MAN");
+      scene.setStageName("Gift of peace");
     }
   },
-  ...blanks,
-  {group: [T]},
+  {group: []},
+  {group: [S,P]},
   {group: [H]},
+  {group: [S,S]},
+  ...blanks,
+  {group: [W]},
+  {
+    group: [T,T],
+    event: (scene) => {
+      scene.setStageName("Tough confidence");
+    }
+  },
+  // ...blanks,
+  {group: [S,P]},
+  {group: [P,P]},
+  {group: [S,P,P]},
   ...blanks,
   {group: [W]},
   {group: [H],
@@ -83,18 +89,20 @@ const rounds: RoundData[] = [
       scene.setStageName("Side dish");
     }
   },
-  ...blanks,
+  // ...blanks,
   {group: [S]},
   {group: [P,H]},
   ...blanks,
   {group: [P,P,P,P,P]},
   {
-    group: [H,H],
+    group: [H,H,P],
     event: (scene) => {
       scene.setStageName("Peasant party");
     }
   },
-  ...blanks,
+  // ...blanks,
+  {group: []},
+  {group: []},
   {group: [P]},
   ...blanks,
   {
@@ -103,9 +111,11 @@ const rounds: RoundData[] = [
       scene.setStageName("The king's platter");
     }
   },
-  ...blanks,
+  // ...blanks,
   {group: [W]},
+  {group: []},
   {group: [H,H]},
+  {group: [T,S]},
   ...blanks,
   {
     group: [P],

@@ -100,6 +100,7 @@ export class GameoverScene extends BaseScene {
 			// this.wind.setLoop(true);
 			// this.wind.play();
 		}
+		this.sound.play('j_defeat', { volume: 0.4 });
 		this.musicTitle.play();
 
 
