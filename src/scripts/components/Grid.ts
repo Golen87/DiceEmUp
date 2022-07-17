@@ -52,9 +52,9 @@ export class Grid extends Phaser.GameObjects.Container {
 				this.grid[j].push(null);
 
 				let cell = this.getCell({i, j});
-				const text = scene.createText(cell.x, cell.y, 20, "#000", "")
+				const text = scene.createText(cell.x+cell.width, cell.y, 18, "#B71C1C", "")
 				text.setStroke("#FFFFFF", 3);
-				text.setOrigin(-0.1, 0.1);
+				text.setOrigin(1.05, 0.15);
 				this.add(text);
 				this.gridText[j][i] = text;
 			}

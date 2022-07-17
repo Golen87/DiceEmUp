@@ -56,6 +56,8 @@ import dice from "../assets/images/dice/dice.png"
 import fire from "../assets/images/bad_fire.png"
 import attack_button from "../assets/images/ui/button.png";
 import fire_button from "../assets/images/ui/fire_button.png";
+import music from "../assets/images/ui/music.png";
+import audio from "../assets/images/ui/audio.png";
 
 const spritesheets: SpriteSheet[] = [
 	{ key: "dragon",	path: dragon,		width: 840/2,	height: 1080/2 },
@@ -67,6 +69,8 @@ const spritesheets: SpriteSheet[] = [
 	{ key: "explosion",	path: explosion,	width: 200,	height: 282 },
 	{ key: "attack_button",	path: attack_button,	width: 532,	height: 219  },
 	{ key: "fire_button",	path: fire_button,	width: 512,	height: 256  },
+	{ key: "music",	path: music,	width: 300,	height: 300  },
+	{ key: "audio",	path: audio,	width: 300,	height: 300  },
 ];
 
 

@@ -11,21 +11,21 @@ interface DiceStyle {
 const diceStyles: DiceStyle[] = [
 	{
 		sides: 6,
-		tint: 0xFF7777,
+		tint: 0xEF5350,
 		pattern: (coord, x, y) => {
 			return Math.abs(coord.i - x) + Math.abs(coord.j - y) <= 1;
 		}
 	},
 	{
 		sides: 6,
-		tint: 0x77FF77,
+		tint: 0x66BB6A,
 		pattern: (coord, x, y) => {
 			return coord.j == y;
 		}
 	},
 	{
 		sides: 6,
-		tint: 0x7777FF,
+		tint: 0x42A5F5,
 		pattern: (coord, x, y) => {
 			return coord.i == x;
 		}

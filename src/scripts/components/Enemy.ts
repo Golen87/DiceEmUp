@@ -110,10 +110,8 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 				create({i: coord.i, j: j});
 			}
 		}
-		for(let i = coord.i-1; i <= coord.i+1; i++) {
-			if(inrange(i, 0, grid.cols-1)) {
-				create({i: i, j: coord.j});
-			}
+		if(inrange(coord.i+1, 0, grid.cols-1)) {
+			create({i: coord.i+1, j: coord.j});
 		}
 		return ret;
 	}
@@ -189,7 +187,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 		// this.sprite.setScale(0.25);
 		this.add(this.sprite);
 
-		this.text = scene.createText(0, 0, 25, "#007", this.health.toString());
+		this.text = scene.createText(0, 0, 25, "#303F9F", this.health.toString());
 		this.text.setOrigin(0.6);
 		this.text.setStroke("#FFFFFF", 5);
 		this.add(this.text);
@@ -280,6 +278,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 		const previousHealth = this.health;
 		const healthDifference = Math.abs(previousHealth - this.health);
 		this.health -= amount;
+		this.health = Math.max(this.health, 0);
 		if (amount > 0) {
 			this.hurtTimer = 1000;
 			this.scene.sound.play("e_damage", {
