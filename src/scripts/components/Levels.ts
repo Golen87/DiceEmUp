@@ -15,6 +15,7 @@ interface RoundData {
 const blanks: RoundData[] = new Array(20).fill({group: []});
 
 const rounds: RoundData[] = [
+  ...blanks,
   {
     group: [P],
     event: (scene) => {
@@ -31,9 +32,6 @@ const rounds: RoundData[] = [
       scene.setStageName("Brittle confidence");
     }
   },
-  ...blanks,
-  {group: [S]},
-  {group: [P,P]},
   ...blanks,
   {group: [S]},
   {group: [S,S]},
@@ -59,9 +57,6 @@ const rounds: RoundData[] = [
   ...blanks,
   {group: [S,T]},
   ...blanks,
-  {group: [T,T]},
-  {group: [S]},
-  ...blanks,
   {group: [W]},
   {
     group: [T],
@@ -80,8 +75,6 @@ const rounds: RoundData[] = [
     }
   },
   ...blanks,
-  {group: [S,H]},
-  ...blanks,
   {group: [T]},
   {group: [H]},
   ...blanks,
@@ -92,10 +85,8 @@ const rounds: RoundData[] = [
     }
   },
   ...blanks,
-  {group: [T]},
-  {group: [P,P,H]},
-  ...blanks,
   {group: [S]},
+  {group: [P,H]},
   ...blanks,
   {group: [P,P,P,P,P]},
   {
