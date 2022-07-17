@@ -42,6 +42,7 @@ export class GameScene extends BaseScene {
 
 	// UI texts
 	// private ui: UI;
+	public overlayText: Phaser.GameObjects.Text;
 
 	// Enemies
 	// private enemies: Enemy[];
@@ -96,6 +97,11 @@ export class GameScene extends BaseScene {
 		// UI
 		// this.ui = new UI(this);
 		// this.ui.setDepth(UI_LAYER);
+		this.overlayText = this.createText(this.W/2 + 0.5, this.H/2 + 0.5, 32, "#fff", "Overlay");
+		this.overlayText.setOrigin(0.5);
+		this.overlayText.setStroke("#000", 5);
+		this.overlayText.setDepth(20);
+		this.overlayText.setAlpha(0);
 
 		// Characters
 		// this.player = new Player(this, this.CX, this.CY);
@@ -349,16 +355,36 @@ export class GameScene extends BaseScene {
 		}
 		this.enemies = this.enemies.filter(enemy => enemy.alive);
 
+		let switchDelay = 1000;
 		if (this.enemies.length > 0) {
 			this.grid.moveEnemies();
 			this.sound.play("e_advance", {
 				volume: this.enemies.length == 1 ? 0.3 : 0.5
 			});
+		} else {
+			this.overlayText.setColor("#fd0");
+			this.overlayText.setText("Perfect Clear!");
+			this.sound.play("m_sparkle", { volume: 0.7, pan: -0.2 });
+			switchDelay = 1500;
+			this.tweens.add({
+				targets: this.overlayText,
+				duration: 200,
+				ease: "Cubic.Out",
+				alpha: { from: 0, to: 1 },
+				scale: { from: 2, to: 1 },
+			})
+			this.tweens.add({
+				targets: this.overlayText,
+				delay: 1400,
+				duration: 800,
+				ease: "Linear",
+				alpha: { from: 1, to: 0 }
+			})
 		}
 		for (let enemy of this.enemies) {
 			enemy.playWalk();
 		}
-		this.addEvent(1000, this.onEnemyAttack);
+		this.addEvent(switchDelay, this.onEnemyAttack);
 	}
 
 	onEnemyAttack() {
@@ -409,7 +435,14 @@ export class GameScene extends BaseScene {
 
 		// Show attack button after a while
 		this.addEvent(1800, () => {
+			this.tweens.add({
+				targets: this.button.fire,
+				scaleY: { from: 0, to: 0.6 },
+				duration: 200,
+				ease: "Cubic.Out"
+			});
 			this.button.setVisible(true);
+			this.sound.play(`m_fire_ignite_${Phaser.Math.Between(1, 3)}`, {volume: 0.85});
 		});
 	}
 

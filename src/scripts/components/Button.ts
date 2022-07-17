@@ -25,7 +25,7 @@ export class Button extends Phaser.GameObjects.Container {
 		// this.sprite.setTint(0xFFCCCC);
 		this.add(this.sprite);
 
-		this.text = scene.createText(0, 0, 20, "#FFF", "Attack");
+		this.text = scene.createText(0.5, 0.5, 20, "#FFF", "Attack"); // Subpixel blur fix
 		this.text.setOrigin(0.5);
 		this.text.setStroke("#000", 4);
 		this.add(this.text);
@@ -35,6 +35,7 @@ export class Button extends Phaser.GameObjects.Container {
 		this.sprite.on('pointerover', () => {
 			// this.sprite.setTint(0xFFEEEE);
 			this.sprite.setFrame(1);
+			this.scene.sound.play("u_hover", { volume: 0.25 });
 		});
 		this.sprite.on('pointerout', () => {
 			// this.sprite.setTint(0xFFCCCC);

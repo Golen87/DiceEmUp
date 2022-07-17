@@ -75,6 +75,7 @@ const spritesheets: SpriteSheet[] = [
 /* UI */
 import u_attack_button from "../assets/sounds/ui/Attack_Button.mp3";
 import u_disabled from "../assets/sounds/ui/Disabled.mp3";
+import u_hover from "../assets/sounds/ui/Wii hover.mp3";
 
 /* Enemy */
 import e_advance from "../assets/sounds/enemy/Enemy_Advance.mp3";
@@ -83,6 +84,7 @@ import e_damage from "../assets/sounds/enemy/Enemy_Damage.mp3";
 /* Dragon */
 
 /* Misc */
+import m_sparkle from "../assets/sounds/misc/Sparkle.mp3";
 import m_fire_ignite_1 from "../assets/sounds/misc/Fire ignite 1.mp3";
 import m_fire_ignite_2 from "../assets/sounds/misc/Fire ignite 2.mp3";
 import m_fire_ignite_3 from "../assets/sounds/misc/Fire ignite 3.mp3";
@@ -250,10 +252,12 @@ import c_swirl_cup_single_short_3 from "../assets/sounds/cup/Swirl cup single sh
 const audios: Audio[] = [
 	{ key: "u_attack_button", path: u_attack_button, volume: 1 },
 	{ key: "u_disabled", path: u_disabled, volume: 1 },
+	{ key: "u_hover", path: u_hover, volume: 1 },
 
 	{ key: "e_advance", path: e_advance, volume: 1 },
 	{ key: "e_damage", path: e_damage, volume: 1 },
 
+	{ key: "m_sparkle", path: m_sparkle, volume: 1 },
 	{ key: "m_fire_ignite_1", path: m_fire_ignite_1, volume: 1 },
 	{ key: "m_fire_ignite_2", path: m_fire_ignite_2, volume: 1 },
 	{ key: "m_fire_ignite_3", path: m_fire_ignite_3, volume: 1 },
