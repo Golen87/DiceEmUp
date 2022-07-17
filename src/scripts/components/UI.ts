@@ -162,7 +162,7 @@ export class UI extends Phaser.GameObjects.Container {
 
 		let hx = 0.1 * scene.W;
 		let rrw = 100;
-		let ty = 0.1 * scene.H;
+		let ty = 0.9 * scene.H;
 
 		this.highscoreBg = new RoundRectangle(scene, hx, ty+34, rrw, 67, 10, 0x3a3a3a);
 		this.add(this.highscoreBg);
@@ -172,8 +172,7 @@ export class UI extends Phaser.GameObjects.Container {
 		hsLabel.setStroke("#FFFFFF", STROKE);
 		this.add(hsLabel);
 
-		ty += 1.2 * FONT_SIZE;
-		this.highscore = scene.createText(hx, ty, FONT_SIZE, "#FFF", "00000000");
+		this.highscore = scene.createText(hx + 100, ty, FONT_SIZE, "#FFF", "00000000");
 		this.highscore.setOrigin(0.5, 0);
 		// this.highscore.setStroke("#FFFFFF", STROKE);
 		this.add(this.highscore);
@@ -188,7 +187,7 @@ export class UI extends Phaser.GameObjects.Container {
 		this.add(sLabel);
 
 		ty += 1.2 * FONT_SIZE;
-		this.score = scene.createText(hx, ty, FONT_SIZE, "#FFF", "00000000");
+		this.score = scene.createText(hx + 100, ty, FONT_SIZE, "#FFF", "00000000");
 		this.score.setOrigin(0.5, 0);
 		// this.score.setStroke("#FFFFFF", STROKE);
 		this.add(this.score);
@@ -233,10 +232,10 @@ export class UI extends Phaser.GameObjects.Container {
 		this.setScore(0, 0);
 	}
 
-	update(time: number, delta: number, dayTimeSmooth: number) {
+	update(time: number, delta: number) {
 
-		this.highscoreBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
-		this.scoreBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
+		this.highscoreBg.setColor( 0x363a4b-0x101010 );
+		this.scoreBg.setColor( 0x363a4b-0x101010 );
 
 		// Score
 		this.scoreBounce += 10 * (0 - this.scoreBounce) * delta;

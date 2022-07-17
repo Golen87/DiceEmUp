@@ -19,6 +19,7 @@ interface EnemyBehaviour {
 	tint: number;
 	minHealth: number;
 	maxHealth: number;
+	score: number;
 	sprite: string;
 };
 
@@ -29,6 +30,7 @@ EnemyKinds.set(EnemyType.SQUIRE, {
 	tint: 0xFFFFFF,
 	minHealth: 3,
 	maxHealth: 9,
+	score: 10,
 	sprite: "enemy",
 	move: (coord, moves) => {
 		return { i: coord.i-1, j: coord.j };
@@ -51,6 +53,7 @@ EnemyKinds.set(EnemyType.TANK, Object.assign({},
 	type: EnemyType.TANK,
 	minHealth: 14,
 	maxHealth: 25,
+	score: 30,
 	sprite: "tank",
 	spawn: (scene:GameScene, grid:Grid) => {
 		const ret: Enemy[] = [];
@@ -68,6 +71,7 @@ EnemyKinds.set(EnemyType.TANK, Object.assign({},
 EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	maxHealth: 3,
+	score: 5,
 	spawn: (scene:GameScene, grid:Grid) => {
 		const ret: Enemy[] = [];
 		const kind = EnemyKinds.get(EnemyType.SQUIRE_WAVE);
@@ -91,6 +95,7 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 	type: EnemyType.TROJAN_MINION,
 	minHealth: 1,
 	maxHealth: 3,
+	score: 5,
 	spawn: (scene:GameScene, grid:Grid, coord:Coord) => {
 		const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
 		if(!minionKind) return;
@@ -121,6 +126,7 @@ EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	minHealth: 8,
 	maxHealth: 13,
+	score: 15,
 	sprite: "trojan",
 	type: EnemyType.TROJAN_HORSE,
 	spawn: (scene:GameScene, grid:Grid) => {
@@ -165,7 +171,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 	private deathTimer: number;
 	private deathDuration;
 
-	private behaviour: EnemyBehaviour;
+	public behaviour: EnemyBehaviour;
 
 	constructor(scene: GameScene, x: number, y: number, behaviour: EnemyBehaviour) {
 		super(scene, x, y);

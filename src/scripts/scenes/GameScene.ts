@@ -192,6 +192,7 @@ export class GameScene extends BaseScene {
 		this.musicButton.update(timeMs, deltaMs);
 		this.audioButton.update(timeMs, deltaMs);
 		this.particles.update(timeMs/1000, deltaMs/1000);
+		this.ui.update(timeMs/1000, deltaMs/1000);
 
 		// Camera shake
 		if (this.cameraShakeValue > 0) {
@@ -389,7 +390,7 @@ export class GameScene extends BaseScene {
 
 		for (const enemy of this.enemies) {
 			if (!enemy.alive) {
-				this.addScore(10);
+				this.addScore(enemy.behaviour.score);
 				enemy.destroy();
 			}
 		}
@@ -403,6 +404,7 @@ export class GameScene extends BaseScene {
 				volume: this.enemies.length == 1 ? 0.3 : 0.5
 			});
 		} else {
+			this.addScore(100);
 			this.overlayText.setColor("#fd0");
 			this.overlayText.setText("Perfect Clear!");
 			this.sound.play("m_sparkle", { volume: 0.7, pan: -0.2 });
@@ -547,7 +549,7 @@ export class GameScene extends BaseScene {
 
 				if (data.highscore && !isNaN(parseInt(data.highscore))) {
 					this.highscore = Phaser.Math.Clamp(data.highscore, 0, 99999999);
-					// this.ui.setScore(this.score, this.highscore);
+					this.ui.setScore(this.score, this.highscore);
 				}
 			}
 		} catch (error) {}
