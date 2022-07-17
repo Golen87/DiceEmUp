@@ -31,6 +31,18 @@ import shadow from "../assets/images/shadow.png";
 
 import ui_healthbar from "../assets/images/ui/ui_healthbar.png";
 
+// import cover_all from "../assets/images/cover/all.png";
+// import cover_dice_all from "../assets/images/cover/dice_all.png";
+// import cover_background_blue from "../assets/images/cover/background_blue.png";
+import cover_background_orange from "../assets/images/cover/background_orange.png";
+import cover_body from "../assets/images/cover/dragon_body.png";
+import cover_roof from "../assets/images/cover/roof.png";
+import cover_hands from "../assets/images/cover/hands.png";
+import cover_dice_blue from "../assets/images/cover/dice_blue.png";
+import cover_dice_green from "../assets/images/cover/dice_green.png";
+import cover_dice_red from "../assets/images/cover/dice_red.png";
+import cover_knights from "../assets/images/cover/knights.png";
+
 const images: Asset[] = [
 	{ key: "background",	path: background },
 	{ key: "concept",		path: concept },
@@ -40,6 +52,19 @@ const images: Asset[] = [
 
 	// UI
 	{ key: "ui_healthbar",	path: ui_healthbar },
+
+	// Cover
+	// { key: "cover_all", path: cover_all },
+	// { key: "cover_dice_all", path: cover_dice_all },
+	// { key: "cover_background_blue", path: cover_background_blue },
+	{ key: "cover_background_orange", path: cover_background_orange },
+	{ key: "cover_body", path: cover_body },
+	{ key: "cover_roof", path: cover_roof },
+	{ key: "cover_hands", path: cover_hands },
+	{ key: "cover_dice_blue", path: cover_dice_blue },
+	{ key: "cover_dice_green", path: cover_dice_green },
+	{ key: "cover_dice_red", path: cover_dice_red },
+	{ key: "cover_knights", path: cover_knights },
 ];
 
 

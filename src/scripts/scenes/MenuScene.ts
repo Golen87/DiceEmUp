@@ -3,33 +3,38 @@ import { RoundRectangle } from "../components/RoundRectangle";
 import { Music } from "./../components/Music";
 
 
-const creditsLeft = `Global Game Jam 2022
+const creditsLeft = `GMTK Game Jam 2022
 
 @Golenchu
+@ArcticFqx
+@LuxxArt
 @KonixKun
-@JolteonDude
 @MatoCookies
 Kiu
 Lumie
-
-Thanks to
-Frassy, Neo, Squishy`;
+Wilon`;
 
 const creditsRight = `
 
 code
+code
 art
-design
+art
 music
 sound
-patterns`;
+art
+concept`;
 
 
 export class MenuScene extends BaseScene {
-	public imp: Phaser.GameObjects.Image;
-	public angel: Phaser.GameObjects.Image;
-	public bird: Phaser.GameObjects.Image;
 	public bg: Phaser.GameObjects.Image;
+	public dragon: Phaser.GameObjects.Image;
+	public roof: Phaser.GameObjects.Image;
+	public hands: Phaser.GameObjects.Image;
+	public diceBlue: Phaser.GameObjects.Image;
+	public diceGreen: Phaser.GameObjects.Image;
+	public diceRed: Phaser.GameObjects.Image;
+	public knights: Phaser.GameObjects.Image;
 
 	public credits: Phaser.GameObjects.Container;
 	public title: Phaser.GameObjects.Text;
@@ -52,27 +57,45 @@ export class MenuScene extends BaseScene {
 		this.fade(false, 200, 0x000000);
 
 
-		this.bg = this.add.image(this.CX, this.CY, "CoverArtBg");
+		// this.bg = this.add.image(this.CX, this.CY, "CoverArtBg");
+		// this.containToScreen(this.bg);
+		// this.imp = this.add.image(this.CX+80, this.CY-60, "CoverArtImp");
+		// this.imp.setAlpha(0);
+		// this.containToScreen(this.imp);
+		// this.angel = this.add.image(this.CX-90, this.CY-50, "CoverArtAngel");
+		// this.angel.setAlpha(0);
+		// this.containToScreen(this.angel);
+		// this.dragon = this.add.image(this.CX-40, this.CY+70, "CoverArtdragon");
+		// this.dragon.setVisible(false);
+		// this.dragon.setAlpha(0);
+		// this.containToScreen(this.dragon);
+
+
+		this.bg = this.add.image(this.CX, this.CY, "cover_background_orange");
 		this.containToScreen(this.bg);
-		this.imp = this.add.image(this.CX+80, this.CY-60, "CoverArtImp");
-		this.imp.setAlpha(0);
-		this.containToScreen(this.imp);
-		this.angel = this.add.image(this.CX-90, this.CY-50, "CoverArtAngel");
-		this.angel.setAlpha(0);
-		this.containToScreen(this.angel);
-		this.bird = this.add.image(this.CX-40, this.CY+70, "CoverArtBird");
-		this.bird.setVisible(false);
-		this.bird.setAlpha(0);
-		this.containToScreen(this.bird);
+		this.dragon = this.add.image(this.CX, this.CY, "cover_body");
+		this.containToScreen(this.dragon);
+		this.roof = this.add.image(this.CX, this.CY, "cover_roof");
+		this.containToScreen(this.roof);
+		this.hands = this.add.image(this.CX, this.CY, "cover_hands");
+		this.containToScreen(this.hands);
+		this.diceBlue = this.add.image(this.CX, this.CY, "cover_dice_blue");
+		this.containToScreen(this.diceBlue);
+		this.diceGreen = this.add.image(this.CX, this.CY, "cover_dice_green");
+		this.containToScreen(this.diceGreen);
+		this.diceRed = this.add.image(this.CX, this.CY, "cover_dice_red");
+		this.containToScreen(this.diceRed);
+		this.knights = this.add.image(this.CX, this.CY, "cover_knights");
+		this.containToScreen(this.knights);
 
 
-		this.title = this.createText(this.W-50, this.H-100, 60, "#000", "Dice 'Em Up");
-		this.title.setOrigin(1);
+		this.title = this.createText(this.CX, this.H-75, 60, "#000", "Dice 'Em Up");
+		this.title.setOrigin(0.5, 1.0);
 		this.title.setStroke("#FFF", 8);
 		this.title.setVisible(false);
 		this.title.setAlpha(0);
 
-		this.subtitle = this.createText(this.W-160, this.H-60, 35, "#000", "Tap to start");
+		this.subtitle = this.createText(this.CX, this.H-50, 35, "#000", "Tap to start");
 		this.subtitle.setOrigin(0.5);
 		this.subtitle.setStroke("#FFF", 4);
 		this.subtitle.setVisible(false);
@@ -127,20 +150,26 @@ export class MenuScene extends BaseScene {
 	}
 
 	update(time: number, delta: number) {
-		if (this.bird.visible) {
-			this.bird.x		+= 0.01 * ((this.CX + 30 * Math.cos(0.4*time/1000)) - this.bird.x);
-			this.bird.y		+= 0.01 * ((this.CY) - this.bird.y);
-			this.imp.x		+= 0.015 * ((this.CX + 5 * Math.sin(time/1000+Math.PI/4)) - this.imp.x);
-			this.angel.x	+= 0.015 * ((this.CX - 5 * Math.sin(time/1000)) - this.angel.x);
-			this.imp.y		+= 0.015 * ((this.CY + 10 * Math.sin(0.6*time/1000+Math.PI/4)) - this.imp.y);
-			this.angel.y	+= 0.015 * ((this.CY - 10 * Math.sin(0.6*time/1000)) - this.angel.y);
+		if (this.dragon.visible) {
+			// this.dragon.x		+= 0.01 * ((this.CX + 5 * Math.cos(1*0.4*time/1000)) - this.dragon.x);
+			this.roof.x		+= 0.01 * ((this.CX + 6 * Math.cos(1*0.4*time/1000)) - this.roof.x);
+			this.hands.x		+= 0.01 * ((this.CX + 7 * Math.cos(1*0.4*time/1000)) - this.hands.x);
 
-			this.bird.alpha += 0.02 * (1 - this.bird.alpha);
-			this.imp.alpha += 0.03 * (1 - this.imp.alpha);
-			this.angel.alpha += 0.03 * (1 - this.angel.alpha);
+			this.diceBlue.x		+= 0.03 * ((this.CX + 5 * Math.sin(time/1000+Math.PI/4)) - this.diceBlue.x);
+			this.diceGreen.x	+= 0.03 * ((this.CX - 5 * Math.sin(time/1000)) - this.diceGreen.x);
+			this.diceRed.x		+= 0.03 * ((this.CX - 7 * Math.sin(time/1000+Math.PI/3)) - this.diceGreen.x);
+			this.diceBlue.y		+= 0.03 * ((this.CY + 10 * Math.sin(0.6*time/1000+Math.PI/4)) - this.diceBlue.y);
+			this.diceGreen.y	+= 0.03 * ((this.CY - 10 * Math.sin(0.6*time/1000)) - this.diceGreen.y);
+			this.diceRed.y		+= 0.03 * ((this.CY - 7 * Math.sin(0.6*time/1000+Math.PI/3)) - this.diceGreen.y);
 
-			this.title.alpha += 0.02 * ((this.title.visible ? 1 : 0) - this.title.alpha);
-			this.subtitle.alpha += 0.02 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);
+			this.knights.x		+= 0.01 * ((this.CX + 15 * Math.cos(4*0.4*time/1000)) - this.knights.x);
+
+			// this.dragon.alpha += 0.02 * (1 - this.dragon.alpha);
+			// this.imp.alpha += 0.03 * (1 - this.imp.alpha);
+			// this.angel.alpha += 0.03 * (1 - this.angel.alpha);
+
+			// this.title.alpha += 0.02 * ((this.title.visible ? 1 : 0) - this.title.alpha);
+			// this.subtitle.alpha += 0.02 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);
 
 			if (this.credits.visible) {
 				this.credits.alpha += 0.01 * (1 - this.credits.alpha);
@@ -150,7 +179,7 @@ export class MenuScene extends BaseScene {
 			this.tap.alpha += 0.01 * (1 - this.tap.alpha);
 
 			if (this.musicTitle.seek > 0) {
-				this.bird.setVisible(true);
+				// this.dragon.setVisible(true);
 				this.tap.setVisible(false);
 			}
 		}
@@ -164,7 +193,7 @@ export class MenuScene extends BaseScene {
 	}
 
 	progress() {
-		if (!this.bird.visible) {
+		if (!this.dragon.visible) {
 			this.onBar(1);
 		}
 		else if (!this.subtitle.visible) {
@@ -175,7 +204,8 @@ export class MenuScene extends BaseScene {
 		}
 
 		else if (!this.isStarting) {
-			// this.select.play();
+			this.sound.play("m_slice", { volume: 0.4 });
+			this.sound.play("u_attack_button", { volume: 0.5 });
 			// this.select2.play();
 			this.isStarting = true;
 			this.musicTitle.stop();
