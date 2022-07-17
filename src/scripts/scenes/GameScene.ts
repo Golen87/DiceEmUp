@@ -66,7 +66,6 @@ export class GameScene extends BaseScene {
 
 	constructor() {
 		super({key: "GameScene"});
-		this.round = 0;
 	}
 
 	init(data): void {
@@ -515,7 +514,34 @@ export class GameScene extends BaseScene {
 					this.addEnemy(type);
 				})
 			} else {
-				this.addEnemy(Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.SPAWNABLE_COUNT-1));
+				let type = Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.SPAWNABLE_COUNT-1);
+
+				if (type == EnemyType.PEASANT) {
+					console.log("spawn 1-4 peasants");
+					for (let i = Phaser.Math.Between(1,4); i >= 0; i--) {
+						this.addEnemy(type);
+					}
+				}
+				else if (type == EnemyType.SQUIRE) {
+					console.log("spawn 1-3 squires");
+					for (let i = Phaser.Math.Between(1,3); i >= 0; i--) {
+						this.addEnemy(type);
+					}
+				}
+				else {
+					console.log("spawn 1", type);
+					this.addEnemy(type);
+
+					if (Math.random() < 0.3) {
+						console.log("+ peasant");
+						this.addEnemy(EnemyType.PEASANT);
+					}
+					if (Math.random() < 0.3) {
+						console.log("+ squire");
+						this.addEnemy(EnemyType.SQUIRE);
+					}
+				}
+
 			}
 		} while (this.enemies.filter(enemy => enemy.alive).length < 1);
 
