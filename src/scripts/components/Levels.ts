@@ -108,7 +108,7 @@ const rounds: RoundData[] = [
   {group: [P]},
   ...blanks,
   {
-    group: [T,T,T,T,T],
+    group: [S,S,T,S,S],
     event: (scene) => {
       scene.setStageName("The king's platter");
     }
@@ -120,7 +120,7 @@ const rounds: RoundData[] = [
   {
     group: [P],
     event: (scene) => {
-      scene.setStageName("Infinite food");
+      scene.setStageName("Infinite food!");
     }
   },
 ];
