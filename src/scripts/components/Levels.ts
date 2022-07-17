@@ -18,7 +18,7 @@ const rounds: RoundData[] = [
   {
     group: [P],
     event: (scene) => {
-      scene.setStageName("A minor annoyance");
+      scene.setStageName("Move the dice to attack");
     }
   },
   ...blanks,
@@ -37,9 +37,6 @@ const rounds: RoundData[] = [
       }
     }
   },
-  ...blanks,
-  {group: [S]},
-  {group: [P,P]},
   ...blanks,
   {group: [S]},
   {group: [S,S]},
@@ -65,9 +62,6 @@ const rounds: RoundData[] = [
   ...blanks,
   {group: [S,T]},
   ...blanks,
-  {group: [T,T]},
-  {group: [S]},
-  ...blanks,
   {group: [W]},
   {
     group: [T],
@@ -86,8 +80,6 @@ const rounds: RoundData[] = [
     }
   },
   ...blanks,
-  {group: [S,H]},
-  ...blanks,
   {group: [T]},
   {group: [H]},
   ...blanks,
@@ -98,10 +90,8 @@ const rounds: RoundData[] = [
     }
   },
   ...blanks,
-  {group: [T]},
-  {group: [P,P,H]},
-  ...blanks,
   {group: [S]},
+  {group: [P,H]},
   ...blanks,
   {group: [P,P,P,P,P]},
   {
