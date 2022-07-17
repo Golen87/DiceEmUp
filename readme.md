@@ -1,6 +1,6 @@
-# Dice 'Em Up
+# Fire and Dice
 
-Bullet hell through dawn and dusk. Made during Global Game Jam 2022.
+Dice up the competition with some dragon dice! Made for GMTK Game Jam 2022.
 
 ## Installation
 
