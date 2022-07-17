@@ -203,6 +203,17 @@ export class Grid extends Phaser.GameObjects.Container {
 		}
 	}
 
+	needMoreEnemies() {
+		for (let j = 0; j < this.rows; j++) {
+			for (let i = 0; i < this.cols-1; i++) {
+				if (this.grid[j][i] instanceof Enemy) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 
 	addDice(coord: Coord, dice: Dice) {
 		this.grid[coord.j][coord.i] = dice;

@@ -27,7 +27,7 @@ export const EnemyKinds = new Map<EnemyType, EnemyBehaviour>();
 EnemyKinds.set(EnemyType.SQUIRE, {
 	type: EnemyType.SQUIRE,
 	tint: 0xFFFFFF,
-	minHealth: 2,
+	minHealth: 3,
 	maxHealth: 9,
 	sprite: "enemy",
 	move: (coord, moves) => {
@@ -119,8 +119,8 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 
 EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
-	minHealth: 10,
-	maxHealth: 15,
+	minHealth: 8,
+	maxHealth: 13,
 	sprite: "trojan",
 	type: EnemyType.TROJAN_HORSE,
 	spawn: (scene:GameScene, grid:Grid) => {

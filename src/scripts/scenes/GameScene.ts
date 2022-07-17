@@ -310,6 +310,15 @@ export class GameScene extends BaseScene {
 			],
 			repeat: -1
 		});
+		this.anims.create({
+			key: 'trojan_walk',
+			frames: [
+				{ key: 'trojan', frame: 2, duration: 100 },
+				{ key: 'trojan', frame: 1, duration: 100 },
+				{ key: 'trojan', frame: 0, duration: 100 },
+			],
+			repeat: -1
+		});
 	}
 
 
@@ -449,13 +458,18 @@ export class GameScene extends BaseScene {
 		this.state = State.MoveDice;
 
 		this.button.setVisible(false);
-		this.dragon.throw();
-		// Animation -> this.onDragonThrow
 
 		this.addEnemy(Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.SPAWNABLE_COUNT-1));
-
 		for (let enemy of this.enemies) {
 			enemy.playIdle();
+		}
+
+		if (this.grid.needMoreEnemies()) {
+			this.addEvent(1000, this.onMove);
+		}
+		else {
+			this.dragon.throw();
+			// Animation -> this.onDragonThrow
 		}
 	}
 

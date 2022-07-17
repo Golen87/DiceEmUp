@@ -51,7 +51,8 @@ export class Button extends BaseButton {
 	}
 
 	update(timeMs: number, deltaMs: number) {
-		this.setScale(1 - 0.1 * this.holdSmooth);
+		this.sprite.setScale(0.3 - 0.02 * this.holdSmooth);
 		this.fire.setFrame(Math.floor(10*timeMs/1000) % 8);
+		this.sprite.setFrame(this.hold ? 1 : 0);
 	}
 }

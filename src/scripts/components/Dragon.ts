@@ -26,7 +26,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 		this.scene = scene;
 		scene.add.existing(this);
 
-		this.maxHealth = Math.floor((3 + 13 * Math.random()));
+		this.maxHealth = 6;
 		this.health = this.maxHealth;
 		this.hurtTimer = 0;
 		this.deathTimer = 0;
@@ -59,7 +59,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 		// Health bar
 
 		this.healthCont = scene.add.container();
-		// this.healthCont.setVisible(false);
+		this.healthCont.setVisible(false);
 		this.add(this.healthCont);
 
 		const cx = 0.2 * this.scene.W;
@@ -149,6 +149,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 	}
 
 	damage(amount: number=1) {
+		this.healthCont.setVisible(true);
 		this.health -= amount;
 		this.hurtTimer = 1000;
 		this.healthFlash = 1;
