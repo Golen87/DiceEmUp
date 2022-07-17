@@ -76,7 +76,7 @@ const rounds: RoundData[] = [
   {
     group: [H],
     event: (scene) => {
-      scene.setStageName("Honse... MAN");
+      scene.setStageName("Horse... MAN");
     }
   },
   ...blanks,
