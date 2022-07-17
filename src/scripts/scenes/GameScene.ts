@@ -99,6 +99,7 @@ export class GameScene extends BaseScene {
 		this.musicButton.on('click', (active: boolean) => {
 			this.musicButton.toggle();
 			this.music.volume = (this.musicButton.active ? 0.25 : 0);
+			this.ambience.volume = (this.musicButton.active ? 0.35 : 0);
 		}, this);
 		this.audioButton = new MiniButton(this, this.W-bsize, bsize, 'audio');
 		this.audioButton.on('click', (active: boolean) => {
@@ -166,7 +167,7 @@ export class GameScene extends BaseScene {
 
 		// this.loadSounds();
 		this.music = new Music(this, 'm_main_music', { volume: 0.25 });
-		this.ambience = new Music(this, 'm_city_ambience', { volume: 0.4 });
+		this.ambience = new Music(this, 'm_city_ambience', { volume: 0.35 });
 		this.music.play();
 		this.ambience.play();
 
