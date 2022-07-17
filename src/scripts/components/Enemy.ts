@@ -1,6 +1,8 @@
 import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
 
+const inrange = (n:number, min:number, max:number) => n >= min && n <= max;
+
 export enum EnemyType {
 	SQUIRE = 1,
 	SQUIRE_WAVE,
@@ -66,18 +68,29 @@ EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	type: EnemyType.TROJAN_MINION,
-	minHealth: 2,
+	minHealth: 1,
 	maxHealth: 2,
 	spawn: (scene:GameScene, grid:Grid, coord:Coord) => {
 		const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
 		if(!minionKind) return;
-		const cell = grid.getCell(coord);
 		const ret: Enemy[] = [];
-		const minion = new Enemy(scene, cell.cx, cell.cy, minionKind);
-		minion.moves = -1;
-		ret.push(minion);
-		grid.addEnemy(coord, minion);
-		scene.enemies.push(minion);
+		const cell = grid.getCell(coord);
+		const create = (pos: Coord) => {
+			if( grid.grid[pos.j][pos.i] ) return;
+			const minion = new Enemy(scene, cell.cx, cell.cy, minionKind);
+			minion.moves = -1;
+			grid.addEnemy(pos, minion);
+			scene.enemies.push(minion);
+			ret.push(minion);
+		}
+		for(let j = coord.j-1; j <= coord.j+1; j++) {
+			if(inrange(j, 0, grid.rows-1)) {
+				create({i: coord.i, j: j});
+			}
+		}
+		if(inrange(coord.i+1, 0, grid.cols-1)) {
+			create({i: coord.i+1, j: coord.j});
+		}
 		return ret;
 	}
 }));
