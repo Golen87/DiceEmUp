@@ -229,13 +229,52 @@ export class GameScene extends BaseScene {
 				{ key: 'enemy', frame: 0, duration: 100 },
 				{ key: 'enemy', frame: 2, duration: 100 },
 				{ key: 'enemy', frame: 3, duration: 100 },
-				{ key: 'enemy', frame: 0, duration: 100 },
-				{ key: 'enemy', frame: 2, duration: 100 },
-				{ key: 'enemy', frame: 3, duration: 100 },
-				{ key: 'enemy', frame: 0, duration: 100 },
-				{ key: 'enemy', frame: 2, duration: 100 },
-				{ key: 'enemy', frame: 3, duration: 100 },
-			]
+			],
+			repeat: -1
+		});
+
+		this.anims.create({
+			key: 'tank_idle',
+			frames: [
+				{ key: 'tank', frame: 0, duration: 500 },
+				{ key: 'tank', frame: 1, duration: 500 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'tank_walk',
+			frames: [
+				{ key: 'tank', frame: 2, duration: 100 },
+				{ key: 'tank', frame: 0, duration: 100 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'tank_attack',
+			frames: [
+				{ key: 'tank', frame: 0, duration: 100 },
+				{ key: 'tank', frame: 2, duration: 100 },
+				{ key: 'tank', frame: 3, duration: 60 },
+				{ key: 'tank', frame: 4, duration: 120 },
+			],
+			repeat: -1
+		});
+
+		this.anims.create({
+			key: 'trojan_idle',
+			frames: [
+				{ key: 'trojan', frame: 0, duration: 500 },
+				{ key: 'trojan', frame: 1, duration: 500 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'trojan_walk',
+			frames: [
+				{ key: 'trojan', frame: 2, duration: 100 },
+				{ key: 'trojan', frame: 0, duration: 100 },
+			],
+			repeat: -1
 		});
 	}
 
