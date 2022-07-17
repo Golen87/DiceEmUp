@@ -1,4 +1,5 @@
 import { GameScene } from "../scenes/GameScene";
+import { interpolateColor } from "../utils";
 
 
 export class Dragon extends Phaser.GameObjects.Container {
@@ -57,29 +58,32 @@ export class Dragon extends Phaser.GameObjects.Container {
 
 		// Health bar
 
-		// this.healthCont = scene.add.container();
+		this.healthCont = scene.add.container();
 		// this.healthCont.setVisible(false);
-		// this.add(this.healthCont);
+		this.add(this.healthCont);
 
-		// this.healthBox = scene.add.image(cx, 0.06*cy, "ui_healthbar");
-		// this.healthBox.setScale(0.5);
-		// this.healthCont.add(this.healthBox);
+		const cx = 0.2 * this.scene.W;
+		const cy = -0.44 * this.scene.H;
 
-		// const w = this.healthBox.displayWidth - 5;
-		// const h = this.healthBox.displayHeight - 5;
+		this.healthBox = scene.add.image(cx, cy, "ui_healthbar");
+		this.healthBox.setScale(0.4);
+		this.healthCont.add(this.healthBox);
 
-		// this.healthBg = scene.add.rectangle(this.healthBox.x - w/2, this.healthBox.y - h/2, w, h, 0);
-		// this.healthBg.setOrigin(0);
-		// this.healthBg.setAlpha(0.6);
-		// this.healthCont.add(this.healthBg);
+		const w = this.healthBox.displayWidth - 5;
+		const h = this.healthBox.displayHeight - 5;
 
-		// this.healthBar = scene.add.rectangle(this.healthBox.x - w/2, this.healthBox.y - h/2, w, h, 0);
-		// this.healthBar.setOrigin(0);
-		// this.healthCont.add(this.healthBar);
+		this.healthBg = scene.add.rectangle(this.healthBox.x - w/2, this.healthBox.y - h/2, w, h, 0);
+		this.healthBg.setOrigin(0);
+		this.healthBg.setAlpha(0.6);
+		this.healthCont.add(this.healthBg);
 
-		// this.healthCont.bringToTop(this.healthBox);
+		this.healthBar = scene.add.rectangle(this.healthBox.x - w/2, this.healthBox.y - h/2, w, h, 0);
+		this.healthBar.setOrigin(0);
+		this.healthCont.add(this.healthBar);
 
-		// this.healthFlash = 0;
+		this.healthCont.bringToTop(this.healthBox);
+
+		this.healthFlash = 0;
 	}
 
 	update(timeMs: number, deltaMs: number) {
@@ -129,20 +133,14 @@ export class Dragon extends Phaser.GameObjects.Container {
 		// Health
 
 		// if (this.boss) {
-		// 	this.healthBar.width = this.boss.healthPerc * (this.healthBox.displayWidth - 5);
+			this.healthBar.width = (this.health / this.maxHealth) * (this.healthBox.displayWidth - 5);
 		// }
 
-		// this.healthFlash += -0.3 * this.healthFlash;
+		this.healthFlash += -0.3 * this.healthFlash;
 
-		// this.clockBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
-		// this.heartsBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
-		// this.highscoreBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
-		// this.scoreBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
-
-		// this.background.setTint( interpolateColor(0xb8c5ff, 0xf7e3af, dayTimeSmooth) );
-		// this.healthBox.setTint( interpolateColor(0xDDEEFF, 0x110900, dayTimeSmooth) );
-		// this.healthBar.fillColor = interpolateColor( interpolateColor(0xd81b60, 0x43a047, dayTimeSmooth), 0xFFFFFF, this.healthFlash );
-		// this.healthBg.fillColor = interpolateColor(0, 0xAABBFF, dayTimeSmooth);
+		this.healthBox.setTint( 0x112233 );
+		this.healthBar.fillColor = interpolateColor( 0xd81b60, 0xFFFFFF, this.healthFlash );
+		this.healthBg.fillColor = 0;
 	}
 
 	throw() {

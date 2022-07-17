@@ -77,7 +77,8 @@ export class GameScene extends BaseScene {
 		let bg = this.add.image(this.CX, this.CY, 'background');
 		this.containToScreen(bg);
 
-		this.dragon = new Dragon(this, 0, this.CY);
+		this.dragon = new Dragon(this, -2, this.CY);
+		this.dragon.setDepth(10);
 		this.dragon.on('throw', this.onDragonThrow, this);
 
 		// Grid
@@ -187,20 +188,21 @@ export class GameScene extends BaseScene {
 			frames: [
 				{ key: 'dragon', frame: 0, duration: 200 },
 				{ key: 'dragon', frame: 4, duration: 200 },
-				{ key: 'dragon', frame: 5, duration: 200 },
+				{ key: 'dragon', frame: 5, duration: 300 },
 			],
 		});
 		this.anims.create({
 			key: 'dragon_return',
 			frames: [
-				{ key: 'dragon', frame: 6, duration: 300 },
-				{ key: 'dragon', frame: 7, duration: 700 },
+				{ key: 'dragon', frame: 6, duration: 500 },
+				{ key: 'dragon', frame: 7, duration: 300 },
+				{ key: 'dragon', frame: 8, duration: 200 },
 			],
 		});
 		this.anims.create({
 			key: 'dragon_hurt',
 			frames: [
-				{ key: 'dragon', frame: 3, duration: 1000 },
+				{ key: 'dragon', frame: 3, duration: 1500 },
 			],
 			repeat: -1
 		});
@@ -281,7 +283,7 @@ export class GameScene extends BaseScene {
 		// });
 
 		// Explode dice
-		this.flash(3000, 0xFFAA77, 0.6);
+		this.flash(3000, 0xFF9977, 0.6);
 		this.shake(500, 4, 0);
 		this.grid.explodeGrid();
 		for (const dice of this.dices) {
@@ -363,6 +365,8 @@ export class GameScene extends BaseScene {
 		for (let i = 0; i < 3; i++) {
 			this.addDice();
 		}
+
+		this.shake(300, 2, 0);
 
 		// Show attack button after a while
 		this.addEvent(1800, () => {
