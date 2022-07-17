@@ -191,16 +191,21 @@ export class Enemy extends Phaser.GameObjects.Container {
 		}
 	}
 
+	playAnim(animKey: string) {
+		const spriteKey = 'enemy'; // 'enemy'/'trojan'/'tank', this.behaviour.type
+		this.sprite.play({ key: spriteKey + '_' + animKey });
+	}
+
 	playIdle() {
-		this.sprite.play({ key: 'enemy_idle' });
+		this.playAnim('idle');
 	}
 
 	playWalk() {
-		this.sprite.play({ key: 'enemy_walk' });
+		this.playAnim('walk');
 	}
 
 	playAttack() {
-		this.sprite.play({ key: 'enemy_attack' });
+		this.playAnim('attack');
 	}
 
 	getNextMove(coord: Coord) {
