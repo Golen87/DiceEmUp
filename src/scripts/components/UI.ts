@@ -161,10 +161,12 @@ export class UI extends Phaser.GameObjects.Container {
 
 
 		let hx = 0.1 * scene.W;
-		let rrw = 100;
-		let ty = 0.9 * scene.H;
+		let swidth = 200;
+		let ty = 0.8 * scene.H;
 
-		this.highscoreBg = new RoundRectangle(scene, hx, ty+34, rrw, 67, 10, 0x3a3a3a);
+		this.highscoreBg = new RoundRectangle(scene, hx, ty+20, swidth, FONT_SIZE, 10, 0x3a3a3a);
+		this.highscoreBg.setOrigin(0, 0.5);
+		this.highscoreBg.setColor( 0x363a4b-0x101010 );
 		this.add(this.highscoreBg);
 
 		let hsLabel = scene.createText(hx, ty, FONT_SIZE, "#000", "High score");
@@ -172,13 +174,15 @@ export class UI extends Phaser.GameObjects.Container {
 		hsLabel.setStroke("#FFFFFF", STROKE);
 		this.add(hsLabel);
 
-		this.highscore = scene.createText(hx + 100, ty, FONT_SIZE, "#FFF", "00000000");
+		this.highscore = scene.createText(hx + 100, ty, FONT_SIZE, "#FFF", "0");
 		this.highscore.setOrigin(0.5, 0);
 		// this.highscore.setStroke("#FFFFFF", STROKE);
 		this.add(this.highscore);
 
 		ty += 2.0 * FONT_SIZE;
-		this.scoreBg = new RoundRectangle(scene, hx, ty+34, rrw, 67, 10, 0x3a3a3a);
+		this.scoreBg = new RoundRectangle(scene, hx, ty+20, swidth, FONT_SIZE, 10, 0x3a3a3a);
+		this.scoreBg.setOrigin(0, 0.5);
+		this.scoreBg.setColor( 0x363a4b-0x101010 );
 		this.add(this.scoreBg);
 
 		let sLabel = scene.createText(hx, ty, FONT_SIZE, "#000", "Score");
@@ -187,7 +191,7 @@ export class UI extends Phaser.GameObjects.Container {
 		this.add(sLabel);
 
 		ty += 1.2 * FONT_SIZE;
-		this.score = scene.createText(hx + 100, ty, FONT_SIZE, "#FFF", "00000000");
+		this.score = scene.createText(hx + 100, ty, FONT_SIZE, "#FFF", "0");
 		this.score.setOrigin(0.5, 0);
 		// this.score.setStroke("#FFFFFF", STROKE);
 		this.add(this.score);
@@ -234,9 +238,6 @@ export class UI extends Phaser.GameObjects.Container {
 
 	update(time: number, delta: number) {
 
-		this.highscoreBg.setColor( 0x363a4b-0x101010 );
-		this.scoreBg.setColor( 0x363a4b-0x101010 );
-
 		// Score
 		this.scoreBounce += 10 * (0 - this.scoreBounce) * delta;
 		this.score.setScale(1 + 0.15 * this.scoreBounce, 1 - 0.05 * this.scoreBounce);
@@ -244,8 +245,8 @@ export class UI extends Phaser.GameObjects.Container {
 	}
 
 	setScore(score: number, highscore: number) {
-		this.score.setText(score.toString().padStart(8, '0'));
-		this.highscore.setText(highscore.toString().padStart(8, '0'));
+		this.score.setText(score.toString().padStart(0, '0'));
+		this.highscore.setText(highscore.toString().padStart(0, '0'));
 		this.scoreBounce = 1;
 	}
 }
