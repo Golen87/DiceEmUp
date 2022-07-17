@@ -82,6 +82,23 @@ import e_damage from "../assets/sounds/enemy/Enemy_Damage.mp3";
 
 /* Dragon */
 
+/* Misc */
+import m_fire_ignite_1 from "../assets/sounds/misc/Fire ignite 1.mp3";
+import m_fire_ignite_2 from "../assets/sounds/misc/Fire ignite 2.mp3";
+import m_fire_ignite_3 from "../assets/sounds/misc/Fire ignite 3.mp3";
+import m_whoosh_hard_1 from "../assets/sounds/misc/Whoosh Hard 1.mp3";
+import m_whoosh_hard_2 from "../assets/sounds/misc/Whoosh Hard 2.mp3";
+import m_whoosh_hard_3 from "../assets/sounds/misc/Whoosh Hard 3.mp3";
+import m_whoosh_hard_4 from "../assets/sounds/misc/Whoosh Hard 4.mp3";
+import m_whoosh_medium_1 from "../assets/sounds/misc/Whoosh Medium 1.mp3";
+import m_whoosh_medium_2 from "../assets/sounds/misc/Whoosh Medium 2.mp3";
+import m_whoosh_medium_3 from "../assets/sounds/misc/Whoosh Medium 3.mp3";
+import m_whoosh_medium_4 from "../assets/sounds/misc/Whoosh Medium 4.mp3";
+import m_whoosh_soft_1 from "../assets/sounds/misc/Whoosh Soft 1.mp3";
+import m_whoosh_soft_2 from "../assets/sounds/misc/Whoosh Soft 2.mp3";
+import m_whoosh_soft_3 from "../assets/sounds/misc/Whoosh Soft 3.mp3";
+import m_whoosh_soft_4 from "../assets/sounds/misc/Whoosh Soft 4.mp3";
+
 /* Tray */
 import t_place_multiple_1 from "../assets/sounds/tray/Place multiple 1.mp3";
 import t_place_multiple_2 from "../assets/sounds/tray/Place multiple 2.mp3";
@@ -237,6 +254,22 @@ const audios: Audio[] = [
 	{ key: "e_advance", path: e_advance, volume: 1 },
 	{ key: "e_damage", path: e_damage, volume: 1 },
 
+	{ key: "m_fire_ignite_1", path: m_fire_ignite_1, volume: 1 },
+	{ key: "m_fire_ignite_2", path: m_fire_ignite_2, volume: 1 },
+	{ key: "m_fire_ignite_3", path: m_fire_ignite_3, volume: 1 },
+	{ key: "m_whoosh_hard_1", path: m_whoosh_hard_1, volume: 1 },
+	{ key: "m_whoosh_hard_2", path: m_whoosh_hard_2, volume: 1 },
+	{ key: "m_whoosh_hard_3", path: m_whoosh_hard_3, volume: 1 },
+	{ key: "m_whoosh_hard_4", path: m_whoosh_hard_4, volume: 1 },
+	{ key: "m_whoosh_medium_1", path: m_whoosh_medium_1, volume: 1 },
+	{ key: "m_whoosh_medium_2", path: m_whoosh_medium_2, volume: 1 },
+	{ key: "m_whoosh_medium_3", path: m_whoosh_medium_3, volume: 1 },
+	{ key: "m_whoosh_medium_4", path: m_whoosh_medium_4, volume: 1 },
+	{ key: "m_whoosh_soft_1", path: m_whoosh_soft_1, volume: 1 },
+	{ key: "m_whoosh_soft_2", path: m_whoosh_soft_2, volume: 1 },
+	{ key: "m_whoosh_soft_3", path: m_whoosh_soft_3, volume: 1 },
+	{ key: "m_whoosh_soft_4", path: m_whoosh_soft_4, volume: 1 },
+
 	{ key: "t_place_multiple_1", path: t_place_multiple_1, volume: 1 },
 	{ key: "t_place_multiple_2", path: t_place_multiple_2, volume: 1 },
 	{ key: "t_place_multiple_3", path: t_place_multiple_3, volume: 1 },
@@ -274,6 +307,7 @@ const audios: Audio[] = [
 	{ key: "t_take_multiple_3", path: t_take_multiple_3, volume: 1 },
 	{ key: "t_take_multiple_4", path: t_take_multiple_4, volume: 1 },
 	{ key: "t_take_multiple_5", path: t_take_multiple_5, volume: 1 },
+
 	{ key: "t_throw_cardboard_multiple_1", path: t_throw_cardboard_multiple_1, volume: 1 },
 	{ key: "t_throw_cardboard_multiple_2", path: t_throw_cardboard_multiple_2, volume: 1 },
 	{ key: "t_throw_cardboard_multiple_3", path: t_throw_cardboard_multiple_3, volume: 1 },
@@ -304,6 +338,7 @@ const audios: Audio[] = [
 	{ key: "t_throw_felt_single_5", path: t_throw_felt_single_5, volume: 1 },
 	{ key: "t_throw_felt_to_desk_1", path: t_throw_felt_to_desk_1, volume: 1 },
 	{ key: "t_throw_felt_to_desk_2", path: t_throw_felt_to_desk_2, volume: 1 },
+
 	{ key: "h_fondle_hard_1", path: h_fondle_hard_1, volume: 1 },
 	{ key: "h_fondle_hard_2", path: h_fondle_hard_2, volume: 1 },
 	{ key: "h_fondle_hard_3", path: h_fondle_hard_3, volume: 1 },
@@ -327,6 +362,7 @@ const audios: Audio[] = [
 	{ key: "h_swirl_hand_open_1", path: h_swirl_hand_open_1, volume: 1 },
 	{ key: "h_swirl_hand_open_2", path: h_swirl_hand_open_2, volume: 1 },
 	{ key: "h_swirl_hand_open_3", path: h_swirl_hand_open_3, volume: 1 },
+
 	{ key: "d_dice_tap_long_1", path: d_dice_tap_long_1, volume: 1 },
 	{ key: "d_dice_tap_long_2", path: d_dice_tap_long_2, volume: 1 },
 	{ key: "d_dice_tap_long_3", path: d_dice_tap_long_3, volume: 1 },
@@ -338,6 +374,7 @@ const audios: Audio[] = [
 	{ key: "d_dice_tap_short_4", path: d_dice_tap_short_4, volume: 1 },
 	{ key: "d_dice_tap_short_5", path: d_dice_tap_short_5, volume: 1 },
 	{ key: "d_fall_down_and_hit_steel_leg_of_an_ikea_desk", path: d_fall_down_and_hit_steel_leg_of_an_ikea_desk, volume: 1 },
+
 	{ key: "c_cup_put_multiple_1", path: c_cup_put_multiple_1, volume: 1 },
 	{ key: "c_cup_put_multiple_2", path: c_cup_put_multiple_2, volume: 1 },
 	{ key: "c_cup_put_multiple_3", path: c_cup_put_multiple_3, volume: 1 },
