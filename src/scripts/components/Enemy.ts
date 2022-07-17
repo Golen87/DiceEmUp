@@ -213,7 +213,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 		// this.sprite.setScale(0.25);
 		this.add(this.sprite);
 
-		this.text = scene.createText(0, 0, 25, "#303F9F", this.health.toString());
+		this.text = scene.createText(20, 15, 25, "#303F9F", this.health.toString());
 		this.text.setOrigin(0.6);
 		this.text.setStroke("#FFFFFF", 5);
 		this.add(this.text);

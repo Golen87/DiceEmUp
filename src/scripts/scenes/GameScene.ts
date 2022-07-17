@@ -77,8 +77,11 @@ export class GameScene extends BaseScene {
 		// Backgrounds
 		// this.background = new Background(this);
 		// this.background.setDepth(BACKGROUND_LAYER);
-		let bg = this.add.image(this.CX, this.CY, 'background');
+		let bg = this.add.image(this.CX, this.CY, 'bg');
 		this.containToScreen(bg);
+		let fg = this.add.image(this.CX, this.CY, 'fg');
+		this.containToScreen(fg);
+		fg.setDepth(1000);
 
 		this.dragon = new Dragon(this, -2, this.CY);
 		this.dragon.setDepth(10);
@@ -95,13 +98,13 @@ export class GameScene extends BaseScene {
 		this.button.on('click', this.onAttack, this);
 
 		const bsize = 35;
-		this.musicButton = new MiniButton(this, this.W-2.5*bsize, bsize, 'music');
+		this.musicButton = new MiniButton(this, this.W-2.5*bsize, 0.8*bsize, 'music');
 		this.musicButton.on('click', (active: boolean) => {
 			this.musicButton.toggle();
 			this.music.volume = (this.musicButton.active ? 0.25 : 0);
 			this.ambience.volume = (this.musicButton.active ? 0.35 : 0);
 		}, this);
-		this.audioButton = new MiniButton(this, this.W-bsize, bsize, 'audio');
+		this.audioButton = new MiniButton(this, this.W-bsize, 0.8*bsize, 'audio');
 		this.audioButton.on('click', (active: boolean) => {
 			this.audioButton.toggle();
 			this.sound.mute = !this.audioButton.active;

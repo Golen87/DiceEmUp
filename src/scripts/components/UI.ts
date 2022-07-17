@@ -6,7 +6,7 @@ import BendWaves2 from "../pipelines/BendWavesPostFX2";
 
 const EDGE = 0.235;
 const PAD = 13;
-const FONT_SIZE = 25;
+const FONT_SIZE = 24;
 const STROKE = 3;
 
 
@@ -34,8 +34,6 @@ export class UI extends Phaser.GameObjects.Container {
 	// public world: Phaser.GameObjects.Text;
 	// public stage: Phaser.GameObjects.Text;
 
-	private highscoreBg: RoundRectangle;
-	private scoreBg: RoundRectangle;
 	public highscore: Phaser.GameObjects.Text;
 	public score: Phaser.GameObjects.Text;
 	public scoreBounce: number;
@@ -160,41 +158,45 @@ export class UI extends Phaser.GameObjects.Container {
 		// this.setStage(1);
 
 
-		let hx = 0.1 * scene.W;
-		let swidth = 200;
-		let ty = 0.8 * scene.H;
+		let hx = 0.021 * scene.W;
+		let swidth = 230;
+		let ty = 0.83 * scene.H;
 
-		this.highscoreBg = new RoundRectangle(scene, hx, ty+20, swidth, FONT_SIZE, 10, 0x3a3a3a);
-		this.highscoreBg.setOrigin(0, 0.5);
-		this.highscoreBg.setColor( 0x363a4b-0x101010 );
-		this.add(this.highscoreBg);
+		let scoreBg = new RoundRectangle(scene, hx-5-3, ty+20, swidth+6, 1.4*FONT_SIZE+6, 17, 0x593929);
+		scoreBg.setOrigin(0, 0.5);
+		this.add(scoreBg);
+		let scoreBg2 = new RoundRectangle(scene, hx-5, ty+20, swidth, 1.4*FONT_SIZE, 14, 0xcba17f);
+		scoreBg2.setOrigin(0, 0.5);
+		this.add(scoreBg2);
 
-		let hsLabel = scene.createText(hx, ty, FONT_SIZE, "#000", "High score");
-		hsLabel.setOrigin(0.5, 0);
-		hsLabel.setStroke("#FFFFFF", STROKE);
-		this.add(hsLabel);
-
-		this.highscore = scene.createText(hx + 100, ty, FONT_SIZE, "#FFF", "0");
-		this.highscore.setOrigin(0.5, 0);
-		// this.highscore.setStroke("#FFFFFF", STROKE);
-		this.add(this.highscore);
-
-		ty += 2.0 * FONT_SIZE;
-		this.scoreBg = new RoundRectangle(scene, hx, ty+20, swidth, FONT_SIZE, 10, 0x3a3a3a);
-		this.scoreBg.setOrigin(0, 0.5);
-		this.scoreBg.setColor( 0x363a4b-0x101010 );
-		this.add(this.scoreBg);
-
-		let sLabel = scene.createText(hx, ty, FONT_SIZE, "#000", "Score");
+		let sLabel = scene.createText(hx+70, ty+3, FONT_SIZE, "#000", "Score");
 		sLabel.setOrigin(0.5, 0);
 		sLabel.setStroke("#FFFFFF", STROKE);
 		this.add(sLabel);
 
-		ty += 1.2 * FONT_SIZE;
-		this.score = scene.createText(hx + 100, ty, FONT_SIZE, "#FFF", "0");
-		this.score.setOrigin(0.5, 0);
+		// ty += 1.2 * FONT_SIZE;
+		this.score = scene.createText(hx + 140, ty+4, FONT_SIZE, "#FFF", "0");
+		this.score.setOrigin(0, 0);
 		// this.score.setStroke("#FFFFFF", STROKE);
 		this.add(this.score);
+
+		ty += 1.8 * FONT_SIZE;
+		let highscoreBg = new RoundRectangle(scene, hx-5-3, ty+20, swidth+6, 1.4*FONT_SIZE+6, 14, 0x593929);
+		highscoreBg.setOrigin(0, 0.5);
+		this.add(highscoreBg);
+		let highscoreBg2 = new RoundRectangle(scene, hx-5, ty+20, swidth, 1.4*FONT_SIZE, 14, 0xcba17f);
+		highscoreBg2.setOrigin(0, 0.5);
+		this.add(highscoreBg2);
+
+		let hsLabel = scene.createText(hx+70, ty+3, FONT_SIZE, "#000", "High score");
+		hsLabel.setOrigin(0.5, 0);
+		hsLabel.setStroke("#FFFFFF", STROKE);
+		this.add(hsLabel);
+
+		this.highscore = scene.createText(hx + 140, ty+4, FONT_SIZE, "#FFF", "0");
+		this.highscore.setOrigin(0, 0);
+		// this.highscore.setStroke("#FFFFFF", STROKE);
+		this.add(this.highscore);
 
 		// // this.score.x += 4 +this.score.width/2;
 		// // this.score.y += 4 +this.score.height/2;

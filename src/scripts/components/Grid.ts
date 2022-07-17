@@ -30,7 +30,9 @@ export class Grid extends Phaser.GameObjects.Container {
 	public wPad: number = 2;
 	public hPad: number = 2;
 
+	public bg: Phaser.GameObjects.Image;
 	public grid: any[][];
+	public gridTiles: Phaser.GameObjects.Image[][];
 	public gridText: Phaser.GameObjects.Text[][];
 
 	constructor(scene: GameScene) {
@@ -39,19 +41,33 @@ export class Grid extends Phaser.GameObjects.Container {
 		scene.add.existing(this);
 
 
+		this.bg = scene.add.image(this.left-9, this.top-9, 'ui_board_border');
+		this.bg.setOrigin(0);
+		// this.bg.setScale((this.width*this.cols + 22) / this.bg.width);
+		this.add(this.bg);
+
 		// Debug graphics
 		this.graphics = scene.add.graphics();
+		// this.graphics.setVisible(false);
 		this.add(this.graphics);
 
 		this.grid = [];
 		this.gridText = [];
+		this.gridTiles = [];
 		for (let j = 0; j < this.rows; j++) {
 			this.grid.push([]);
 			this.gridText.push([]);
+			this.gridTiles.push([]);
 			for (let i = 0; i < this.cols; i++) {
 				this.grid[j].push(null);
 
 				let cell = this.getCell({i, j});
+
+				let tile = scene.add.image(cell.cx, cell.cy, 'ui_board_tile');
+				tile.setScale(cell.width / tile.width);
+				this.add(tile);
+				this.gridTiles[j][i] = tile;
+
 				const text = scene.createText(cell.x+cell.width, cell.y, 18, "#B71C1C", "")
 				text.setStroke("#FFFFFF", 3);
 				text.setOrigin(1.05, 0.15);

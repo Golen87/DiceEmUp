@@ -22,7 +22,9 @@ interface Audio {
 
 /* Images */
 
-import background from "../assets/images/background.png";
+// import background from "../assets/images/background.png";
+import bg from "../assets/images/BG.png";
+import fg from "../assets/images/FG.png";
 import concept from "../assets/images/dragon_concept2.png";
 
 import d6 from "../assets/images/dice/d6.png";
@@ -30,6 +32,8 @@ import d6_roll from "../assets/images/dice/d6_roll.png";
 import shadow from "../assets/images/shadow.png";
 
 import ui_healthbar from "../assets/images/ui/ui_healthbar.png";
+import ui_board_border from "../assets/images/ui/board_border.png";
+import ui_board_tile from "../assets/images/ui/board_tile.png";
 
 // import cover_all from "../assets/images/cover/all.png";
 // import cover_dice_all from "../assets/images/cover/dice_all.png";
@@ -44,7 +48,8 @@ import cover_dice_red from "../assets/images/cover/dice_red.png";
 import cover_knights from "../assets/images/cover/knights.png";
 
 const images: Asset[] = [
-	{ key: "background",	path: background },
+	{ key: "bg",	path: bg },
+	{ key: "fg",	path: fg },
 	{ key: "concept",		path: concept },
 	{ key: "d6",			path: d6 },
 	{ key: "d6_roll",		path: d6_roll },
@@ -52,6 +57,8 @@ const images: Asset[] = [
 
 	// UI
 	{ key: "ui_healthbar",	path: ui_healthbar },
+	{ key: "ui_board_border",	path: ui_board_border },
+	{ key: "ui_board_tile",	path: ui_board_tile },
 
 	// Cover
 	// { key: "cover_all", path: cover_all },
