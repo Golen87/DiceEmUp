@@ -3,7 +3,7 @@ import { RoundRectangle } from "../components/RoundRectangle";
 import { Grid } from "./../components/Grid";
 import { Music } from "./../components/Music";
 // import { Background } from "../components/Background";
-// import { UI } from "../components/UI";
+import { UI } from "../components/UI";
 import { Particles } from "../components/Particles";
 import { Player } from "../components/Player";
 import { Enemy, EnemyKinds, EnemyType } from "../components/Enemy";
@@ -46,7 +46,7 @@ export class GameScene extends BaseScene {
 	public audioButton: MiniButton;
 
 	// UI texts
-	// private ui: UI;
+	private ui: UI;
 	public overlayText: Phaser.GameObjects.Text;
 
 	// Enemies
@@ -114,8 +114,9 @@ export class GameScene extends BaseScene {
 		this.onNewRound();
 
 		// UI
-		// this.ui = new UI(this);
-		// this.ui.setDepth(UI_LAYER);
+		this.ui = new UI(this);
+		this.ui.setDepth(10000);
+
 		this.overlayText = this.createText(this.W/2 + 0.5, this.H/2 + 0.5, 32, "#fff", "Overlay");
 		this.overlayText.setOrigin(0.5);
 		this.overlayText.setStroke("#000", 5);
@@ -174,9 +175,9 @@ export class GameScene extends BaseScene {
 		this.ambience.play();
 
 
-		// this.score = 0;
-		// this.highscore = 0;
-		// this.loadHighscore();
+		this.score = 0;
+		this.highscore = 0;
+		this.loadHighscore();
 	}
 
 	update(timeMs: number, deltaMs: number) {
@@ -388,6 +389,7 @@ export class GameScene extends BaseScene {
 
 		for (const enemy of this.enemies) {
 			if (!enemy.alive) {
+				this.addScore(10);
 				enemy.destroy();
 			}
 		}
@@ -538,37 +540,34 @@ export class GameScene extends BaseScene {
 
 	/* Score */
 
-	// loadHighscore() {
-	// 	// Crashes in incognito
-	// 	try {
-	// 		let data = JSON.parse(localStorage.getItem("TWSaveData")!);
-	// 		if (data) {
+	loadHighscore() {
+		try {
+			let data = JSON.parse(localStorage.getItem("DiceSaveData")!);
+			if (data) {
 
-	// 			if (data.highscore && !isNaN(parseInt(data.highscore))) {
-	// 				this.highscore = Phaser.Math.Clamp(data.highscore, 0, 99999999);
-	// 				this.ui.setScore(this.score, this.highscore);
-	// 			}
-	// 		}
-	// 	} catch (error) {}
-	// }
+				if (data.highscore && !isNaN(parseInt(data.highscore))) {
+					this.highscore = Phaser.Math.Clamp(data.highscore, 0, 99999999);
+					// this.ui.setScore(this.score, this.highscore);
+				}
+			}
+		} catch (error) {}
+	}
 
-	// saveHighscore() {
-	// 	// Crashes in incognito
-	// 	try {
-	// 		localStorage.setItem("TWSaveData", JSON.stringify({
-	// 			version: 1,
-	// 			highscore: this.highscore,
-	// 		}));
-	// 	} catch (error) {}
-	// }
+	saveHighscore() {
+		// Crashes in incognito
+		try {
+			localStorage.setItem("DiceSaveData", JSON.stringify({
+				version: 1,
+				highscore: this.highscore,
+			}));
+		} catch (error) {}
+	}
 
-	// addScore(value: number) {
-	// 	this.score += value;
-	// 	this.highscore = Math.max(this.highscore, this.score);
-	// 	this.ui.setScore(this.score, this.highscore);
+	addScore(value: number) {
+		this.score += value;
+		this.highscore = Math.max(this.highscore, this.score);
+		this.ui.setScore(this.score, this.highscore);
 
-	// 	if (value > 1000) {
-	// 		this.saveHighscore();
-	// 	}
-	// }
+		this.saveHighscore();
+	}
 }

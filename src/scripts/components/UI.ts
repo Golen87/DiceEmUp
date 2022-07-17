@@ -34,11 +34,11 @@ export class UI extends Phaser.GameObjects.Container {
 	// public world: Phaser.GameObjects.Text;
 	// public stage: Phaser.GameObjects.Text;
 
-	// private highscoreBg: RoundRectangle;
-	// private scoreBg: RoundRectangle;
-	// public highscore: Phaser.GameObjects.Text;
-	// public score: Phaser.GameObjects.Text;
-	// public scoreBounce: number;
+	private highscoreBg: RoundRectangle;
+	private scoreBg: RoundRectangle;
+	public highscore: Phaser.GameObjects.Text;
+	public score: Phaser.GameObjects.Text;
+	public scoreBounce: number;
 
 	// public endScreen: Phaser.GameObjects.Container;
 	// public endText: Phaser.GameObjects.Text;
@@ -160,43 +160,45 @@ export class UI extends Phaser.GameObjects.Container {
 		// this.setStage(1);
 
 
-		// let ty = 0.7 * PAD;
+		let hx = 0.1 * scene.W;
+		let rrw = 100;
+		let ty = 0.1 * scene.H;
 
-		// this.highscoreBg = new RoundRectangle(scene, hx, ty+34, rrw, 67, 10, 0x3a3a3a);
-		// this.add(this.highscoreBg);
+		this.highscoreBg = new RoundRectangle(scene, hx, ty+34, rrw, 67, 10, 0x3a3a3a);
+		this.add(this.highscoreBg);
 
-		// let hsLabel = scene.createText(hx, ty, FONT_SIZE, "#000", "High score");
-		// hsLabel.setOrigin(0.5, 0);
-		// hsLabel.setStroke("#FFFFFF", STROKE);
-		// this.add(hsLabel);
+		let hsLabel = scene.createText(hx, ty, FONT_SIZE, "#000", "High score");
+		hsLabel.setOrigin(0.5, 0);
+		hsLabel.setStroke("#FFFFFF", STROKE);
+		this.add(hsLabel);
 
-		// ty += 1.2 * FONT_SIZE;
-		// this.highscore = scene.createText(hx, ty, FONT_SIZE, "#FFF", "00000000");
-		// this.highscore.setOrigin(0.5, 0);
-		// // this.highscore.setStroke("#FFFFFF", STROKE);
-		// this.add(this.highscore);
+		ty += 1.2 * FONT_SIZE;
+		this.highscore = scene.createText(hx, ty, FONT_SIZE, "#FFF", "00000000");
+		this.highscore.setOrigin(0.5, 0);
+		// this.highscore.setStroke("#FFFFFF", STROKE);
+		this.add(this.highscore);
 
-		// ty += 2.0 * FONT_SIZE;
-		// this.scoreBg = new RoundRectangle(scene, hx, ty+34, rrw, 67, 10, 0x3a3a3a);
-		// this.add(this.scoreBg);
+		ty += 2.0 * FONT_SIZE;
+		this.scoreBg = new RoundRectangle(scene, hx, ty+34, rrw, 67, 10, 0x3a3a3a);
+		this.add(this.scoreBg);
 
-		// let sLabel = scene.createText(hx, ty, FONT_SIZE, "#000", "Score");
-		// sLabel.setOrigin(0.5, 0);
-		// sLabel.setStroke("#FFFFFF", STROKE);
-		// this.add(sLabel);
+		let sLabel = scene.createText(hx, ty, FONT_SIZE, "#000", "Score");
+		sLabel.setOrigin(0.5, 0);
+		sLabel.setStroke("#FFFFFF", STROKE);
+		this.add(sLabel);
 
-		// ty += 1.2 * FONT_SIZE;
-		// this.score = scene.createText(hx, ty, FONT_SIZE, "#FFF", "00000000");
-		// this.score.setOrigin(0.5, 0);
-		// // this.score.setStroke("#FFFFFF", STROKE);
-		// this.add(this.score);
+		ty += 1.2 * FONT_SIZE;
+		this.score = scene.createText(hx, ty, FONT_SIZE, "#FFF", "00000000");
+		this.score.setOrigin(0.5, 0);
+		// this.score.setStroke("#FFFFFF", STROKE);
+		this.add(this.score);
 
 		// // this.score.x += 4 +this.score.width/2;
 		// // this.score.y += 4 +this.score.height/2;
 		// // this.highscore.x += 4 +this.highscore.width/2;
 		// // this.highscore.y += 4 +this.highscore.height/2;
 
-		// this.scoreBounce = 0;
+		this.scoreBounce = 0;
 
 
 		// this.debug = scene.createText(0, 0, FONT_SIZE/2, "#FFF", "LMAO");
@@ -228,10 +230,23 @@ export class UI extends Phaser.GameObjects.Container {
 		// this.sendToBack(this.playerHitbox);
 
 
-		// this.setScore(0, 0);
+		this.setScore(0, 0);
 	}
 
-
 	update(time: number, delta: number, dayTimeSmooth: number) {
+
+		this.highscoreBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
+		this.scoreBg.setColor( interpolateColor(0x363a4b-0x101010, 0x494333-0x101010, dayTimeSmooth) );
+
+		// Score
+		this.scoreBounce += 10 * (0 - this.scoreBounce) * delta;
+		this.score.setScale(1 + 0.15 * this.scoreBounce, 1 - 0.05 * this.scoreBounce);
+		this.highscore.setScale(1 + 0.15 * this.scoreBounce, 1 - 0.05 * this.scoreBounce);
+	}
+
+	setScore(score: number, highscore: number) {
+		this.score.setText(score.toString().padStart(8, '0'));
+		this.highscore.setText(highscore.toString().padStart(8, '0'));
+		this.scoreBounce = 1;
 	}
 }
