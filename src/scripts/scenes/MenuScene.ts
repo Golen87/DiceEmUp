@@ -71,8 +71,6 @@ export class MenuScene extends BaseScene {
 		this.bg = this.add.image(this.CX, this.CY, "cover_background_orange");
 		this.containToScreen(this.bg);
 		this.dragon = this.add.image(this.CX, this.CY, "cover_body");
-		this.dragon.setVisible(false);
-		this.dragon.setAlpha(0);
 		this.containToScreen(this.dragon);
 		this.roof = this.add.image(this.CX, this.CY, "cover_roof");
 		this.containToScreen(this.roof);
@@ -86,6 +84,15 @@ export class MenuScene extends BaseScene {
 		this.containToScreen(this.diceRed);
 		this.knights = this.add.image(this.CX, this.CY, "cover_knights");
 		this.containToScreen(this.knights);
+
+		this.dragon.setVisible(false);
+		this.dragon.setAlpha(0);
+		this.diceGreen.setAlpha(0);
+		this.diceBlue.setAlpha(0);
+		this.diceRed.setAlpha(0);
+		this.dragon.y += 300;
+		this.roof.y += 50;
+		this.hands.y += 50;
 
 
 		this.title = this.createText(this.CX, this.H-75, 60, "#000", "Dice 'Em Up");
@@ -123,7 +130,7 @@ export class MenuScene extends BaseScene {
 		// Music
 
 		if (!this.musicTitle) {
-			this.musicTitle = new Music(this, "m_city_ambience", { volume: 0.25 });
+			this.musicTitle = new Music(this, "m_main_menu", { volume: 0.25 });
 			this.musicTitle.on('bar', this.onBar, this);
 			this.musicTitle.on('beat', this.onBeat, this);
 
@@ -150,7 +157,10 @@ export class MenuScene extends BaseScene {
 
 	update(time: number, delta: number) {
 		if (this.dragon.visible) {
-			// this.dragon.x		+= 0.01 * ((this.CX + 5 * Math.cos(1*0.4*time/1000)) - this.dragon.x);
+			this.dragon.y		+= 0.02 * (this.CY - this.dragon.y);
+			this.roof.y		+= 0.025 * (this.CY - this.roof.y);
+			this.hands.y		+= 0.025 * (this.CY - this.hands.y);
+
 			this.roof.x		+= 0.01 * ((this.CX + 6 * Math.cos(1*0.4*time/1000)) - this.roof.x);
 			this.hands.x		+= 0.01 * ((this.CX + 7 * Math.cos(1*0.4*time/1000)) - this.hands.x);
 
@@ -163,9 +173,10 @@ export class MenuScene extends BaseScene {
 
 			this.knights.x		+= 0.01 * ((this.CX + 15 * Math.cos(4*0.4*time/1000)) - this.knights.x);
 
-			this.dragon.alpha += 0.02 * (1 - this.dragon.alpha);
-			// this.imp.alpha += 0.03 * (1 - this.imp.alpha);
-			// this.angel.alpha += 0.03 * (1 - this.angel.alpha);
+			this.dragon.alpha += 0.03 * (1 - this.dragon.alpha);
+			this.diceGreen.alpha += 0.02 * (1 - this.diceGreen.alpha);
+			this.diceBlue.alpha += 0.02 * (1 - this.diceBlue.alpha);
+			this.diceRed.alpha += 0.02 * (1 - this.diceRed.alpha);
 
 			this.title.alpha += 0.02 * ((this.title.visible ? 1 : 0) - this.title.alpha);
 			this.subtitle.alpha += 0.02 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);

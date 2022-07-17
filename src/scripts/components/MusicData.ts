@@ -13,7 +13,7 @@ export default {
 		start: 4.151,
 		end: 56.981,
 	},
-	'music_title': {
+	'm_main_menu': {
 		offset: .424,
 		bpm: 60,
 		// loop: true,
