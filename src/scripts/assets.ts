@@ -24,6 +24,7 @@ interface Audio {
 
 // import background from "../assets/images/background.png";
 import bg from "../assets/images/BG.png";
+import bgs from "../assets/images/BGS.png";
 import fg from "../assets/images/FG.png";
 import concept from "../assets/images/dragon_concept2.png";
 
@@ -49,6 +50,7 @@ import cover_knights from "../assets/images/cover/knights.png";
 
 const images: Asset[] = [
 	{ key: "bg",	path: bg },
+	{ key: "bgs",	path: bgs },
 	{ key: "fg",	path: fg },
 	{ key: "concept",		path: concept },
 	{ key: "d6",			path: d6 },

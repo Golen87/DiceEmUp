@@ -30,6 +30,7 @@ export class GameScene extends BaseScene {
 
 	// Background
 	// public background: Background;
+	public bg_shadow: Phaser.GameObjects.Image;
 	public grid: Grid;
 	public dices: Dice[];
 	public enemies: Enemy[];
@@ -81,6 +82,8 @@ export class GameScene extends BaseScene {
 		// this.background.setDepth(BACKGROUND_LAYER);
 		let bg = this.add.image(this.CX, this.CY, 'bg');
 		this.containToScreen(bg);
+		this.bg_shadow = this.add.image(this.CX, this.CY, 'bgs');
+		this.containToScreen(this.bg_shadow);
 		let fg = this.add.image(this.CX, this.CY, 'fg');
 		this.containToScreen(fg);
 		fg.setDepth(1000);

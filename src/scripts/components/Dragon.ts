@@ -165,7 +165,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 			width: {
 				from: this.healthBar.width,
 				to: Math.max( // Prevent it from spilling out the box from the left
-					(this.health / this.maxHealth) * (this.healthBox.displayWidth - 5),
+					(this.health / this.maxHealth) * (this.healthBox.displayWidth - 5) - 5,
 					this.healthBox.getBounds().left
 				)
 			}
@@ -175,6 +175,12 @@ export class Dragon extends Phaser.GameObjects.Container {
 
 		if (this.health <= 0) {
 			this.emit("death");
+			this.scene.tweens.add({
+				targets: this.scene.bg_shadow,
+				delay: 300,
+				duration: 700,
+				alpha: { from: 1, to: 0 }
+			})
 		}
 	}
 
