@@ -5,8 +5,9 @@ const inrange = (n:number, min:number, max:number) => n >= min && n <= max;
 
 export enum EnemyType {
 	SQUIRE = 1,
-	SQUIRE_WAVE,
+	TANK,
 	TROJAN_HORSE,
+	SQUIRE_WAVE,
 	SPAWNABLE_COUNT,
 	TROJAN_MINION
 }
@@ -22,8 +23,13 @@ interface EnemyBehaviour {
 };
 
 export const EnemyKinds = new Map<EnemyType, EnemyBehaviour>();
+
 EnemyKinds.set(EnemyType.SQUIRE, {
 	type: EnemyType.SQUIRE,
+	tint: 0xFFFFFF,
+	minHealth: 2,
+	maxHealth: 5,
+	sprite: "enemy",
 	move: (coord, moves) => {
 		return { i: coord.i-1, j: coord.j };
 	},
@@ -37,15 +43,31 @@ EnemyKinds.set(EnemyType.SQUIRE, {
 			ret.push(enemy);
 		}
 		return ret;
-	},
-	tint: 0xFFFFFF,
-	minHealth: 3,
-	maxHealth: 9,
-	sprite: "enemy"
+	}
 });
+
+EnemyKinds.set(EnemyType.TANK, Object.assign({},
+	EnemyKinds.get(EnemyType.SQUIRE), {
+	type: EnemyType.TANK,
+	minHealth: 9,
+	maxHealth: 13,
+	sprite: "tank",
+	spawn: (scene:GameScene, grid:Grid) => {
+		const ret: Enemy[] = [];
+		const coord = grid.getRandomRightFree();
+		const kind = EnemyKinds.get(EnemyType.TANK);
+		if (coord && kind != null) {
+			const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
+			grid.addEnemy(coord, enemy);
+			ret.push(enemy);
+		}
+		return ret;
+	}
+}));
 
 EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
+	maxHealth: 3,
 	spawn: (scene:GameScene, grid:Grid) => {
 		const ret: Enemy[] = [];
 		const kind = EnemyKinds.get(EnemyType.SQUIRE_WAVE);
@@ -61,8 +83,7 @@ EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 			}
 		}
 		return ret;
-	},
-	maxHealth: 3
+	}
 }));
 
 EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
@@ -97,6 +118,10 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 
 EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
+	minHealth: 5,
+	maxHealth: 5,
+	sprite: "trojan",
+	type: EnemyType.TROJAN_HORSE,
 	spawn: (scene:GameScene, grid:Grid) => {
 		const ret: Enemy[] = [];
 		const coord = grid.getRandomRightFree();
@@ -115,11 +140,7 @@ EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
 			});
 		}
 		return ret;
-	},
-	minHealth: 5,
-	maxHealth: 5,
-	tint: 0xFFFFFF,
-	sprite: "trojan"
+	}
 }));
 
 
