@@ -118,6 +118,7 @@ import d_damage from "../assets/sounds/dragon/Dragon_Damage.mp3";
 
 /* Music */
 import m_main_music from "../assets/music/main.mp3";
+import m_main_menu from "../assets/music/title.mp3";
 import m_city_ambience from "../assets/music/City_Ambience.mp3";
 
 /* Jingles */
@@ -308,6 +309,7 @@ const audios: Audio[] = [
 	{ key: "d_damage", path: d_damage, volume: 1 },
 
 	{ key: "m_main_music", path: m_main_music, volume: 1 },
+	{ key: "m_main_menu", path: m_main_menu, volume: 1 },
 	{ key: "m_city_ambience", path: m_city_ambience, volume: 1 },
 
 	{ key: "j_fanfare", path: j_fanfare, volume: 1 },
