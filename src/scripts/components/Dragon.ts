@@ -114,7 +114,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 			let deathEase2 = Phaser.Math.Easing.Sine.Out(x);
 
 			this.setScale(1 - deathEase);
-			this.sprite.setOrigin(0.5 + deathEase2 * 0.15 * Math.sin(100*timeMs), 0.5);
+			this.sprite.setOrigin(0.0, 0.5 + deathEase2 * 0.03 * Math.sin(100*timeMs));
 			// this.setAlpha(1 - deathEase);
 
 			let blink = (Math.sin(50*timeMs) > 0);
@@ -150,6 +150,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 	damage(amount: number=1) {
 		this.health -= amount;
 		this.hurtTimer = 1000;
+		this.healthFlash = 1;
 		this.sprite.play({ key: 'dragon_hurt' });
 
 		this.text.setText(this.health.toString());
@@ -158,12 +159,6 @@ export class Dragon extends Phaser.GameObjects.Container {
 			this.emit("death");
 		}
 	}
-
-	// onBossDamage(boss: Boss) {
-		// if (this.boss == boss) {
-			// this.healthFlash = 1;
-		// }
-	// }
 
 	get alive() {
 		return this.health > 0;

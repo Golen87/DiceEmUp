@@ -336,7 +336,7 @@ export class GameScene extends BaseScene {
 			}
 
 			this.addEvent(500, () => {
-				this.dragon.damage(1);
+				this.dragon.damage(attackingEnemies.length);
 			});
 
 			this.addEvent(1000, this.onNewRound);
