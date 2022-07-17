@@ -665,5 +665,23 @@ export class GameScene extends BaseScene {
 			ease: "Linear",
 			alpha: { from: 1, to: 0 }
 		})
+		if (name != "Move the dice to attack") {
+			this.music_isFull = true;
+			if (this.musicButton.active) {
+				this.music.volume = 0.25;
+				this.music_light.volume = 0;
+				// The code below freezes the game
+				/* this.tweens.add({
+					target: this.music,
+					duration: 1000,
+					volume: { from: 0, to: 0.25 }
+				})
+				this.tweens.add({
+					target: this.music_light,
+					duration: 1000,
+					volume: { from: 0.25, to: 0 }
+				}) */
+			}
+		}
 	}
 }

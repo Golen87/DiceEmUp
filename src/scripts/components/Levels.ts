@@ -29,12 +29,6 @@ const rounds: RoundData[] = [
     group: [S],
     event: (scene) => {
       scene.setStageName("Brittle confidence");
-      scene.music_isFull = true;
-      console.log(scene.musicButton.active);
-      if (scene.musicButton.active) {
-        scene.music.volume = 0.25;
-        scene.music_light.volume = 0;
-      }
     }
   },
   ...blanks,
