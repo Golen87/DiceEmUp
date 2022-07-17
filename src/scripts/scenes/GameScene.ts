@@ -200,9 +200,8 @@ export class GameScene extends BaseScene {
 		this.anims.create({
 			key: 'dragon_throw',
 			frames: [
-				{ key: 'dragon', frame: 0, duration: 200 },
-				{ key: 'dragon', frame: 4, duration: 200 },
-				{ key: 'dragon', frame: 5, duration: 300 },
+				{ key: 'dragon', frame: 4, duration: 300 },
+				{ key: 'dragon', frame: 5, duration: 400 },
 			],
 		});
 		this.anims.create({
@@ -324,30 +323,31 @@ export class GameScene extends BaseScene {
 		this.state = State.DamagePhase;
 		this.button.setVisible(false);
 
-		// this.addEvent(200, () => {
-		for (const enemy of this.enemies) {
-			if (enemy.coord) {
-				const dmg = this.grid.getDamage(enemy.coord);
-				if (dmg > 0) {
-					enemy.damage(dmg);
-				}
-			}
-		}
-		// });
+		// Cache damage grid
+		const damageGrid = this.grid.getDamageGrid();
 
 		// Explode dice
 		this.flash(3000, 0xFF9977, 0.6);
 		this.shake(500, 4, 0);
 		this.grid.explodeGrid();
 		for (const dice of this.dices) {
-
 			// this.particles.createExplosion(dice.x, dice.y, 0.8, 1.0);
-
 			this.grid.clear(dice.coord);
 			dice.destroy();
 		}
 		this.grid.updateGrid();
 		this.dices = [];
+
+		// this.addEvent(200, () => {
+		for (const enemy of this.enemies) {
+			if (enemy.coord) {
+				const dmg = damageGrid[enemy.coord.j][enemy.coord.i];
+				if (dmg > 0) {
+					enemy.damage(dmg);
+				}
+			}
+		}
+		// });
 
 
 		this.addEvent(1000, this.onMove);

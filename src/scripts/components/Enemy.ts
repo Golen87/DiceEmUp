@@ -28,7 +28,7 @@ EnemyKinds.set(EnemyType.SQUIRE, {
 	type: EnemyType.SQUIRE,
 	tint: 0xFFFFFF,
 	minHealth: 2,
-	maxHealth: 5,
+	maxHealth: 9,
 	sprite: "enemy",
 	move: (coord, moves) => {
 		return { i: coord.i-1, j: coord.j };
@@ -49,8 +49,8 @@ EnemyKinds.set(EnemyType.SQUIRE, {
 EnemyKinds.set(EnemyType.TANK, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	type: EnemyType.TANK,
-	minHealth: 9,
-	maxHealth: 13,
+	minHealth: 14,
+	maxHealth: 25,
 	sprite: "tank",
 	spawn: (scene:GameScene, grid:Grid) => {
 		const ret: Enemy[] = [];
@@ -110,8 +110,10 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 				create({i: coord.i, j: j});
 			}
 		}
-		if(inrange(coord.i+1, 0, grid.cols-1)) {
-			create({i: coord.i+1, j: coord.j});
+		for(let i = coord.i-1; i <= coord.i+1; i++) {
+			if(inrange(i, 0, grid.cols-1)) {
+				create({i: i, j: coord.j});
+			}
 		}
 		return ret;
 	}

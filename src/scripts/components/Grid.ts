@@ -134,11 +134,6 @@ export class Grid extends Phaser.GameObjects.Container {
 	}
 
 	getDamage(coord: Coord) {
-
-		// if (this.grid[coord.j][coord.i] instanceof Dice) {
-			// return 0;
-		// }
-
 		let sum = 0;
 		for (let j = 0; j < this.rows; j++) {
 			for (let i = 0; i < this.cols; i++) {
@@ -150,6 +145,17 @@ export class Grid extends Phaser.GameObjects.Container {
 			}
 		}
 		return sum;
+	}
+
+	getDamageGrid() {
+		let grid: number[][] = [];
+		for (let j = 0; j < this.rows; j++) {
+			grid.push([]);
+			for (let i = 0; i < this.cols; i++) {
+				grid[j].push(this.getDamage({ i, j }));
+			}
+		}
+		return grid;
 	}
 
 	updateGrid() {
