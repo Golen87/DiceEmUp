@@ -12,10 +12,11 @@ export enum EnemyType {
 interface EnemyBehaviour {
 	type: EnemyType;
 	move: (coord:Coord, moves: number) => Coord;
-	spawn: (scene:GameScene, grid:Grid) => Enemy[];
+	spawn: (scene:GameScene, grid:Grid, coord?: Coord) => Enemy[];
 	tint: number;
 	minHealth: number;
 	maxHealth: number;
+	sprite: string;
 };
 
 export const EnemyKinds = new Map<EnemyType, EnemyBehaviour>();
@@ -37,7 +38,8 @@ EnemyKinds.set(EnemyType.SQUIRE, {
 	},
 	tint: 0xFFFFFF,
 	minHealth: 3,
-	maxHealth: 9
+	maxHealth: 9,
+	sprite: "enemy"
 });
 
 EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
@@ -65,7 +67,19 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	type: EnemyType.TROJAN_MINION,
 	minHealth: 2,
-	maxHealth: 2
+	maxHealth: 2,
+	spawn: (scene:GameScene, grid:Grid, coord:Coord) => {
+		const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
+		if(!minionKind) return;
+		const cell = grid.getCell(coord);
+		const ret: Enemy[] = [];
+		const minion = new Enemy(scene, cell.cx, cell.cy, minionKind);
+		minion.moves = -1;
+		ret.push(minion);
+		grid.addEnemy(coord, minion);
+		scene.enemies.push(minion);
+		return ret;
+	}
 }));
 
 EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
@@ -84,18 +98,15 @@ EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
 				const grave = enemy.coord;
 				if(!grave) return;
 				if(!minionKind) return;
-				const cell = grid.getCell(grave);
-				const minion = new Enemy(scene, cell.cx, cell.cy, minionKind);
-				minion.moves = -1;
-				grid.addEnemy(grave, minion);
-				scene.enemies.push(minion);
+				minionKind.spawn(scene, grid, grave);
 			});
 		}
 		return ret;
 	},
 	minHealth: 5,
 	maxHealth: 5,
-	tint: 0x62261A
+	tint: 0xFFFFFF,
+	sprite: "trojan"
 }));
 
 
@@ -135,7 +146,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 		this.behaviour = behaviour;
 
 		// Create player sprite
-		this.sprite = scene.add.sprite(0, 0, "enemy", 0);
+		this.sprite = scene.add.sprite(0, 0, behaviour.sprite, 0);
 		this.sprite.setTint(behaviour.tint);
 		this.sprite.setOrigin(0.6, 0.65);
 		// this.sprite.setScale(0.25);
@@ -192,7 +203,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 	}
 
 	playAnim(animKey: string) {
-		const spriteKey = 'enemy'; // 'enemy'/'trojan'/'tank', this.behaviour.type
+		const spriteKey = this.behaviour.sprite; // 'enemy'/'trojan'/'tank', this.behaviour.type
 		this.sprite.play({ key: spriteKey + '_' + animKey });
 	}
 
