@@ -51,6 +51,7 @@ import explosion from "../assets/images/explosion.png";
 import dragon from "../assets/images/dragon_spritesheet.png";
 import enemy from "../assets/images/enemy.png";
 import tank from "../assets/images/tank.png";
+import enemy_trojan from "../assets/images/enemy_trojan.png";
 import dice from "../assets/images/dice/dice.png"
 import fire from "../assets/images/bad_fire.png"
 import attack_button from "../assets/images/ui/button.png";
@@ -60,6 +61,7 @@ const spritesheets: SpriteSheet[] = [
 	{ key: "dragon",	path: dragon,		width: 840/2,	height: 1080/2 },
 	{ key: "enemy",		path: enemy,		width: 540,	height: 540 },
 	{ key: "tank",		path: tank,			width: 540,	height: 540 },
+	{ key: "enemy_trojan",		path: enemy_trojan,			width: 540,	height: 540 },
 	{ key: "dice",		path: dice,			width: 512/2,	height: 512/2 },
 	{ key: "fire",		path: fire,			width: 512,	height: 512 },
 	{ key: "explosion",	path: explosion,	width: 200,	height: 282 },
