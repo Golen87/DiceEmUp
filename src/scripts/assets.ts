@@ -82,9 +82,16 @@ import e_advance from "../assets/sounds/enemy/Enemy_Advance.mp3";
 import e_damage from "../assets/sounds/enemy/Enemy_Damage.mp3";
 
 /* Dragon */
+import d_damage from "../assets/sounds/dragon/Dragon_Damage.mp3";
+
+/* Music */
+import m_main_music from "../assets/music/main.mp3";
+import m_city_ambience from "../assets/music/City_Ambience.mp3";
 
 /* Misc */
 import m_sparkle from "../assets/sounds/misc/Sparkle.mp3";
+import m_scatter from "../assets/sounds/misc/Scatter.mp3";
+import m_slice from "../assets/sounds/misc/Slice.mp3";
 import m_fire_ignite_1 from "../assets/sounds/misc/Fire ignite 1.mp3";
 import m_fire_ignite_2 from "../assets/sounds/misc/Fire ignite 2.mp3";
 import m_fire_ignite_3 from "../assets/sounds/misc/Fire ignite 3.mp3";
@@ -257,7 +264,14 @@ const audios: Audio[] = [
 	{ key: "e_advance", path: e_advance, volume: 1 },
 	{ key: "e_damage", path: e_damage, volume: 1 },
 
+	{ key: "d_damage", path: d_damage, volume: 1 },
+
+	{ key: "m_main_music", path: m_main_music, volume: 1 },
+	{ key: "m_city_ambience", path: m_city_ambience, volume: 1 },
+
 	{ key: "m_sparkle", path: m_sparkle, volume: 1 },
+	{ key: "m_scatter", path: m_scatter, volume: 1 },
+	{ key: "m_slice", path: m_slice, volume: 1 },
 	{ key: "m_fire_ignite_1", path: m_fire_ignite_1, volume: 1 },
 	{ key: "m_fire_ignite_2", path: m_fire_ignite_2, volume: 1 },
 	{ key: "m_fire_ignite_3", path: m_fire_ignite_3, volume: 1 },

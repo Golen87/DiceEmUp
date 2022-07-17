@@ -10,6 +10,7 @@ import { Enemy, EnemyKinds, EnemyType } from "../components/Enemy";
 import { Dice } from "../components/Dice";
 import { Button } from "../components/Button";
 import { Dragon } from "../components/Dragon";
+import { interpolateColor } from "../utils";
 // import { Minion } from "../components/Minion";
 // import { Boss } from "../components/Boss";
 // import { Bullet } from "../components/Bullet";
@@ -26,6 +27,7 @@ enum State {
 	DamagePhase,
 	MovementPhase,
 	AttackPhase,
+	GameOverPhase,
 }
 
 
@@ -81,6 +83,7 @@ export class GameScene extends BaseScene {
 		this.dragon = new Dragon(this, -2, this.CY);
 		this.dragon.setDepth(10);
 		this.dragon.on('throw', this.onDragonThrow, this);
+		this.dragon.on('death', this.onDragonDeath, this);
 
 		// Grid
 		this.grid = new Grid(this);
@@ -174,6 +177,11 @@ export class GameScene extends BaseScene {
 		}
 		else {
 			this.cameras.main.x = 0;
+		}
+
+		// Game over text flash
+		if (this.state == State.GameOverPhase) {
+			this.overlayText.setTint(interpolateColor(0xFF7777, 0XFFFFFF, Math.sin(0.005*timeMs)*0.5+0.5));
 		}
 	}
 
@@ -300,7 +308,7 @@ export class GameScene extends BaseScene {
 	}
 
 	addEnemy(kind: EnemyType) {
-		console.log("Spawn kind", kind)
+		console.log(`Spawn kind ${kind} (${EnemyType[kind]})`)
 		let spawner = EnemyKinds.get(kind);
 		if( spawner != null ) {
 			const spawned = spawner.spawn(this, this.grid);
@@ -355,6 +363,7 @@ export class GameScene extends BaseScene {
 		}
 		this.enemies = this.enemies.filter(enemy => enemy.alive);
 
+		let playScatterSound = false;
 		let switchDelay = 1000;
 		if (this.enemies.length > 0) {
 			this.grid.moveEnemies();
@@ -366,6 +375,7 @@ export class GameScene extends BaseScene {
 			this.overlayText.setText("Perfect Clear!");
 			this.sound.play("m_sparkle", { volume: 0.7, pan: -0.2 });
 			switchDelay = 1500;
+			playScatterSound = true;
 			this.tweens.add({
 				targets: this.overlayText,
 				duration: 200,
@@ -384,7 +394,10 @@ export class GameScene extends BaseScene {
 		for (let enemy of this.enemies) {
 			enemy.playWalk();
 		}
-		this.addEvent(switchDelay, this.onEnemyAttack);
+		this.addEvent(switchDelay || 1000, () => {
+			playScatterSound && this.sound.play("m_scatter", { volume: 0.5, delay: 0.2 });
+			this.onEnemyAttack();
+		});
 	}
 
 	onEnemyAttack() {
@@ -404,7 +417,7 @@ export class GameScene extends BaseScene {
 				this.dragon.damage(attackingEnemies.length);
 			});
 
-			this.addEvent(1000, this.onNewRound);
+			this.addEvent(1000, () => this.dragon.alive && this.onNewRound());
 		}
 		else {
 			this.onNewRound();
@@ -427,6 +440,11 @@ export class GameScene extends BaseScene {
 
 	onDragonThrow() {
 		// Throwing animation finished
+
+		this.sound.play(
+			`m_whoosh_${Phaser.Math.RND.pick(["hard", "medium"])}_${Phaser.Math.Between(1, 4)}`,
+			{ volume: 0.35, pan: -0.3, rate: 1.28 }
+		)
 		for (let i = 0; i < 3; i++) {
 			this.addDice();
 		}
@@ -444,6 +462,23 @@ export class GameScene extends BaseScene {
 			this.button.setVisible(true);
 			this.sound.play(`m_fire_ignite_${Phaser.Math.Between(1, 3)}`, {volume: 0.85});
 		});
+	}
+
+	onDragonDeath() {
+		for (let enemy of this.enemies) {
+			enemy.playIdle();
+		}
+
+		this.state = State.GameOverPhase;
+		this.overlayText.setColor("#fff");
+		this.overlayText.setText("Game Over");
+		this.tweens.add({
+			targets: this.overlayText,
+			duration: 400,
+			ease: "Elastic.Out",
+			alpha: { from: 0, to: 1 },
+			scale: { from: 0, to: 1 },
+		})
 	}
 
 

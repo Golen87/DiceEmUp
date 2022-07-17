@@ -133,7 +133,8 @@ export class Dragon extends Phaser.GameObjects.Container {
 		// Health
 
 		// if (this.boss) {
-			this.healthBar.width = (this.health / this.maxHealth) * (this.healthBox.displayWidth - 5);
+			// this.healthBar.width = (this.health / this.maxHealth) * (this.healthBox.displayWidth - 5);
+			// Moved below
 		// }
 
 		this.healthFlash += -0.3 * this.healthFlash;
@@ -152,6 +153,20 @@ export class Dragon extends Phaser.GameObjects.Container {
 		this.hurtTimer = 1000;
 		this.healthFlash = 1;
 		this.sprite.play({ key: 'dragon_hurt' });
+		this.scene.sound.play("d_damage");
+
+		this.scene.tweens.add({
+			targets: this.healthBar,
+			duration: 200,
+			ease: "Cubic.Out",
+			width: {
+				from: this.healthBar.width,
+				to: Math.max( // Prevent it from spilling out the box from the left
+					(this.health / this.maxHealth) * (this.healthBox.displayWidth - 5),
+					this.healthBox.getBounds().left
+				)
+			}
+		});
 
 		this.text.setText(this.health.toString());
 
