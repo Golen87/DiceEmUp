@@ -440,10 +440,11 @@ export class GameScene extends BaseScene {
 				volume: this.enemies.length == 1 ? 0.3 : 0.5
 			});
 		} else {
-			this.addScore(100);
 			if(level.length <= this.round) {
+				this.addScore(100);
 				this.overlayText.setColor("#fd0");
 				this.overlayText.setText("Perfect Clear!");
+				this.dragon.heal(1);
 				this.sound.play("m_sparkle", { volume: 0.7, pan: -0.2 });
 				this.tweens.add({
 					targets: this.overlayText,
@@ -460,7 +461,6 @@ export class GameScene extends BaseScene {
 					alpha: { from: 1, to: 0 }
 				})
 			}
-			this.dragon.heal(1);
 			switchDelay = 1500;
 			playScatterSound = true;
 		}
