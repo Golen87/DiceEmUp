@@ -66,14 +66,13 @@ export class MenuScene extends BaseScene {
 		// this.angel.setAlpha(0);
 		// this.containToScreen(this.angel);
 		// this.dragon = this.add.image(this.CX-40, this.CY+70, "CoverArtdragon");
-		// this.dragon.setVisible(false);
-		// this.dragon.setAlpha(0);
-		// this.containToScreen(this.dragon);
 
 
 		this.bg = this.add.image(this.CX, this.CY, "cover_background_orange");
 		this.containToScreen(this.bg);
 		this.dragon = this.add.image(this.CX, this.CY, "cover_body");
+		this.dragon.setVisible(false);
+		this.dragon.setAlpha(0);
 		this.containToScreen(this.dragon);
 		this.roof = this.add.image(this.CX, this.CY, "cover_roof");
 		this.containToScreen(this.roof);
@@ -164,12 +163,12 @@ export class MenuScene extends BaseScene {
 
 			this.knights.x		+= 0.01 * ((this.CX + 15 * Math.cos(4*0.4*time/1000)) - this.knights.x);
 
-			// this.dragon.alpha += 0.02 * (1 - this.dragon.alpha);
+			this.dragon.alpha += 0.02 * (1 - this.dragon.alpha);
 			// this.imp.alpha += 0.03 * (1 - this.imp.alpha);
 			// this.angel.alpha += 0.03 * (1 - this.angel.alpha);
 
-			// this.title.alpha += 0.02 * ((this.title.visible ? 1 : 0) - this.title.alpha);
-			// this.subtitle.alpha += 0.02 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);
+			this.title.alpha += 0.02 * ((this.title.visible ? 1 : 0) - this.title.alpha);
+			this.subtitle.alpha += 0.02 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);
 
 			if (this.credits.visible) {
 				this.credits.alpha += 0.01 * (1 - this.credits.alpha);
@@ -179,7 +178,7 @@ export class MenuScene extends BaseScene {
 			this.tap.alpha += 0.01 * (1 - this.tap.alpha);
 
 			if (this.musicTitle.seek > 0) {
-				// this.dragon.setVisible(true);
+				this.dragon.setVisible(true);
 				this.tap.setVisible(false);
 			}
 		}
@@ -204,7 +203,7 @@ export class MenuScene extends BaseScene {
 		}
 
 		else if (!this.isStarting) {
-			this.sound.play("m_slice", { volume: 0.4 });
+			this.sound.play("m_slice", { volume: 0.3 });
 			this.sound.play("u_attack_button", { volume: 0.5 });
 			// this.select2.play();
 			this.isStarting = true;
