@@ -90,7 +90,7 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	type: EnemyType.TROJAN_MINION,
 	minHealth: 1,
-	maxHealth: 2,
+	maxHealth: 3,
 	spawn: (scene:GameScene, grid:Grid, coord:Coord) => {
 		const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
 		if(!minionKind) return;
@@ -121,8 +121,8 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 
 EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
-	minHealth: 5,
-	maxHealth: 5,
+	minHealth: 10,
+	maxHealth: 15,
 	sprite: "trojan",
 	type: EnemyType.TROJAN_HORSE,
 	spawn: (scene:GameScene, grid:Grid) => {
