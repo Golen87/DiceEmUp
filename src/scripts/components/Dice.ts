@@ -1,6 +1,7 @@
 import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
 import { audios } from "../assets";
+import { SCALEDOWN } from "../constants";
 
 interface DiceStyle {
 	sides: number;
@@ -67,10 +68,10 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.sprite.setTint(this.style.tint);
 		this.add(this.sprite);
 
-		this.text = scene.createText(0, 0, 25, "#000", this.value.toString());
+		this.text = scene.createText(0, 0, 50/SCALEDOWN, "#000", this.value.toString());
 		this.text.setOrigin(0.5);
 		this.text.setVisible(false);
-		this.text.setStroke("#FFFFFF", 5);
+		this.text.setStroke("#FFFFFF", 10/SCALEDOWN);
 		this.add(this.text);
 
 		this.lastDragSound = Date.now();

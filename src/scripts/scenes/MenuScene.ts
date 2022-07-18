@@ -1,6 +1,7 @@
 import { BaseScene } from "./BaseScene";
 import { RoundRectangle } from "../components/RoundRectangle";
 import { Music } from "./../components/Music";
+import { MUSIC_ON, SCALEDOWN } from "../constants";
 
 
 const creditsLeft = `GMTK Game Jam 2022
@@ -95,34 +96,34 @@ export class MenuScene extends BaseScene {
 		this.hands.y += 50;
 
 
-		this.title = this.createText(this.CX, this.H-75, 60, "#000", "Fire and Dice");
+		this.title = this.createText(this.CX, this.H-(150/SCALEDOWN), 120/SCALEDOWN, "#000", "Fire and Dice");
 		this.title.setOrigin(0.5, 1.0);
-		this.title.setStroke("#FFF", 8);
+		this.title.setStroke("#FFF", 16/SCALEDOWN);
 		this.title.setVisible(false);
 		this.title.setAlpha(0);
 
-		this.subtitle = this.createText(this.CX, this.H-50, 35, "#000", "Tap to start");
+		this.subtitle = this.createText(this.CX, this.H-(100/SCALEDOWN), 70/SCALEDOWN, "#000", "Tap to start");
 		this.subtitle.setOrigin(0.5);
-		this.subtitle.setStroke("#FFF", 4);
+		this.subtitle.setStroke("#FFF", 8/SCALEDOWN);
 		this.subtitle.setVisible(false);
 		this.subtitle.setAlpha(0);
 
-		this.tap = this.createText(this.CX, this.CY, 35, "#000", "Tap to focus");
+		this.tap = this.createText(this.CX, this.CY, 70/SCALEDOWN, "#000", "Tap to focus");
 		this.tap.setOrigin(0.5);
 		this.tap.setAlpha(-1);
-		this.tap.setStroke("#FFF", 4);
+		this.tap.setStroke("#FFF", 8/SCALEDOWN);
 
 		this.credits = this.add.container(0, 0);
 		this.credits.setVisible(false);
 		this.credits.setAlpha(0);
 
-		let credits1 = this.createText(7, 4, 14, "#c2185b", creditsLeft);
-		credits1.setStroke("#FFF", 6);
+		let credits1 = this.createText(14/SCALEDOWN, 8/SCALEDOWN, 28/SCALEDOWN, "#c2185b", creditsLeft);
+		credits1.setStroke("#FFF", 12/SCALEDOWN);
 		credits1.setLineSpacing(0);
 		this.credits.add(credits1);
 
-		let credits2 = this.createText(120, 4, 14, "#c2185b", creditsRight);
-		credits2.setStroke("#FFF", 6);
+		let credits2 = this.createText(240/SCALEDOWN, 8/SCALEDOWN, 28/SCALEDOWN, "#c2185b", creditsRight);
+		credits2.setStroke("#FFF", 12/SCALEDOWN);
 		credits2.setLineSpacing(0);
 		this.credits.add(credits2);
 
@@ -130,7 +131,7 @@ export class MenuScene extends BaseScene {
 		// Music
 
 		if (!this.musicTitle) {
-			this.musicTitle = new Music(this, "m_main_menu", { volume: 0.25 });
+			this.musicTitle = new Music(this, "m_main_menu", { volume: MUSIC_ON ? 0.25 : 0 });
 			this.musicTitle.on('bar', this.onBar, this);
 			this.musicTitle.on('beat', this.onBeat, this);
 

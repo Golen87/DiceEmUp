@@ -1,6 +1,7 @@
 import { BaseScene } from "./BaseScene";
 import { RoundRectangle } from "../components/RoundRectangle";
 import BendWaves2 from "../pipelines/BendWavesPostFX2";
+import { SCALEDOWN } from "../constants";
 
 
 export interface Point {
@@ -64,11 +65,11 @@ export class OverworldScene extends BaseScene {
 		this.graphics.fillStyle(0xEEEEDD, 1.0);
 
 
-		this.title = this.createText(this.CX, 0.43*this.H, 3*40, "#FA4", "Fire and Dice").setOrigin(0.5).setStroke("#732", 6);
+		this.title = this.createText(this.CX, 0.43*this.H, 3*40*2/SCALEDOWN, "#FA4", "Fire and Dice").setOrigin(0.5).setStroke("#732", 12/SCALEDOWN);
 		this.title.setPostPipeline(BendWaves2);
 		this.title.setVisible(false);
 
-		this.desc = this.createText(this.CX, 0.65*this.H, 3*18, "#FFF").setOrigin(0.5);
+		this.desc = this.createText(this.CX, 0.65*this.H, 3*18*2/SCALEDOWN, "#FFF").setOrigin(0.5);
 		this.desc.setText("Tap to play");
 		this.desc.setVisible(false);
 
@@ -215,7 +216,7 @@ export class OverworldScene extends BaseScene {
 	showStageAnimation() {
 		if (this.level > 3) {
 			this.flash(1000, 0xFFFFFF);
-			this.victory = this.createText(this.CX, this.CY, 60, "#F00", "VICTORY").setOrigin(0.5).setStroke("#FF0", 6);
+			this.victory = this.createText(this.CX, this.CY, 120/SCALEDOWN, "#F00", "VICTORY").setOrigin(0.5).setStroke("#FF0", 12/SCALEDOWN);
 			return;
 		}
 

@@ -2,6 +2,7 @@ import { GameScene } from "../scenes/GameScene";
 import { Enemy } from "../components/Enemy";
 import { Dice } from "../components/Dice";
 import { interpolateColor } from "../utils";
+import { SCALEDOWN } from "../constants";
 
 export interface Coord {
 	i: number;
@@ -23,12 +24,12 @@ export class Grid extends Phaser.GameObjects.Container {
 
 	public cols: number = 6;
 	public rows: number = 5;
-	public left: number = 400;
-	public top: number = 190;
-	public width: number = 80;
-	public height: number = 62;
-	public wPad: number = 2;
-	public hPad: number = 2;
+	public left: number = 800/SCALEDOWN;
+	public top: number = 380/SCALEDOWN;
+	public width: number = 160/SCALEDOWN;
+	public height: number = 124/SCALEDOWN;
+	public wPad: number = 4/SCALEDOWN;
+	public hPad: number = 4/SCALEDOWN;
 
 	public bg: Phaser.GameObjects.Image;
 	public grid: any[][];
@@ -42,8 +43,9 @@ export class Grid extends Phaser.GameObjects.Container {
 		scene.add.existing(this);
 
 
-		this.bg = scene.add.image(this.left-9, this.top-9, 'ui_board_border');
+		this.bg = scene.add.image(this.left-(18/SCALEDOWN), this.top-(18/SCALEDOWN), 'ui_board_border');
 		this.bg.setOrigin(0);
+		this.bg.setScale(2/SCALEDOWN);
 		// this.bg.setScale((this.width*this.cols + 22) / this.bg.width);
 		this.add(this.bg);
 
@@ -75,8 +77,8 @@ export class Grid extends Phaser.GameObjects.Container {
 				this.add(tile2);
 				this.gridHighlights[j][i] = tile2;
 
-				const text = scene.createText(cell.x+cell.width, cell.y, 18, "#B71C1C", "")
-				text.setStroke("#FFFFFF", 3);
+				const text = scene.createText(cell.x+cell.width, cell.y, 36/SCALEDOWN, "#B71C1C", "")
+				text.setStroke("#FFFFFF", 6/SCALEDOWN);
 				text.setOrigin(1.05, 0.15);
 				this.add(text);
 				this.gridText[j][i] = text;

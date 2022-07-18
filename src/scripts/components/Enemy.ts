@@ -1,3 +1,4 @@
+import { SCALEDOWN } from "../constants";
 import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
 
@@ -213,9 +214,9 @@ export class Enemy extends Phaser.GameObjects.Container {
 		// this.sprite.setScale(0.25);
 		this.add(this.sprite);
 
-		this.text = scene.createText(20, 15, 25, "#303F9F", this.health.toString());
+		this.text = scene.createText(40/SCALEDOWN, 30/SCALEDOWN, 50/SCALEDOWN, "#303F9F", this.health.toString());
 		this.text.setOrigin(0.6);
-		this.text.setStroke("#FFFFFF", 5);
+		this.text.setStroke("#FFFFFF", 10/SCALEDOWN);
 		this.add(this.text);
 	}
 

@@ -4,11 +4,12 @@ import { MenuScene } from "./scripts/scenes/MenuScene";
 import { GameoverScene } from "./scripts/scenes/GameoverScene";
 import { OverworldScene } from "./scripts/scenes/OverworldScene";
 import { GameScene } from "./scripts/scenes/GameScene";
+import { SCALEDOWN } from "./scripts/constants";
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.WEBGL,
-	width: 1920/2,
-	height: 1080/2,
+	width: 1920/SCALEDOWN,
+	height: 1080/SCALEDOWN,
 	// pixelArt: true,
 	// disableContextMenu: true,
 	scale: {

@@ -1,3 +1,4 @@
+import { SCALEDOWN } from "../constants";
 import { GameScene } from "../scenes/GameScene";
 import { interpolateColor } from "../utils";
 
@@ -38,9 +39,9 @@ export class Dragon extends Phaser.GameObjects.Container {
 		scene.containToScreen(this.sprite);
 		this.add(this.sprite);
 
-		this.text = scene.createText(0, 0, 25, "#000", "");
+		this.text = scene.createText(0, 0, 50/SCALEDOWN, "#000", "");
 		this.text.setOrigin(0.5);
-		this.text.setStroke("#FFFFFF", 5);
+		this.text.setStroke("#FFFFFF", 10/SCALEDOWN);
 		this.text.setVisible(false);
 		this.add(this.text);
 

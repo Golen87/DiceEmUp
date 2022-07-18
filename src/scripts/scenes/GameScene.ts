@@ -15,6 +15,7 @@ import { interpolateColor } from "../utils";
 import { GrayScalePostFilter } from "../pipelines/GrayScalePostFilter";
 
 import level from "../components/Levels";
+import { MUSIC_ON, SCALEDOWN } from "../constants";
 
 
 enum State {
@@ -92,7 +93,7 @@ export class GameScene extends BaseScene {
 		this.containToScreen(fg);
 		fg.setDepth(1000);
 
-		this.dragon = new Dragon(this, -2, this.CY);
+		this.dragon = new Dragon(this, -(4/SCALEDOWN), this.CY);
 		this.dragon.setDepth(10);
 		this.dragon.on('throw', this.onDragonThrow, this);
 		this.dragon.on('death', this.onDragonDeath, this);
@@ -103,10 +104,10 @@ export class GameScene extends BaseScene {
 		this.dices = [];
 		this.enemies = [];
 
-		this.button = new Button(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - 60);
+		this.button = new Button(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - (120/SCALEDOWN));
 		this.button.on('click', this.onAttack, this);
 
-		const bsize = 35;
+		const bsize = 70/SCALEDOWN;
 		this.musicButton = new MiniButton(this, this.W-2.5*bsize, 0.8*bsize, 'music');
 		this.musicButton.on('click', (active: boolean) => {
 			this.musicButton.toggle();
@@ -126,9 +127,9 @@ export class GameScene extends BaseScene {
 		this.ui = new UI(this);
 		this.ui.setDepth(10000);
 
-		this.overlayText = this.createText(this.W/2 + 0.5, this.H/2 + 0.5, 32, "#fff", "Overlay");
+		this.overlayText = this.createText(this.W/2 + 0.5, this.H/2 + 0.5, 64/SCALEDOWN, "#fff", "Overlay");
 		this.overlayText.setOrigin(0.5);
-		this.overlayText.setStroke("#000", 5);
+		this.overlayText.setStroke("#000", 10/SCALEDOWN);
 		this.overlayText.setDepth(20);
 		this.overlayText.setAlpha(0);
 
@@ -181,10 +182,12 @@ export class GameScene extends BaseScene {
 		this.music = new Music(this, 'm_main_music', { volume: 0.00001 });
 		this.music_light = new Music(this, 'm_main_music_light', { volume: 0.25 });
 		this.ambience = new Music(this, 'm_city_ambience', { volume: 0.35 });
-		this.music.play();
-		this.music_light.play();
-		this.ambience.play();
-		this.music_isFull = false;
+		if (MUSIC_ON) {
+			this.music.play();
+			this.music_light.play();
+			this.ambience.play();
+		}
+		this.music_isFull = true;
 
 
 		this.score = 0;
@@ -366,7 +369,7 @@ export class GameScene extends BaseScene {
 
 
 	addDice() {
-		const dice = new Dice(this, 300, this.CY)
+		const dice = new Dice(this, (600/SCALEDOWN), this.CY)
 		this.dices.push(dice);
 
 		const coord = this.grid.getRandomFree();
@@ -578,7 +581,7 @@ export class GameScene extends BaseScene {
 		this.addEvent(1800, () => {
 			this.tweens.add({
 				targets: this.button.fire,
-				scaleY: { from: 0, to: 0.6 },
+				scaleY: { from: 0, to: (1.2/SCALEDOWN) },
 				duration: 200,
 				ease: "Cubic.Out"
 			});

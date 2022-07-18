@@ -1,3 +1,5 @@
+import { SCALEDOWN } from "../constants";
+
 export class BaseScene extends Phaser.Scene {
 	protected flashRect: Phaser.GameObjects.Rectangle;
 	protected cameraShakeValue: number;
@@ -50,7 +52,7 @@ export class BaseScene extends Phaser.Scene {
 	}
 
 	// Creates Phaser text object
-	createText(x: number=0, y: number=0, size: number=20, color: string="#FFF", text: string=""): Phaser.GameObjects.Text {
+	createText(x: number=0, y: number=0, size: number=40/SCALEDOWN, color: string="#FFF", text: string=""): Phaser.GameObjects.Text {
 		return this.add.text(x, y, text, {
 			fontFamily: "Fredoka One",
 			fontSize: Math.max(size, 1) + "px",

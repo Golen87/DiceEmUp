@@ -3,11 +3,12 @@ import { RoundRectangle } from "./RoundRectangle";
 import { interpolateColor } from "../utils";
 // import { Boss } from "./Boss";
 import BendWaves2 from "../pipelines/BendWavesPostFX2";
+import { SCALEDOWN } from "../constants";
 
 const EDGE = 0.235;
-const PAD = 13;
-const FONT_SIZE = 24;
-const STROKE = 3;
+const PAD = 26/SCALEDOWN;
+const FONT_SIZE = 48/SCALEDOWN;
+const STROKE = 6/SCALEDOWN;
 
 
 export class UI extends Phaser.GameObjects.Container {
@@ -159,41 +160,41 @@ export class UI extends Phaser.GameObjects.Container {
 
 
 		let hx = 0.021 * scene.W;
-		let swidth = 230;
+		let swidth = 460/SCALEDOWN;
 		let ty = 0.83 * scene.H;
 
-		let scoreBg = new RoundRectangle(scene, hx-5-3, ty+20, swidth+6, 1.4*FONT_SIZE+6, 17, 0x593929);
+		let scoreBg = new RoundRectangle(scene, hx-(16/SCALEDOWN), ty+(40/SCALEDOWN), swidth+(12/SCALEDOWN), 1.4*FONT_SIZE+(12/SCALEDOWN), 34/SCALEDOWN, 0x593929);
 		scoreBg.setOrigin(0, 0.5);
 		this.add(scoreBg);
-		let scoreBg2 = new RoundRectangle(scene, hx-5, ty+20, swidth, 1.4*FONT_SIZE, 14, 0xcba17f);
+		let scoreBg2 = new RoundRectangle(scene, hx-(10/SCALEDOWN), ty+(40/SCALEDOWN), swidth, 1.4*FONT_SIZE, 28/SCALEDOWN, 0xcba17f);
 		scoreBg2.setOrigin(0, 0.5);
 		this.add(scoreBg2);
 
-		let sLabel = scene.createText(hx+70, ty+3, FONT_SIZE, "#000", "Score");
+		let sLabel = scene.createText(hx+(140/SCALEDOWN), ty+(6/SCALEDOWN), FONT_SIZE, "#000", "Score");
 		sLabel.setOrigin(0.5, 0);
 		sLabel.setStroke("#FFFFFF", STROKE);
 		this.add(sLabel);
 
 		// ty += 1.2 * FONT_SIZE;
-		this.score = scene.createText(hx + 140, ty+5, FONT_SIZE, "#FFF", "0");
+		this.score = scene.createText(hx + (280/SCALEDOWN), ty+(10/SCALEDOWN), FONT_SIZE, "#FFF", "0");
 		this.score.setOrigin(0, 0);
 		// this.score.setStroke("#FFFFFF", STROKE);
 		this.add(this.score);
 
 		ty += 1.8 * FONT_SIZE;
-		let highscoreBg = new RoundRectangle(scene, hx-5-3, ty+20, swidth+6, 1.4*FONT_SIZE+6, 14, 0x593929);
+		let highscoreBg = new RoundRectangle(scene, hx-(16/SCALEDOWN), ty+(40/SCALEDOWN), swidth+(12/SCALEDOWN), 1.4*FONT_SIZE+6, 14, 0x593929);
 		highscoreBg.setOrigin(0, 0.5);
 		this.add(highscoreBg);
-		let highscoreBg2 = new RoundRectangle(scene, hx-5, ty+20, swidth, 1.4*FONT_SIZE, 14, 0xcba17f);
+		let highscoreBg2 = new RoundRectangle(scene, hx-(10/SCALEDOWN), ty+(40/SCALEDOWN), swidth, 1.4*FONT_SIZE, 14, 0xcba17f);
 		highscoreBg2.setOrigin(0, 0.5);
 		this.add(highscoreBg2);
 
-		let hsLabel = scene.createText(hx+70, ty+3, FONT_SIZE, "#000", "High score");
+		let hsLabel = scene.createText(hx+(140/SCALEDOWN), ty+(6/SCALEDOWN), FONT_SIZE, "#000", "High score");
 		hsLabel.setOrigin(0.5, 0);
 		hsLabel.setStroke("#FFFFFF", STROKE);
 		this.add(hsLabel);
 
-		this.highscore = scene.createText(hx + 140, ty+5, FONT_SIZE, "#FFF", "0");
+		this.highscore = scene.createText(hx + (280/SCALEDOWN), ty+(10/SCALEDOWN), FONT_SIZE, "#FFF", "0");
 		this.highscore.setOrigin(0, 0);
 		// this.highscore.setStroke("#FFFFFF", STROKE);
 		this.add(this.highscore);

@@ -4,6 +4,7 @@ import { GrayScalePostFilter } from "../pipelines/GrayScalePostFilter";
 import { BlurPostFilter } from "../pipelines/BlurPostFilter";
 import BendWaves from "../pipelines/BendWavesPostFX";
 import BendWaves2 from "../pipelines/BendWavesPostFX2";
+import { SCALEDOWN } from "../constants";
 
 
 export class PreloadScene extends BaseScene {
@@ -29,11 +30,11 @@ export class PreloadScene extends BaseScene {
 		let width = 0.5 * this.W;
 		let x = this.CX - width/2;
 		let y = this.CY;
-		let bg = this.add.rectangle(x, y, width, 4, 0x666666).setOrigin(0, 0.5);
-		let bar = this.add.rectangle(x, y, 1, 8, 0xDDDDDD).setOrigin(0, 0.5);
+		let bg = this.add.rectangle(x, y, width, 8/SCALEDOWN, 0x666666).setOrigin(0, 0.5);
+		let bar = this.add.rectangle(x, y, 2/SCALEDOWN, 16/SCALEDOWN, 0xDDDDDD).setOrigin(0, 0.5);
 
 		// Loading text
-		let text = this.createText(x, y, 16, "#DDDDDD", "Loading...").setOrigin(0, 1.5);
+		let text = this.createText(x, y, 32/SCALEDOWN, "#DDDDDD", "Loading...").setOrigin(0, 1.5);
 
 		// Listener
 		this.load.on("progress", (progress) => {

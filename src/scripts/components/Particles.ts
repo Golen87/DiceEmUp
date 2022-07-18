@@ -1,3 +1,4 @@
+import { SCALEDOWN } from "../constants";
 import { BaseScene } from "../scenes/BaseScene";
 
 class Particle extends Phaser.GameObjects.Sprite {
@@ -80,8 +81,8 @@ class Particle extends Phaser.GameObjects.Sprite {
 			this.vel.x *= -1;
 		}
 
-		this.pos.x += -2 + 4*Math.random() + (flip ? 2 : -2);
-		this.pos.y += -2 + 4*Math.random() + -3;
+		this.pos.x += -(4/SCALEDOWN) + (8/SCALEDOWN)*Math.random() + ((flip ? 1 : -1) * (4/SCALEDOWN));
+		this.pos.y += -(4/SCALEDOWN) + (8/SCALEDOWN)*Math.random() + -(6/SCALEDOWN);
 
 		this.setData("airtime", 0.4 + 0.3 * Math.random());
 
