@@ -1,5 +1,5 @@
 {
-  "name": "DiceEmUp",
+  "name": "FireAndDice",
   "version": "1.0.0",
   "description": "DESCRIPTION",
   "main": "build/main.js",
@@ -23,8 +23,8 @@
     "public": "rimraf public && webpack --config webpack/webpack.prod.js"
   },
   "build": {
-    "appId": "diceemup",
-    "productName": "DiceEmUp",
+    "appId": "fireanddice",
+    "productName": "FireAndDice",
     "mac": {
       "category": "your.app.category.type"
     },
