@@ -130,7 +130,7 @@ export class MenuScene extends BaseScene {
 		// Music
 
 		if (!this.musicTitle) {
-			this.musicTitle = new Music(this, "m_main_menu", { volume: 0.25 });
+			this.musicTitle = new Music(this, "m_main_menu", { volume: 0.4 });
 			this.musicTitle.on('bar', this.onBar, this);
 			this.musicTitle.on('beat', this.onBeat, this);
 
@@ -182,7 +182,7 @@ export class MenuScene extends BaseScene {
 			this.subtitle.alpha += 0.02 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);
 
 			if (this.credits.visible) {
-				this.credits.alpha += 0.01 * (1 - this.credits.alpha);
+				this.credits.alpha += 0.02 * (1 - this.credits.alpha);
 			}
 		}
 		else {
@@ -236,13 +236,11 @@ export class MenuScene extends BaseScene {
 
 
 	onBar(bar) {
-		if (bar >= 4) {
+		if (bar >= 2) {
 			this.title.setVisible(true);
 		}
-		if (bar >= 6) {
+		if (bar >= 4) {
 			this.subtitle.setVisible(true);
-		}
-		if (bar >= 8) {
 			this.credits.setVisible(true);
 		}
 	}
