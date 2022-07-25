@@ -15,8 +15,9 @@ export enum EnemyType {
 
 interface EnemyBehaviour {
 	type: EnemyType;
-	move: (coord:Coord, moves: number) => Coord;
-	spawn: (scene:GameScene, grid:Grid, coord?: Coord) => Enemy[];
+	move: (coord: Coord, moves: number) => Coord;
+	spawn: (scene: GameScene, grid: Grid, y?: number) => Enemy[];
+	customSpawn?: (scene: GameScene, grid: Grid, coord: Coord) => Enemy[];
 	tint: number;
 	minHealth: number;
 	maxHealth: number;
@@ -26,81 +27,69 @@ interface EnemyBehaviour {
 
 export const EnemyKinds = new Map<EnemyType, EnemyBehaviour>();
 
+const normalSpawn = (type: EnemyType) => {
+	return (scene: GameScene, grid: Grid, y?: number) => {
+		const kind = EnemyKinds.get(type);
+		const coord = grid.getRandomRightFree(y);
+		if (coord && kind != null) {
+			const enemy = new Enemy(scene, 0, 0, kind);
+			grid.addEnemy(coord, enemy);
+			return [enemy];
+		}
+		return [];
+	}
+};
+
 EnemyKinds.set(EnemyType.SQUIRE, {
 	type: EnemyType.SQUIRE,
 	tint: 0xFFFFFF,
-	minHealth: 3,
+	minHealth: 4,
 	maxHealth: 9,
 	score: 10,
 	sprite: "enemy",
 	move: (coord, moves) => {
 		return { i: coord.i-1, j: coord.j };
 	},
-	spawn: (scene, grid) => {
-		const ret: Enemy[] = [];
-		const coord = grid.getRandomRightFree();
-		const kind = EnemyKinds.get(EnemyType.SQUIRE);
-		if (coord && kind != null) {
-			const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
-			grid.addEnemy(coord, enemy);
-			ret.push(enemy);
-		}
-		return ret;
-	}
+	spawn: normalSpawn(EnemyType.SQUIRE)
 });
 
 EnemyKinds.set(EnemyType.PEASANT, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	minHealth: 2,
-	maxHealth: 5,
+	maxHealth: 4,
+	score: 5,
 	sprite: "peasant",
-	spawn: (scene:GameScene, grid:Grid) => {
-		const ret: Enemy[] = [];
-		const coord = grid.getRandomRightFree();
-		const kind = EnemyKinds.get(EnemyType.PEASANT);
-		if (coord && kind != null) {
-			const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
-			grid.addEnemy(coord, enemy);
-			ret.push(enemy);
-		}
-		return ret;
-	}
+	spawn: normalSpawn(EnemyType.PEASANT)
 }));
 
 EnemyKinds.set(EnemyType.TANK, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	type: EnemyType.TANK,
-	minHealth: 14,
-	maxHealth: 25,
+	minHealth: 16,
+	maxHealth: 22,
 	score: 30,
 	sprite: "tank",
-	spawn: (scene:GameScene, grid:Grid) => {
-		const ret: Enemy[] = [];
-		const coord = grid.getRandomRightFree();
-		const kind = EnemyKinds.get(EnemyType.TANK);
-		if (coord && kind != null) {
-			const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
-			grid.addEnemy(coord, enemy);
-			ret.push(enemy);
-		}
-		return ret;
-	}
+	spawn: normalSpawn(EnemyType.TANK)
 }));
 
 EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
-	maxHealth: 3,
+	minHealth: 4,
+	maxHealth: 4,
 	score: 5,
 	spawn: (scene:GameScene, grid:Grid) => {
 		const ret: Enemy[] = [];
 		const kind = EnemyKinds.get(EnemyType.SQUIRE_WAVE);
 		if(!kind) return ret;
 
+		const weakKind = Object.assign({}, kind, { minHealth: 1, maxHealth: 1 });
+		const weakPos = Phaser.Math.Between(0,4);
 		const right = grid.cols-1;
 
 		for( let j = 0; j < grid.rows; j++) {
 			if(!grid.grid[j][right]) {
-				const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
+				const ekind = (j == weakPos) ? weakKind : kind;
+				const enemy = new Enemy(scene, scene.W+200, scene.H/2, ekind);
 				grid.addEnemy({i: right, j: j}, enemy);
 				ret.push(enemy);
 			}
@@ -116,7 +105,7 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 	maxHealth: 3,
 	score: 5,
 	sprite: "peasant",
-	spawn: (scene:GameScene, grid:Grid, coord:Coord) => {
+	customSpawn: (scene:GameScene, grid:Grid, coord:Coord) => {
 		const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
 		if(!minionKind) return;
 		const ret: Enemy[] = [];
@@ -125,7 +114,7 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 			if( grid.grid[pos.j][pos.i] ) return;
 			const minion = new Enemy(scene, cell.cx, cell.cy, minionKind);
 			minion.moves = -1;
-			grid.addEnemy(pos, minion);
+			grid.addEnemy(pos, minion, false);
 			scene.enemies.push(minion);
 			ret.push(minion);
 			scene.sound.play("e_jump_out", { volume: 0.25, delay: 0.3 });
@@ -145,28 +134,27 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	minHealth: 8,
-	maxHealth: 13,
+	maxHealth: 10,
 	score: 15,
 	sprite: "trojan",
 	type: EnemyType.TROJAN_HORSE,
-	spawn: (scene:GameScene, grid:Grid) => {
-		const ret: Enemy[] = [];
-		const coord = grid.getRandomRightFree();
+	spawn: (scene: GameScene, grid: Grid, y?: number) => {
 		const kind = EnemyKinds.get(EnemyType.TROJAN_HORSE);
+		const coord = grid.getRandomRightFree(y);
 		if (coord && kind != null) {
-			const enemy = new Enemy(scene, scene.W+200, scene.H/2, kind);
+			const enemy = new Enemy(scene, 0, 0, kind);
 			grid.addEnemy(coord, enemy);
-			ret.push(enemy);
 
 			enemy.on("death", () => {
 				const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
 				const grave = enemy.coord;
-				if(!grave) return;
-				if(!minionKind) return;
-				minionKind.spawn(scene, grid, grave);
+				if (grave && minionKind && minionKind.customSpawn) {
+					minionKind.customSpawn(scene, grid, grave);
+				}
 			});
+			return [enemy];
 		}
-		return ret;
+		return [];
 	}
 }));
 
