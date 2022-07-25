@@ -153,10 +153,10 @@ export class Grid extends Phaser.GameObjects.Container {
 		return null;
 	}
 
-	getRandomRightFree(): Coord | null {
+	getRandomRightFree(y?: number): Coord | null {
 		let free: Coord[] = [];
 		for (let j = 0; j < this.rows; j++) {
-			if (!this.grid[j][this.cols-1]) {
+			if (!this.grid[j][this.cols-1] && (y == j || y === undefined)) {
 				free.push({ i: this.cols-1, j });
 			}
 		}
@@ -272,7 +272,14 @@ export class Grid extends Phaser.GameObjects.Container {
 		this.updateGrid();
 	}
 
-	addEnemy(coord: Coord, enemy: Enemy) {
+	addEnemy(coord: Coord, enemy: Enemy, moveRight: boolean=true) {
+		// Place enemy right of screen
+		if (moveRight) {
+			const cell = this.getCell(coord);
+			enemy.x = this.scene.W + 20;
+			enemy.y = cell.cy;
+		}
+
 		this.grid[coord.j][coord.i] = enemy;
 		enemy.move(coord, this.getCell(coord));
 		this.updateGrid();

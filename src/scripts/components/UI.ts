@@ -243,7 +243,7 @@ export class UI extends Phaser.GameObjects.Container {
 		// Score
 		this.scoreBounce += 10 * (0 - this.scoreBounce) * delta;
 		this.score.setScale(1 + 0.15 * this.scoreBounce, 1 - 0.05 * this.scoreBounce);
-		this.highscore.setScale(1 + 0.15 * this.scoreBounce, 1 - 0.05 * this.scoreBounce);
+		// this.highscore.setScale(1 + 0.15 * this.scoreBounce, 1 - 0.05 * this.scoreBounce);
 	}
 
 	setScore(score: number, highscore: number) {

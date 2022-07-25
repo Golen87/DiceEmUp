@@ -18,6 +18,7 @@ import level from "../components/Levels";
 
 
 enum State {
+	ThrowDice,
 	MoveDice,
 	DamagePhase,
 	MovementPhase,
@@ -76,7 +77,8 @@ export class GameScene extends BaseScene {
 	create(): void {
 		this.fade(false, 1000, 0x000000);
 
-		this.state = State.MoveDice;
+		this.round = 0;
+		this.state = State.MovementPhase;
 		this.initAnimations();
 
 		this.cameras.main.resetPostPipeline();
@@ -380,13 +382,13 @@ export class GameScene extends BaseScene {
 		});
 	}
 
-	addEnemy(kind: EnemyType) {
-		console.log(`Spawn kind ${kind} (${EnemyType[kind]})`)
+	addEnemy(kind: EnemyType, y?: number) {
+		// console.log(`Spawn kind ${kind} (${EnemyType[kind]})`);
 		let spawner = EnemyKinds.get(kind);
 		if( spawner != null ) {
-			const spawned = spawner.spawn(this, this.grid);
-			this.enemies.push(...spawned);
-			return spawned;
+			const newEnemies = spawner.spawn(this, this.grid, y);
+			this.enemies.push(...newEnemies);
+			return newEnemies;
 		}
 		return [];
 	}
@@ -423,11 +425,10 @@ export class GameScene extends BaseScene {
 		}
 		// });
 
-
-		this.addEvent(1000, this.onMove);
+		this.addEvent(1000, this.onEnemyMove);
 	}
 
-	onMove() {
+	onEnemyMove() {
 		this.state = State.MovementPhase;
 
 		for (const enemy of this.enemies) {
@@ -438,13 +439,11 @@ export class GameScene extends BaseScene {
 		}
 		this.enemies = this.enemies.filter(enemy => enemy.alive);
 
+		// Move enemies forward
 		let playScatterSound = false;
-		let switchDelay = 1000;
+		let switchDelay = 800;
 		if (this.enemies.length > 0) {
 			this.grid.moveEnemies();
-			this.sound.play("e_advance", {
-				volume: this.enemies.length == 1 ? 0.3 : 0.5
-			});
 		} else {
 			if(level.length <= this.round) {
 				this.addScore(100);
@@ -462,24 +461,78 @@ export class GameScene extends BaseScene {
 				this.tweens.add({
 					targets: this.overlayText,
 					delay: 1400,
-					duration: 800,
+					duratioonEnemyAttackn: 800,
 					ease: "Linear",
 					alpha: { from: 1, to: 0 }
 				})
 			}
-			switchDelay = 1500;
+			switchDelay = 0;
 			playScatterSound = true;
 		}
+
+		// Spawn new wave
+		do {
+			const roundData = level[this.round++];
+			if (roundData) {
+
+				if (roundData.event) {
+					roundData.event(this);
+				}
+				if (roundData.optional && this.enemies.filter(enemy => enemy.alive).length == 0) {
+					continue;
+				}
+				roundData.group.forEach( enemyParams => {
+					this.addEnemy(enemyParams.type, enemyParams.y);
+				});
+
+			} else {
+				let type = Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.SPAWNABLE_COUNT-1);
+
+				if (type == EnemyType.PEASANT) {
+					for (let i = Phaser.Math.Between(1,4); i >= 0; i--) {
+						this.addEnemy(type);
+					}
+				}
+				else if (type == EnemyType.SQUIRE) {
+					for (let i = Phaser.Math.Between(1,3); i >= 0; i--) {
+						this.addEnemy(type);
+					}
+				}
+				else {
+					this.addEnemy(type);
+
+					if (Math.random() < 0.3) {
+						console.log("+ peasant");
+						this.addEnemy(EnemyType.PEASANT);
+					}
+					if (Math.random() < 0.3) {
+						console.log("+ squire");
+						this.addEnemy(EnemyType.SQUIRE);
+					}
+				}
+
+			}
+		} while (this.enemies.filter(enemy => enemy.alive).length < 1);
+
 		for (let enemy of this.enemies) {
 			enemy.playWalk();
 		}
-		this.addEvent(switchDelay || 1000, () => {
+
+		if (this.enemies.length > 0 && !this.grid.needMoreEnemies()) {
+			this.sound.play("e_advance", {
+				volume: this.enemies.length == 1 ? 0.3 : 0.5
+			});
+		}
+
+		this.addEvent(switchDelay, () => {
 			playScatterSound && this.sound.play("m_scatter", { volume: 0.5, delay: 0.2 });
 			this.onEnemyAttack();
 		});
 	}
 
 	onEnemyAttack() {
+		this.state = State.AttackPhase;
+
 		let attackingEnemies = this.enemies.filter(enemy => enemy.coord && enemy.coord.i == 0);
 
 		for (let enemy of this.enemies) {
@@ -504,60 +557,23 @@ export class GameScene extends BaseScene {
 	}
 
 	onNewRound() {
+		this.state = State.ThrowDice;
 
+		this.attackButton.setVisible(false);
 
-		this.state = State.MoveDice;
-
-		this.button.setVisible(false);
-
-		do {
-			const roundData = level[this.round++];
-			if(roundData) {
-				if(roundData.event) roundData.event(this);
-				roundData.group.forEach( type => {
-					this.addEnemy(type);
-				})
-			} else {
-				let type = Phaser.Math.Between(EnemyType.SQUIRE, EnemyType.SPAWNABLE_COUNT-1);
-
-				if (type == EnemyType.PEASANT) {
-					console.log("spawn 1-4 peasants");
-					for (let i = Phaser.Math.Between(1,4); i >= 0; i--) {
-						this.addEnemy(type);
-					}
-				}
-				else if (type == EnemyType.SQUIRE) {
-					console.log("spawn 1-3 squires");
-					for (let i = Phaser.Math.Between(1,3); i >= 0; i--) {
-						this.addEnemy(type);
-					}
-				}
-				else {
-					console.log("spawn 1", type);
-					this.addEnemy(type);
-
-					if (Math.random() < 0.3) {
-						console.log("+ peasant");
-						this.addEnemy(EnemyType.PEASANT);
-					}
-					if (Math.random() < 0.3) {
-						console.log("+ squire");
-						this.addEnemy(EnemyType.SQUIRE);
-					}
-				}
-
-			}
-		} while (this.enemies.filter(enemy => enemy.alive).length < 1);
+		// Used to spawn enemies here
 
 		for (let enemy of this.enemies) {
 			enemy.playIdle();
 		}
 
 		if (this.grid.needMoreEnemies()) {
-			this.addEvent(600, this.onMove);
+			this.addEvent(200, this.onEnemyMove);
 		}
 		else {
+			// this.addEvent(500, () => {
 			this.dragon.throw();
+			// });
 			// Animation -> this.onDragonThrow
 		}
 	}
@@ -576,16 +592,20 @@ export class GameScene extends BaseScene {
 		this.shake(300, 2, 0);
 
 		// Show attack button after a while
-		this.addEvent(1800, () => {
-			this.tweens.add({
-				targets: this.button.fire,
-				scaleY: { from: 0, to: 0.6 },
-				duration: 200,
-				ease: "Cubic.Out"
-			});
-			this.button.setVisible(true);
-			this.sound.play(`m_fire_ignite_${Phaser.Math.Between(1, 3)}`, {volume: 0.85});
+		this.addEvent(1800, this.onPlayerTurn, this);
+	}
+
+	onPlayerTurn() {
+		this.state = State.MoveDice;
+
+		this.tweens.add({
+			targets: this.attackButton.fire,
+			scaleY: { from: 0, to: 0.6 },
+			duration: 200,
+			ease: "Cubic.Out"
 		});
+		this.attackButton.setVisible(true);
+		this.sound.play(`m_fire_ignite_${Phaser.Math.Between(1, 3)}`, {volume: 0.85});
 	}
 
 	onDragonDeath() {
