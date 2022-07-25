@@ -1,7 +1,7 @@
 import { GameScene } from "../scenes/GameScene";
 import { BaseButton } from "./BaseButton";
 
-export class Button extends BaseButton {
+export class AttackButton extends BaseButton {
 	public scene: GameScene;
 
 	public fire: Phaser.GameObjects.Sprite;

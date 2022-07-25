@@ -8,7 +8,7 @@ import { Particles } from "../components/Particles";
 import { Player } from "../components/Player";
 import { Enemy, EnemyKinds, EnemyType } from "../components/Enemy";
 import { Dice } from "../components/Dice";
-import { Button } from "../components/Button";
+import { AttackButton } from "../components/AttackButton";
 import { MiniButton } from "../components/MiniButton";
 import { Dragon } from "../components/Dragon";
 import { interpolateColor } from "../utils";
@@ -36,7 +36,7 @@ export class GameScene extends BaseScene {
 	public dices: Dice[];
 	public enemies: Enemy[];
 	public dragon: Dragon;
-	public button: Button;
+	public attackButton: AttackButton;
 	public musicButton: MiniButton;
 	public audioButton: MiniButton;
 
@@ -103,8 +103,9 @@ export class GameScene extends BaseScene {
 		this.dices = [];
 		this.enemies = [];
 
-		this.button = new Button(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - 60);
-		this.button.on('click', this.onAttack, this);
+		this.attackButton = new AttackButton(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - 60);
+		this.attackButton.setVisible(false);
+		this.attackButton.on('click', this.onAttack, this);
 
 		const bsize = 35;
 		this.musicButton = new MiniButton(this, this.W-2.5*bsize, 0.8*bsize, 'music');
@@ -202,7 +203,7 @@ export class GameScene extends BaseScene {
 		for (const enemy of this.enemies) {
 			enemy.update(timeMs, deltaMs);
 		}
-		this.button.update(timeMs, deltaMs);
+		this.attackButton.update(timeMs, deltaMs);
 		this.musicButton.update(timeMs, deltaMs);
 		this.audioButton.update(timeMs, deltaMs);
 		this.particles.update(timeMs/1000, deltaMs/1000);
@@ -394,7 +395,7 @@ export class GameScene extends BaseScene {
 		this.sound.play("u_attack_button", {volume: 0.5});
 
 		this.state = State.DamagePhase;
-		this.button.setVisible(false);
+		this.attackButton.setVisible(false);
 
 		// Cache damage grid
 		const damageGrid = this.grid.getDamageGrid();
