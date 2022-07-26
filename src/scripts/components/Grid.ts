@@ -89,6 +89,16 @@ export class Grid extends Phaser.GameObjects.Container {
 		text.setOrigin(1.05, 0.15);
 		this.add(text);
 		this.gridText[j][i] = text;
+
+		if (this.isStorage({i, j})) {
+			tile2.setAlpha(0);
+			text.setFontSize(12);
+			text.setColor("#FFFFFF");
+			text.setStroke("#222229", 3);
+			text.setText("Storage");
+			text.setOrigin(0.5, 0.5);
+			text.x -= cell.width/2;
+		}
 	}
 
 	update(time: number, delta: number) {
@@ -101,7 +111,7 @@ export class Grid extends Phaser.GameObjects.Container {
 			}
 		}
 
-		this.gridHighlights[0][this.cols].setAlpha(0);
+		// this.gridHighlights[0][this.cols].setAlpha(0);
 		// if (this.getHighlight({ i:this.cols, j:0 })) {
 			// this.gridHighlights[0][this.cols].setAlpha( 0.4 + 0.1 * Math.sin(10*time) );
 		// }
@@ -112,8 +122,8 @@ export class Grid extends Phaser.GameObjects.Container {
 		let y = this.top + coord.j * this.height + this.hPad;
 		// Storage tile
 		if (coord.i == this.cols) {
-			x = this.left - 1.5 * this.width + this.wPad;
-			y = this.top;
+			x = this.left - 1.4 * this.width + this.wPad;
+			y = this.top - 0 * this.height + this.hPad;
 		}
 
 		const width = this.width - 2*this.wPad;
