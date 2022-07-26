@@ -39,16 +39,16 @@ export class Grid extends Phaser.GameObjects.Container {
 	constructor(scene: GameScene) {
 		super(scene, 0, 0);
 		this.scene = scene;
-		scene.add.existing(this);
+		this.scene.add.existing(this);
 
 
-		this.bg = scene.add.image(this.left-9, this.top-9, 'ui_board_border');
+		this.bg = this.scene.add.image(this.left-9, this.top-9, 'ui_board_border');
 		this.bg.setOrigin(0);
 		// this.bg.setScale((this.width*this.cols + 22) / this.bg.width);
 		this.add(this.bg);
 
 		// Debug graphics
-		// this.graphics = scene.add.graphics();
+		// this.graphics = this.scene.add.graphics();
 		// this.graphics.setVisible(false);
 		// this.add(this.graphics);
 
@@ -62,28 +62,33 @@ export class Grid extends Phaser.GameObjects.Container {
 			this.gridTiles.push([]);
 			this.gridHighlights.push([]);
 			for (let i = 0; i < this.cols; i++) {
-				this.grid[j].push(null);
-
-				let cell = this.getCell({i, j});
-
-				let tile = scene.add.image(cell.cx, cell.cy, 'ui_board_tile');
-				tile.setScale(cell.width / tile.width);
-				this.add(tile);
-				this.gridTiles[j][i] = tile;
-
-				let tile2 = scene.add.rectangle(cell.cx, cell.cy, cell.width, cell.height+1, 0xFFFF99, 1.0);
-				this.add(tile2);
-				this.gridHighlights[j][i] = tile2;
-
-				const text = scene.createText(cell.x+cell.width, cell.y, 18, "#B71C1C", "")
-				text.setStroke("#FFFFFF", 3);
-				text.setOrigin(1.05, 0.15);
-				this.add(text);
-				this.gridText[j][i] = text;
+				this.newCell(i, j);
 			}
 		}
+		this.newCell(this.cols, 0);
 
 		this.updateGrid();
+	}
+
+	newCell(i: number, j: number) {
+		this.grid[j].push(null);
+
+		let cell = this.getCell({i, j});
+
+		let tile = this.scene.add.image(cell.cx, cell.cy, 'ui_board_tile');
+		tile.setScale(cell.width / tile.width);
+		this.add(tile);
+		this.gridTiles[j][i] = tile;
+
+		let tile2 = this.scene.add.rectangle(cell.cx, cell.cy, cell.width, cell.height+1, 0xFFFF99, 1.0);
+		this.add(tile2);
+		this.gridHighlights[j][i] = tile2;
+
+		const text = this.scene.createText(cell.x+cell.width, cell.y, 18, "#B71C1C", "")
+		text.setStroke("#FFFFFF", 3);
+		text.setOrigin(1.05, 0.15);
+		this.add(text);
+		this.gridText[j][i] = text;
 	}
 
 	update(time: number, delta: number) {
@@ -95,11 +100,22 @@ export class Grid extends Phaser.GameObjects.Container {
 				}
 			}
 		}
+
+		this.gridHighlights[0][this.cols].setAlpha(0);
+		// if (this.getHighlight({ i:this.cols, j:0 })) {
+			// this.gridHighlights[0][this.cols].setAlpha( 0.4 + 0.1 * Math.sin(10*time) );
+		// }
 	}
 
 	getCell(coord: Coord): Cell {
-		const x = this.left + coord.i * this.width + this.wPad;
-		const y = this.top + coord.j * this.height + this.hPad;
+		let x = this.left + coord.i * this.width + this.wPad;
+		let y = this.top + coord.j * this.height + this.hPad;
+		// Storage tile
+		if (coord.i == this.cols) {
+			x = this.left - 1.5 * this.width + this.wPad;
+			y = this.top;
+		}
+
 		const width = this.width - 2*this.wPad;
 		const height = this.height - 2*this.hPad;
 		const cx = x + width/2;
@@ -114,27 +130,36 @@ export class Grid extends Phaser.GameObjects.Container {
 		};
 	}
 
-	getClosest(coord: Coord):Coord {
-		const x = Math.floor((coord.i-this.left)/this.width);
-		const y = Math.floor((coord.j-this.top)/this.height);
-		const minmax = (n, min, max) => Math.max(Math.min(n, max), min);
-		return {i: minmax(x, 0, this.cols), j: minmax(y, 0, this.rows)};
-	}
+	// getClosest(coord: Coord):Coord {
+	// 	const x = Math.floor((coord.i-this.left)/this.width);
+	// 	const y = Math.floor((coord.j-this.top)/this.height);
+	// 	const minmax = (n, min, max) => Math.max(Math.min(n, max), min);
+	// 	return {i: minmax(x, 0, this.cols), j: minmax(y, 0, this.rows)};
+	// }
 
 	getClosestCoord(x: number, y: number, dice?: Dice): Coord | null {
-		let coord: Coord | null = null;
+		let winner: Coord | null = null;
 		let record = Infinity;
+
+		const check = (coord: Coord, cell: Cell, slot: any) => {
+			const dist = Math.abs(x-cell.cx) + Math.abs(y-cell.cy);
+			if (dist < record && (!slot || slot == dice)) {
+				record = dist;
+				winner = coord;
+			}
+		};
+
 		for (let j = 0; j < this.rows; j++) {
 			for (let i = 0; i < this.cols; i++) {
-				const cell = this.getCell({i, j});
-				const dist = Math.abs(x-cell.cx) + Math.abs(y-cell.cy);
-				if (dist < record && (!this.grid[j][i] || dice == this.grid[j][i])) {
-					record = dist;
-					coord = { i, j };
-				}
+				const coord: Coord = {i, j};
+				check(coord, this.getCell(coord), this.grid[j][i]);
 			}
 		}
-		return coord;
+
+		const storage: Coord = {i:this.cols, j:0};
+		check(storage, this.getCell(storage), this.grid[0][this.cols]);
+
+		return winner;
 	}
 
 	getRandomFree(): Coord | null {
@@ -297,13 +322,18 @@ export class Grid extends Phaser.GameObjects.Container {
 		if (coord && dice.coord) {
 			const cell = this.getCell(coord);
 			if (dice.coord.i != coord.i || dice.coord.j != coord.j) {
+
 				this.grid[coord.j][coord.i] = dice;
 				this.grid[dice.coord.j][dice.coord.i] = null;
 				this.updateGrid();
 
-				dice.move(coord, cell);
+				dice.move(coord, cell, this.isStorage(coord));
 			}
 		}
+	}
+
+	isStorage(coord: Coord) {
+		return (coord.i == this.cols && coord.j == 0);
 	}
 
 	moveEnemies() {

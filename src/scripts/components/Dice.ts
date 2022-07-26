@@ -2,13 +2,13 @@ import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
 import { audios } from "../assets";
 
-interface DiceStyle {
+export interface DiceStyle {
 	sides: number;
 	tint: number;
 	pattern: (coord:Coord, x:number, y:number) => boolean;
 }
 
-const diceStyles: DiceStyle[] = [
+export const diceStyles: DiceStyle[] = [
 	{
 		sides: 6,
 		tint: 0xEF5350,
@@ -41,6 +41,7 @@ export class Dice extends Phaser.GameObjects.Container {
 	public style: DiceStyle;
 	public value: number;
 
+	public inStorage: boolean;
 	public dragging: boolean;
 	public hovering: boolean;
 	public holdSmooth: number;
@@ -49,17 +50,17 @@ export class Dice extends Phaser.GameObjects.Container {
 
 	private bounceValue: number;
 
-	constructor(scene: GameScene, x: number, y: number) {
+	constructor(scene: GameScene, x: number, y: number, diceStyle: DiceStyle, diceValue: number) {
 		super(scene, x, y);
 		this.scene = scene;
 		scene.add.existing(this);
 
-		this.style = Phaser.Math.RND.pick(diceStyles);
-		this.value = Phaser.Math.Between(1, this.style.sides);
+		this.style = diceStyle;
+		this.value = diceValue;
 		this.bounceValue = 1;
 
 		this.shadow = scene.add.sprite(0, 0, 'shadow');
-		this.shadow.setOrigin(0.5, 0.6);
+		this.shadow.setOrigin(0.5, 0.52);
 		this.add(this.shadow);
 
 		this.sprite = scene.add.sprite(0, 0, 'dice', 6);
@@ -75,6 +76,7 @@ export class Dice extends Phaser.GameObjects.Container {
 
 		this.lastDragSound = Date.now();
 
+		this.inStorage = false;
 		this.dragging = false;
 		this.hovering = false;
 		this.holdSmooth = 0;
@@ -126,7 +128,7 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.scene.sound.play(`t_place_single_short_${Phaser.Math.Between(1,5)}`); // Phaser.Math.RND.pick(["long", "short"])
 	}
 
-	async throw(coord: Coord, cell: Cell) {
+	throw(coord: Coord, cell: Cell) {
 		this.sprite.setScale(0.9 * cell.width / this.sprite.width);
 		this.shadow.setScale(1.5 * cell.width / this.sprite.width);
 		// this.sprite.setTexture('d6_roll');
@@ -170,14 +172,13 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.scene.addEvent(0.6 * duration, () => {
 			this.scene.sound.play(`t_throw_desk_multiple_${Phaser.Math.Between(1,5)}`);
 		});
-
-		return true;
 	}
 
-	move(coord: Coord, cell: Cell) {
+	move(coord: Coord, cell: Cell, inStorage: boolean) {
 		this.setDepth(10 + cell.y + 0.01*cell.x);
 
 		this.coord = coord;
+		this.inStorage = inStorage;
 
 		// Dice dragging audio
 		const now = Date.now()

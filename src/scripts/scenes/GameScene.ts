@@ -7,7 +7,7 @@ import { UI } from "../components/UI";
 import { Particles } from "../components/Particles";
 import { Player } from "../components/Player";
 import { Enemy, EnemyKinds, EnemyType } from "../components/Enemy";
-import { Dice } from "../components/Dice";
+import { Dice, DiceStyle, diceStyles } from "../components/Dice";
 import { AttackButton } from "../components/AttackButton";
 import { MiniButton } from "../components/MiniButton";
 import { Dragon } from "../components/Dragon";
@@ -122,7 +122,6 @@ export class GameScene extends BaseScene {
 			this.audioButton.toggle();
 			this.sound.mute = !this.audioButton.active;
 		}, this);
-
 
 
 		// UI
@@ -368,8 +367,33 @@ export class GameScene extends BaseScene {
 	}
 
 
-	addDice() {
-		const dice = new Dice(this, 300, this.CY)
+	generateDice() {
+		let diceCount = 3;
+		let styles: number[] = [0, 0, 1, 1, 2, 2];
+
+		// Pick 3 random styles from set of 6 dice
+		styles = styles.sort(() => 0.5 - Math.random()).slice(0, diceCount);
+
+		// Generate 3 values until sum is > 6
+		let values: number[] = [];
+		while (values.reduce((a,b) => a+b, 0) <= diceCount * 2) {
+			values = [];
+			for (let index of styles) {
+				values.push(Phaser.Math.Between(1, diceStyles[index].sides));
+			}
+		}
+
+		// Create dice
+		for (let i = 0; i < diceCount; i++) {
+			const style = diceStyles[styles[i]];
+			const value = values[i];
+
+			this.addDice(style, value);
+		}
+	}
+
+	addDice(diceStyle: DiceStyle, diceValue: number) {
+		const dice = new Dice(this, 300, this.CY, diceStyle, diceValue);
 		this.dices.push(dice);
 
 		const coord = this.grid.getRandomFree();
@@ -407,12 +431,14 @@ export class GameScene extends BaseScene {
 		this.shake(500, 4, 0);
 		this.grid.explodeGrid();
 		for (const dice of this.dices) {
-			// this.particles.createExplosion(dice.x, dice.y, 0.8, 1.0);
-			this.grid.clear(dice.coord);
-			dice.destroy();
+			if (!dice.inStorage) {
+				// this.particles.createExplosion(dice.x, dice.y, 0.8, 1.0);
+				this.grid.clear(dice.coord);
+				dice.destroy();
+			}
 		}
 		this.grid.updateGrid();
-		this.dices = [];
+		this.dices = this.dices.filter(dice => dice.inStorage);
 
 		// this.addEvent(200, () => {
 		for (const enemy of this.enemies) {
@@ -585,9 +611,7 @@ export class GameScene extends BaseScene {
 			`m_whoosh_${Phaser.Math.RND.pick(["hard", "medium"])}_${Phaser.Math.Between(1, 4)}`,
 			{ volume: 0.35, pan: -0.3, rate: 1.28 }
 		)
-		for (let i = 0; i < 3; i++) {
-			this.addDice();
-		}
+		this.generateDice();
 
 		this.shake(300, 2, 0);
 

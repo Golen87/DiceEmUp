@@ -50,7 +50,6 @@ export class Music extends Phaser.Sound.WebAudioSound {
 				if (this.currentTime > this.end) {
 					this.setSeek(this.currentTime - (this.end - this.start));
 					this.loopSum += this.end - this.start;
-					console.log("Music loop", this.currentTime);
 					this.emit('loop');
 				}
 			}
