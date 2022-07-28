@@ -75,7 +75,7 @@ export class Grid extends Phaser.GameObjects.Container {
 
 		let cell = this.getCell({i, j});
 
-		let tile = this.scene.add.image(cell.cx, cell.cy, 'ui_board_tile');
+		let tile = this.scene.add.image(cell.cx, cell.cy, 'board_tile');
 		tile.setScale(cell.width / tile.width);
 		this.add(tile);
 		this.gridTiles[j][i] = tile;

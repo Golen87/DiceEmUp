@@ -59,7 +59,7 @@ export class Dice extends Phaser.GameObjects.Container {
 		this.value = diceValue;
 		this.bounceValue = 1;
 
-		this.shadow = scene.add.sprite(0, 0, 'shadow');
+		this.shadow = scene.add.sprite(0, 0, 'dice_shadow');
 		this.shadow.setOrigin(0.5, 0.52);
 		this.add(this.shadow);
 

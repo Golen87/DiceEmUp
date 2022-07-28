@@ -84,13 +84,11 @@ export class GameScene extends BaseScene {
 		this.cameras.main.resetPostPipeline();
 
 		// Backgrounds
-		// this.background = new Background(this);
-		// this.background.setDepth(BACKGROUND_LAYER);
-		let bg = this.add.image(this.CX, this.CY, 'bg');
+		let bg = this.add.image(this.CX, this.CY, 'bg_town');
 		this.containToScreen(bg);
-		this.bg_shadow = this.add.image(this.CX, this.CY, 'bgs');
+		this.bg_shadow = this.add.image(this.CX, this.CY, 'bg_shadow');
 		this.containToScreen(this.bg_shadow);
-		let fg = this.add.image(this.CX, this.CY, 'fg');
+		let fg = this.add.image(this.CX, this.CY, 'fg_town');
 		this.containToScreen(fg);
 		fg.setDepth(1000);
 
@@ -230,137 +228,137 @@ export class GameScene extends BaseScene {
 		this.anims.create({
 			key: 'dragon_idle',
 			frames: [
-				{ key: 'dragon', frame: 0, duration: 600 },
-				{ key: 'dragon', frame: 1, duration: 400 },
-				{ key: 'dragon', frame: 2, duration: 600 },
-				{ key: 'dragon', frame: 1, duration: 400 },
+				{ key: 'dragon_idle', frame: 0, duration: 600 },
+				{ key: 'dragon_idle', frame: 1, duration: 400 },
+				{ key: 'dragon_idle', frame: 2, duration: 600 },
+				{ key: 'dragon_idle', frame: 1, duration: 400 },
 			],
 			repeat: -1
 		});
 		this.anims.create({
-			key: 'dragon_throw',
+			key: 'dragon_prepare',
 			frames: [
-				{ key: 'dragon', frame: 4, duration: 300 },
-				{ key: 'dragon', frame: 5, duration: 400 },
+				{ key: 'dragon_prepare', frame: 0, duration: 300 },
+				{ key: 'dragon_prepare', frame: 1, duration: 400 },
 			],
 		});
 		this.anims.create({
-			key: 'dragon_return',
+			key: 'dragon_throw',
 			frames: [
-				{ key: 'dragon', frame: 6, duration: 500 },
-				{ key: 'dragon', frame: 7, duration: 300 },
-				{ key: 'dragon', frame: 8, duration: 200 },
+				{ key: 'dragon_throw', frame: 0, duration: 500 },
+				{ key: 'dragon_throw', frame: 1, duration: 300 },
+				{ key: 'dragon_throw', frame: 2, duration: 200 },
 			],
 		});
 		this.anims.create({
 			key: 'dragon_hurt',
 			frames: [
-				{ key: 'dragon', frame: 3, duration: 1500 },
+				{ key: 'dragon_hurt', frame: 0, duration: 1500 },
 			],
 			repeat: -1
 		});
 
 		this.anims.create({
-			key: 'enemy_idle',
+			key: 'enemy_peasant_idle',
 			frames: [
-				{ key: 'enemy', frame: 0, duration: 500 },
-				{ key: 'enemy', frame: 1, duration: 500 },
+				{ key: 'enemy_peasant', frame: 0, duration: 500 },
+				{ key: 'enemy_peasant', frame: 1, duration: 500 },
 			],
 			repeat: -1
 		});
 		this.anims.create({
-			key: 'enemy_walk',
+			key: 'enemy_peasant_walk',
 			frames: [
-				{ key: 'enemy', frame: 2, duration: 100 },
-				{ key: 'enemy', frame: 0, duration: 100 },
+				{ key: 'enemy_peasant', frame: 2, duration: 100 },
+				{ key: 'enemy_peasant', frame: 0, duration: 100 },
 			],
 			repeat: -1
 		});
 		this.anims.create({
-			key: 'enemy_attack',
+			key: 'enemy_peasant_attack',
 			frames: [
-				{ key: 'enemy', frame: 0, duration: 100 },
-				{ key: 'enemy', frame: 2, duration: 100 },
-				{ key: 'enemy', frame: 3, duration: 100 },
-			],
-			repeat: -1
-		});
-
-		this.anims.create({
-			key: 'tank_idle',
-			frames: [
-				{ key: 'tank', frame: 0, duration: 500 },
-				{ key: 'tank', frame: 1, duration: 500 },
-			],
-			repeat: -1
-		});
-		this.anims.create({
-			key: 'tank_walk',
-			frames: [
-				{ key: 'tank', frame: 2, duration: 100 },
-				{ key: 'tank', frame: 0, duration: 100 },
-			],
-			repeat: -1
-		});
-		this.anims.create({
-			key: 'tank_attack',
-			frames: [
-				{ key: 'tank', frame: 0, duration: 100 },
-				{ key: 'tank', frame: 2, duration: 100 },
-				{ key: 'tank', frame: 3, duration: 60 },
-				{ key: 'tank', frame: 4, duration: 120 },
+				{ key: 'enemy_peasant', frame: 1, duration: 100 },
+				{ key: 'enemy_peasant', frame: 2, duration: 100 },
+				{ key: 'enemy_peasant', frame: 3, duration: 100 },
 			],
 			repeat: -1
 		});
 
 		this.anims.create({
-			key: 'trojan_idle',
+			key: 'enemy_squire_idle',
 			frames: [
-				{ key: 'trojan', frame: 0, duration: 500 },
-				{ key: 'trojan', frame: 1, duration: 500 },
+				{ key: 'enemy_squire', frame: 0, duration: 500 },
+				{ key: 'enemy_squire', frame: 1, duration: 500 },
 			],
 			repeat: -1
 		});
 		this.anims.create({
-			key: 'trojan_walk',
+			key: 'enemy_squire_walk',
 			frames: [
-				{ key: 'trojan', frame: 2, duration: 100 },
-				{ key: 'trojan', frame: 0, duration: 100 },
+				{ key: 'enemy_squire', frame: 2, duration: 100 },
+				{ key: 'enemy_squire', frame: 0, duration: 100 },
 			],
 			repeat: -1
 		});
 		this.anims.create({
-			key: 'trojan_walk',
+			key: 'enemy_squire_attack',
 			frames: [
-				{ key: 'trojan', frame: 2, duration: 100 },
-				{ key: 'trojan', frame: 1, duration: 100 },
-				{ key: 'trojan', frame: 0, duration: 100 },
+				{ key: 'enemy_squire', frame: 0, duration: 100 },
+				{ key: 'enemy_squire', frame: 2, duration: 100 },
+				{ key: 'enemy_squire', frame: 3, duration: 100 },
 			],
 			repeat: -1
 		});
 
 		this.anims.create({
-			key: 'peasant_idle',
+			key: 'enemy_tank_idle',
 			frames: [
-				{ key: 'peasant', frame: 0, duration: 500 },
-				{ key: 'peasant', frame: 1, duration: 500 },
+				{ key: 'enemy_tank', frame: 0, duration: 500 },
+				{ key: 'enemy_tank', frame: 1, duration: 500 },
 			],
 			repeat: -1
 		});
 		this.anims.create({
-			key: 'peasant_walk',
+			key: 'enemy_tank_walk',
 			frames: [
-				{ key: 'peasant', frame: 2, duration: 100 },
-				{ key: 'peasant', frame: 0, duration: 100 },
+				{ key: 'enemy_tank', frame: 2, duration: 100 },
+				{ key: 'enemy_tank', frame: 0, duration: 100 },
 			],
 			repeat: -1
 		});
 		this.anims.create({
-			key: 'peasant_attack',
+			key: 'enemy_tank_attack',
 			frames: [
-				{ key: 'peasant', frame: 1, duration: 100 },
-				{ key: 'peasant', frame: 2, duration: 100 },
-				{ key: 'peasant', frame: 3, duration: 100 },
+				{ key: 'enemy_tank', frame: 0, duration: 100 },
+				{ key: 'enemy_tank', frame: 2, duration: 100 },
+				{ key: 'enemy_tank', frame: 3, duration: 60 },
+				{ key: 'enemy_tank', frame: 4, duration: 120 },
+			],
+			repeat: -1
+		});
+
+		this.anims.create({
+			key: 'enemy_trojan_idle',
+			frames: [
+				{ key: 'enemy_trojan', frame: 0, duration: 500 },
+				{ key: 'enemy_trojan', frame: 1, duration: 500 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'enemy_trojan_walk',
+			frames: [
+				{ key: 'enemy_trojan', frame: 2, duration: 100 },
+				{ key: 'enemy_trojan', frame: 0, duration: 100 },
+			],
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'enemy_trojan_walk',
+			frames: [
+				{ key: 'enemy_trojan', frame: 2, duration: 100 },
+				{ key: 'enemy_trojan', frame: 1, duration: 100 },
+				{ key: 'enemy_trojan', frame: 0, duration: 100 },
 			],
 			repeat: -1
 		});
@@ -374,9 +372,9 @@ export class GameScene extends BaseScene {
 		// Pick 3 random styles from set of 6 dice
 		styles = styles.sort(() => 0.5 - Math.random()).slice(0, diceCount);
 
-		// Generate 3 values until sum is > 6
+		// Generate 3 values until sum is >= 6
 		let values: number[] = [];
-		while (values.reduce((a,b) => a+b, 0) <= diceCount * 2) {
+		while (values.reduce((a,b) => a+b, 0) < diceCount * 2) {
 			values = [];
 			for (let index of styles) {
 				values.push(Phaser.Math.Between(1, diceStyles[index].sides));

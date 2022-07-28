@@ -33,7 +33,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 		this.deathDuration = 1000;
 
 		// Create player sprite
-		this.sprite = scene.add.sprite(0, 0, 'dragon', 0);
+		this.sprite = scene.add.sprite(0, 0, 'dragon_idle', 0);
 		this.sprite.setOrigin(0.0, 0.5);
 		scene.containToScreen(this.sprite);
 		this.add(this.sprite);
@@ -47,11 +47,11 @@ export class Dragon extends Phaser.GameObjects.Container {
 
 		this.sprite.play({ key: 'dragon_idle' });
 		this.sprite.on('animationcomplete', () => {
-			if (this.sprite.anims.currentAnim.key == 'dragon_throw') {
+			if (this.sprite.anims.currentAnim.key == 'dragon_prepare') {
 				this.emit('throw');
-				this.sprite.play({ key: 'dragon_return' });
+				this.sprite.play({ key: 'dragon_throw' });
 			}
-			else if (this.sprite.anims.currentAnim.key == 'dragon_return') {
+			else if (this.sprite.anims.currentAnim.key == 'dragon_throw') {
 				this.sprite.play({ key: 'dragon_idle' });
 			}
 		});
@@ -146,7 +146,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 	}
 
 	throw() {
-		this.sprite.play({ key: 'dragon_throw' });
+		this.sprite.play({ key: 'dragon_prepare' });
 	}
 
 	damage(amount: number=1) {

@@ -50,7 +50,7 @@ export class GameoverScene extends BaseScene {
 		this.fade(false, 200, 0x000000);
 
 
-		this.bg = this.add.image(this.CX, this.CY, "gameover");
+		this.bg = this.add.image(this.CX, this.CY, "bg_gameover");
 		this.containToScreen(this.bg);
 
 
@@ -108,7 +108,7 @@ export class GameoverScene extends BaseScene {
 
 		this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE).on('down', this.progress, this);
 		this.input.on('pointerdown', (pointer) => {
-			if (pointer.button == 0) {
+			if (pointer.button == 0 && !this.isStarting) {
 				this.progress();
 			}
 		}, this);

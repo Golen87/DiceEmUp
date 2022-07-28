@@ -1,5 +1,6 @@
 import { GameScene } from "../scenes/GameScene";
 import { Grid, Coord, Cell } from "./Grid";
+import { GRID_COLS, GRID_ROWS, CELL_HEIGHT } from "../constants";
 
 const inrange = (n:number, min:number, max:number) => n >= min && n <= max;
 
@@ -23,6 +24,7 @@ interface EnemyBehaviour {
 	maxHealth: number;
 	score: number;
 	sprite: string;
+	scale: number;
 };
 
 export const EnemyKinds = new Map<EnemyType, EnemyBehaviour>();
@@ -43,10 +45,11 @@ const normalSpawn = (type: EnemyType) => {
 EnemyKinds.set(EnemyType.SQUIRE, {
 	type: EnemyType.SQUIRE,
 	tint: 0xFFFFFF,
-	minHealth: 4,
+	minHealth: 5,
 	maxHealth: 9,
 	score: 10,
-	sprite: "enemy",
+	sprite: "enemy_squire",
+	scale: 1.2,
 	move: (coord, moves) => {
 		return { i: coord.i-1, j: coord.j };
 	},
@@ -58,7 +61,8 @@ EnemyKinds.set(EnemyType.PEASANT, Object.assign({},
 	minHealth: 2,
 	maxHealth: 4,
 	score: 5,
-	sprite: "peasant",
+	sprite: "enemy_peasant",
+	scale: 1.15,
 	spawn: normalSpawn(EnemyType.PEASANT)
 }));
 
@@ -66,9 +70,10 @@ EnemyKinds.set(EnemyType.TANK, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	type: EnemyType.TANK,
 	minHealth: 16,
-	maxHealth: 22,
+	maxHealth: 24,
 	score: 30,
-	sprite: "tank",
+	sprite: "enemy_tank",
+	scale: 1.3,
 	spawn: normalSpawn(EnemyType.TANK)
 }));
 
@@ -84,9 +89,9 @@ EnemyKinds.set(EnemyType.SQUIRE_WAVE, Object.assign({},
 
 		const weakKind = Object.assign({}, kind, { minHealth: 1, maxHealth: 1 });
 		const weakPos = Phaser.Math.Between(0,4);
-		const right = grid.cols-1;
+		const right = GRID_COLS-1;
 
-		for( let j = 0; j < grid.rows; j++) {
+		for( let j = 0; j < GRID_ROWS; j++) {
 			if(!grid.grid[j][right]) {
 				const ekind = (j == weakPos) ? weakKind : kind;
 				const enemy = new Enemy(scene, scene.W+200, scene.H/2, ekind);
@@ -104,7 +109,8 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 	minHealth: 1,
 	maxHealth: 3,
 	score: 5,
-	sprite: "peasant",
+	sprite: "enemy_peasant",
+	scale: 1.15,
 	customSpawn: (scene:GameScene, grid:Grid, coord:Coord) => {
 		const minionKind = EnemyKinds.get(EnemyType.TROJAN_MINION);
 		if(!minionKind) return;
@@ -120,11 +126,11 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 			scene.sound.play("e_jump_out", { volume: 0.25, delay: 0.3 });
 		}
 		for(let j = coord.j-1; j <= coord.j+1; j++) {
-			if(inrange(j, 0, grid.rows-1)) {
+			if(inrange(j, 0, GRID_ROWS-1)) {
 				create({i: coord.i, j: j});
 			}
 		}
-		if(inrange(coord.i+1, 0, grid.cols-1)) {
+		if(inrange(coord.i+1, 0, GRID_COLS-1)) {
 			create({i: coord.i+1, j: coord.j});
 		}
 		return ret;
@@ -134,9 +140,10 @@ EnemyKinds.set(EnemyType.TROJAN_MINION, Object.assign({},
 EnemyKinds.set(EnemyType.TROJAN_HORSE, Object.assign({},
 	EnemyKinds.get(EnemyType.SQUIRE), {
 	minHealth: 8,
-	maxHealth: 10,
+	maxHealth: 12,
 	score: 15,
-	sprite: "trojan",
+	sprite: "enemy_trojan",
+	scale: 1.2,
 	type: EnemyType.TROJAN_HORSE,
 	spawn: (scene: GameScene, grid: Grid, y?: number) => {
 		const kind = EnemyKinds.get(EnemyType.TROJAN_HORSE);
@@ -195,13 +202,14 @@ export class Enemy extends Phaser.GameObjects.Container {
 		this.behaviour = behaviour;
 
 		// Create player sprite
-		this.sprite = scene.add.sprite(0, 0, behaviour.sprite, 0);
+		this.sprite = scene.add.sprite(0, 0.42*CELL_HEIGHT, behaviour.sprite, 0);
+		this.sprite.setScale(behaviour.scale*CELL_HEIGHT / this.sprite.height);
 		this.sprite.setTint(behaviour.tint);
-		this.sprite.setOrigin(0.6, 0.65);
+		this.sprite.setOrigin(0.6, 1.0);
 		// this.sprite.setScale(0.25);
 		this.add(this.sprite);
 
-		this.text = scene.createText(20, 15, 25, "#303F9F", this.health.toString());
+		this.text = scene.createText(24, 17, 25, "#303F9F", this.health.toString());
 		this.text.setOrigin(0.6);
 		this.text.setStroke("#FFFFFF", 5);
 		this.add(this.text);
@@ -218,12 +226,11 @@ export class Enemy extends Phaser.GameObjects.Container {
 			let blink = (Math.sin(0.03*timeMs) > 0);
 			this.sprite.setTint(blink ? 0xFF7777 : this.behaviour.tint);
 			this.sprite.setAlpha(0.5);
-			this.sprite.setOrigin(0.6 + 0.05 * Math.sin(35*timeMs/1000), 0.65);
+			this.sprite.setOrigin(0.6 + 0.05 * Math.sin(35*timeMs/1000), this.sprite.originY);
 		}
 		else {
 			this.sprite.setTint(this.behaviour.tint);
 			this.sprite.setAlpha(1);
-			// this.sprite.setOrigin(0.6, 0.5);
 		}
 
 		// Death animation
@@ -235,7 +242,7 @@ export class Enemy extends Phaser.GameObjects.Container {
 			let deathEase2 = Phaser.Math.Easing.Sine.Out(x);
 
 			this.setScale(1 - deathEase);
-			this.sprite.setOrigin(0.6 + deathEase2 * 0.15 * Math.sin(100*timeMs/1000), 0.65);
+			this.sprite.setOrigin(0.6 + deathEase2 * 0.15 * Math.sin(100*timeMs/1000), this.sprite.originY);
 			// this.setAlpha(1 - deathEase);
 
 			let blink = (Math.sin(50*timeMs/1000) > 0);
@@ -274,7 +281,6 @@ export class Enemy extends Phaser.GameObjects.Container {
 
 	move(coord: Coord, cell: Cell) {
 		this.moves++;
-		this.sprite.setScale(cell.width / this.sprite.height);
 		this.setDepth(10 + cell.y/100);
 		this.coord = coord;
 

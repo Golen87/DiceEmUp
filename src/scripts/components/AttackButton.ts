@@ -17,7 +17,7 @@ export class AttackButton extends BaseButton {
 
 		this.enabled = true;
 
-		this.fire = scene.add.sprite(0, -30, 'fire_button', 0);
+		this.fire = scene.add.sprite(0, -30, 'attack_button_fire', 0);
 		this.fire.setScale(0.6);
 		this.add(this.fire);
 
