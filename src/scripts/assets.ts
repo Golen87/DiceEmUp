@@ -22,24 +22,46 @@ interface Audio {
 
 /* Images */
 
-// import background from "../assets/images/background.png";
-import bg from "../assets/images/BG.png";
-import bgs from "../assets/images/BGS.png";
-import fg from "../assets/images/FG.png";
-import concept from "../assets/images/dragon_concept2.png";
-import gameover from "../assets/images/gameover.png";
+// Backgrounds
+import bg_gameover from "../assets/images/backgrounds/gameover.png";
+import bg_shadow from "../assets/images/backgrounds/shadow.png";
+import bg_town from "../assets/images/backgrounds/town/bg.png";
+import fg_town from "../assets/images/backgrounds/town/fg.png";
 
-import d6 from "../assets/images/dice/d6.png";
-import d6_roll from "../assets/images/dice/d6_roll.png";
-import shadow from "../assets/images/shadow.png";
+// Dice
+import dice_shadow from "../assets/images/dice/dice_shadow.png";
+import dice from "../assets/images/dice/dice.png"
 
-import ui_healthbar from "../assets/images/ui/ui_healthbar.png";
-import ui_board_border from "../assets/images/ui/board_border.png";
-import ui_board_tile from "../assets/images/ui/board_tile.png";
+// Characters
+import dragon_idle from "../assets/images/characters/dragon/idle.png";
+import dragon_prepare from "../assets/images/characters/dragon/prepare.png";
+import dragon_throw from "../assets/images/characters/dragon/throw.png";
+import dragon_hurt from "../assets/images/characters/dragon/hurt.png";
+import enemy_peasant from "../assets/images/characters/peasant.png";
+import enemy_squire from "../assets/images/characters/squire.png";
+import enemy_tank from "../assets/images/characters/tank.png";
+import enemy_trojan from "../assets/images/characters/trojan.png";
 
-// import cover_all from "../assets/images/cover/all.png";
-// import cover_dice_all from "../assets/images/cover/dice_all.png";
-// import cover_background_blue from "../assets/images/cover/background_blue.png";
+// Particles
+import meme_explosion from "../assets/images/particles/meme_explosion.png";
+import fire_explosion from "../assets/images/particles/fire_explosion.png"
+
+// UI
+import board_border from "../assets/images/ui/board_border.png";
+import board_tile from "../assets/images/ui/board_tile.png";
+import healthbar from "../assets/images/ui/healthbar.png";
+import attack_button from "../assets/images/ui/attack_button.png";
+import attack_button_fire from "../assets/images/ui/attack_button_fire.png";
+import music from "../assets/images/ui/music.png";
+import audio from "../assets/images/ui/audio.png";
+import heart_1 from "../assets/images/ui/heart/heart_1.png";
+import heart_2 from "../assets/images/ui/heart/heart_2.png";
+import heart_3 from "../assets/images/ui/heart/heart_3.png";
+import heart_4 from "../assets/images/ui/heart/heart_4.png";
+import heart_empty from "../assets/images/ui/heart/heart_empty.png";
+import heart_full from "../assets/images/ui/heart/heart_full.png";
+
+// Cover
 import cover_background_orange from "../assets/images/cover/background_orange.png";
 import cover_body from "../assets/images/cover/dragon_body.png";
 import cover_roof from "../assets/images/cover/roof.png";
@@ -49,66 +71,64 @@ import cover_dice_green from "../assets/images/cover/dice_green.png";
 import cover_dice_red from "../assets/images/cover/dice_red.png";
 import cover_knights from "../assets/images/cover/knights.png";
 
+
 const images: Asset[] = [
-	{ key: "bg",	path: bg },
-	{ key: "bgs",	path: bgs },
-	{ key: "fg",	path: fg },
-	{ key: "concept",		path: concept },
-	{ key: "gameover",		path: gameover },
-	{ key: "d6",			path: d6 },
-	{ key: "d6_roll",		path: d6_roll },
-	{ key: "shadow",		path: shadow },
+	// Backgrounds
+	{ key: "bg_gameover",	path: bg_gameover },
+	{ key: "bg_shadow",		path: bg_shadow },
+	{ key: "bg_town",		path: bg_town },
+	{ key: "fg_town",		path: fg_town },
+
+	// Dice
+	{ key: "dice_shadow",	path: dice_shadow },
 
 	// UI
-	{ key: "ui_healthbar",	path: ui_healthbar },
-	{ key: "ui_board_border",	path: ui_board_border },
-	{ key: "ui_board_tile",	path: ui_board_tile },
+	{ key: "board_border",	path: board_border },
+	{ key: "board_tile",	path: board_tile },
+	{ key: "healthbar",		path: healthbar },
+	{ key: "heart_1",		path: heart_1 },
+	{ key: "heart_2",		path: heart_2 },
+	{ key: "heart_3",		path: heart_3 },
+	{ key: "heart_4",		path: heart_4 },
+	{ key: "heart_empty",	path: heart_empty },
+	{ key: "heart_full",	path: heart_full },
 
 	// Cover
-	// { key: "cover_all", path: cover_all },
-	// { key: "cover_dice_all", path: cover_dice_all },
-	// { key: "cover_background_blue", path: cover_background_blue },
-	{ key: "cover_background_orange", path: cover_background_orange },
-	{ key: "cover_body", path: cover_body },
-	{ key: "cover_roof", path: cover_roof },
-	{ key: "cover_hands", path: cover_hands },
-	{ key: "cover_dice_blue", path: cover_dice_blue },
-	{ key: "cover_dice_green", path: cover_dice_green },
-	{ key: "cover_dice_red", path: cover_dice_red },
-	{ key: "cover_knights", path: cover_knights },
+	{ key: "cover_background_orange",	path: cover_background_orange },
+	{ key: "cover_body",				path: cover_body },
+	{ key: "cover_roof",				path: cover_roof },
+	{ key: "cover_hands",				path: cover_hands },
+	{ key: "cover_dice_blue",			path: cover_dice_blue },
+	{ key: "cover_dice_green",			path: cover_dice_green },
+	{ key: "cover_dice_red",			path: cover_dice_red },
+	{ key: "cover_knights",				path: cover_knights },
 ];
 
-
-/* Spritesheets */
-
-// import player from "../assets/images/characters/player.png";
-
-import explosion from "../assets/images/explosion.png";
-import dragon from "../assets/images/dragon_spritesheet.png";
-import enemy from "../assets/images/enemy.png";
-import tank from "../assets/images/tank.png";
-import peasant from "../assets/images/enemy_peasant.png";
-import enemy_trojan from "../assets/images/enemy_trojan.png";
-import dice from "../assets/images/dice/dice.png"
-import fire from "../assets/images/bad_fire.png"
-import attack_button from "../assets/images/ui/button.png";
-import fire_button from "../assets/images/ui/fire_button.png";
-import music from "../assets/images/ui/music.png";
-import audio from "../assets/images/ui/audio.png";
-
 const spritesheets: SpriteSheet[] = [
-	{ key: "dragon",	path: dragon,		width: 840/2,	height: 1080/2 },
-	{ key: "enemy",		path: enemy,		width: 540,	height: 540 },
-	{ key: "tank",		path: tank,			width: 540,	height: 540 },
-	{ key: "peasant",	path: peasant,		width: 540,	height: 540 },
-	{ key: "trojan",	path: enemy_trojan,			width: 540,	height: 540 },
-	{ key: "dice",		path: dice,			width: 512/2,	height: 512/2 },
-	{ key: "fire",		path: fire,			width: 512,	height: 512 },
-	{ key: "explosion",	path: explosion,	width: 200,	height: 282 },
-	{ key: "attack_button",	path: attack_button,	width: 532,	height: 219  },
-	{ key: "fire_button",	path: fire_button,	width: 512,	height: 256  },
-	{ key: "music",	path: music,	width: 300,	height: 300  },
-	{ key: "audio",	path: audio,	width: 300,	height: 300  },
+	// Backgrounds
+
+	// Dice
+	{ key: "dice",				path: dice, 			width: 256,	height: 256 },
+
+	// Characters
+	{ key: "dragon_idle",		path: dragon_idle,		width: 420,	height: 540 },
+	{ key: "dragon_prepare",	path: dragon_prepare,	width: 420,	height: 540 },
+	{ key: "dragon_throw",		path: dragon_throw,		width: 420,	height: 540 },
+	{ key: "dragon_hurt",		path: dragon_hurt,		width: 420,	height: 540 },
+	{ key: "enemy_peasant",		path: enemy_peasant,	width: 270,	height: 270 },
+	{ key: "enemy_squire",		path: enemy_squire,		width: 270,	height: 270 },
+	{ key: "enemy_tank",		path: enemy_tank,		width: 340,	height: 270 },
+	{ key: "enemy_trojan",		path: enemy_trojan,		width: 300,	height: 270 },
+
+	// Particles
+	{ key: "fire_explosion",	path: fire_explosion,	width: 214,	height: 214 },
+	{ key: "meme_explosion",	path: meme_explosion,	width: 200,	height: 282 },
+
+	// UI
+	{ key: "attack_button",			path: attack_button,		width: 532,	height: 219 },
+	{ key: "attack_button_fire",	path: attack_button_fire,	width: 512,	height: 256 },
+	{ key: "music",					path: music,				width: 300,	height: 300 },
+	{ key: "audio",					path: audio,				width: 300,	height: 300 },
 ];
 
 
