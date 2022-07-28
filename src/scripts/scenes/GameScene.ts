@@ -11,8 +11,9 @@ import { Dice, DiceStyle, diceStyles } from "../components/Dice";
 import { AttackButton } from "../components/AttackButton";
 import { MiniButton } from "../components/MiniButton";
 import { Dragon } from "../components/Dragon";
-import { interpolateColor } from "../utils";
 import { GrayScalePostFilter } from "../pipelines/GrayScalePostFilter";
+import { interpolateColor } from "../utils";
+import { GRID_COLS, GRID_ROWS, GRID_LEFT, GRID_TOP, CELL_WIDTH, CELL_HEIGHT } from "../constants";
 
 import level from "../components/Levels";
 
@@ -103,7 +104,7 @@ export class GameScene extends BaseScene {
 		this.dices = [];
 		this.enemies = [];
 
-		this.attackButton = new AttackButton(this, this.grid.left+this.grid.width*(this.grid.rows+1)/2, this.grid.top - 60);
+		this.attackButton = new AttackButton(this, GRID_LEFT+CELL_WIDTH*(GRID_ROWS+1)/2, GRID_TOP - 60);
 		this.attackButton.setVisible(false);
 		this.attackButton.on('click', this.onAttack, this);
 

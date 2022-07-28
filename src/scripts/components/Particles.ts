@@ -88,13 +88,12 @@ class Particle extends Phaser.GameObjects.Sprite {
 		this.lifeTime = 0.4 + 0.4*Math.random();
 	}
 
-	explosion(x: number, y: number, scale: number, duration: number) {
-		this.init(x, y, "fire");
+	explosion(x: number, y: number, scale: number, duration: number, flip: boolean) {
+		this.init(x, y, "fire_explosion");
 
-		this.setData("scale", scale);
-		this.setScale(this.getData("scale"));
+		this.setScale((flip ? 1 : -1) * scale, scale);
 		this.setFrame(0);
-		this.setOrigin(0.46, 0.76);
+		this.setOrigin(110/214, 208/214);
 
 		this.lifeTime = duration * (0.8 + 0.2*Math.random());
 	}
@@ -129,9 +128,9 @@ class Particle extends Phaser.GameObjects.Sprite {
 			}
 		}
 
-		if (this.myType == "fire") {
+		if (this.myType == "fire_explosion") {
 			// let frame = Math.floor(17 * (this.life / this.lifeTime));
-			let frame = Math.floor(6 * (this.life / this.lifeTime));
+			let frame = Math.floor(6 * Math.pow(this.life / this.lifeTime, 0.65));
 			this.setFrame(frame);
 		}
 
@@ -217,9 +216,9 @@ export class Particles extends Phaser.GameObjects.Container {
 		});
 	}
 
-	createExplosion(x: number, y: number, scale: number, duration: number) {
+	createExplosion(x: number, y: number, scale: number, duration: number, flip: boolean) {
 		this.getFreeParticles(1).forEach((particle) => {
-			particle.explosion(x, y, scale, duration);
+			particle.explosion(x, y, scale, duration, flip);
 		});
 	}
 }
