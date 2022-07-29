@@ -66,7 +66,7 @@ export class Dragon extends Phaser.GameObjects.Container {
 		const cx = 0.2 * this.scene.W;
 		const cy = -0.44 * this.scene.H;
 
-		this.healthBox = scene.add.image(cx, cy, "ui_healthbar");
+		this.healthBox = scene.add.image(cx, cy, "healthbar");
 		this.healthBox.setScale(0.4);
 		this.healthCont.add(this.healthBox);
 
