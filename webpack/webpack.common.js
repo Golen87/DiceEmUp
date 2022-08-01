@@ -21,30 +21,14 @@ module.exports = {
         include: path.join(__dirname, '../src'),
         loader: 'ts-loader'
       },
-      // {
-        // test: /\.s[ac]ss$/i,
-        // use: [
-          // "style-loader",
-          // "css-loader",
-          // "sass-loader",
-        // ],
-      // },
       {
-        test: /\.(gif|png|jpe?g|svg|xml|ogg|mp3|wav|mpe?g)$/i,
+        test: /\.(gif|png|jpe?g|svg|xml|ogg|mp3|wav|mpe?g|woff(2)?)$/i,
         use: "file-loader"
       },
       {
         test: /\.mp4$/,
         use: 'file-loader?name=videos/[name].[ext]',
-      },
-      // {
-      //     test: /\.(woff(2)?|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      //     loader: 'file-loader',
-      //     options: {
-      //         name: 'fonts/[name].[ext]?[hash]',
-      //         publicPath: '/'
-      //     }
-      // }
+      }
     ]
   },
   optimization: {
