@@ -9,8 +9,8 @@
     "superclean": "rimraf .cache node_modules build dist public bin static/neutralino.js",
     "clean": "rimraf build dist public",
     "build": "rimraf dist public && webpack --config webpack/webpack.prod.js && neu build",
-    "sync": "rimraf dist public && webpack --config webpack/webpack.prod.js && cap sync",
-    "android": "cap sync && cap open android",
+    "sync": "cap sync",
+    "android": "rimraf dist public && webpack --config webpack/webpack.prod.js && cap sync && cap open android",
     "serve": "webpack serve --config webpack/webpack.dev.js",
     "public": "rimraf public && webpack --config webpack/webpack.prod.js"
   },
