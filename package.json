@@ -45,6 +45,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@capacitor/android": "^4.0.1",
+    "@capacitor/core": "^4.0.1",
     "mathjs": "^9.4.1",
     "numeric": "^1.2.6",
     "phaser": "^3.54.0",
@@ -52,6 +54,7 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
+    "@capacitor/cli": "^4.0.1",
     "@neutralinojs/neu": "^9.3.1",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "copy-webpack-plugin": "^9.0.0",
