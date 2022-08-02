@@ -16,9 +16,6 @@
     "app.exit",
     "os.showMessageBox"
   ],
-  "globalVariables": {
-    "isNeutralino": true
-  },
   "modes": {
     "window": {
       "title": "Fire and Dice",
@@ -34,10 +31,7 @@
       "maximize": false,
       "hidden": false,
       "resizable": true,
-      "exitProcessOnClose": false,
-      "globalVariables": {
-        "isNeutralino": true
-      }
+      "exitProcessOnClose": false
     }
   },
   "cli": {
