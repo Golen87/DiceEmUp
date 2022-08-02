@@ -30,31 +30,8 @@ $ yarn serve
 $ yarn public
 ```
 
-### Application development
-Run these commands to build and run the Electron app
-``` bash
-# Parcel bundles the code
-$ yarn build
-
-# Parcel bundles the code and watches for changes
-$ yarn watch
-
-# Run the electron app
-$ yarn app
-
-# Run the electron app with options for a debugger to attach to the render process
-$ yarn debug
-```
-
 ### Production mode and packaging app
-Run this command to bundle code in production mode
+Run these commands to build the Neutralino app for all platforms
 ``` bash
-# Create windows executables
-$ yarn windows
-
-# Create mac executables
-$ yarn mac
-
-# Create linux executables
-$ yarn linux
+$ yarn build
 ```

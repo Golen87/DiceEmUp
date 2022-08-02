@@ -6,6 +6,10 @@ build/
 dist/
 public/
 
+# Neutralino files
+bin/
+static/neutralino.js
+
 yarn-error.log
 *.zip
 
