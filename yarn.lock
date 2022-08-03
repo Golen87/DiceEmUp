@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@aashu-dubey/capacitor-statusbar-safe-area@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@aashu-dubey/capacitor-statusbar-safe-area/-/capacitor-statusbar-safe-area-1.0.1.tgz#aadcd3bc4da2041f043a667d16a333fc583854fd"
+  integrity sha512-JiwVzwyqsPACpuNaNBArROq9Bbq7X4w2RtzplWgnXjVqmbRBoCh6Qb3ChMgcEALj3FhVM3jKL2MhkwjcLph43g==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.13.tgz#dcfc826beef65e75c50e21d3837d7d95798dd658"
@@ -935,6 +940,11 @@
   integrity sha512-gita0j7UPoGyHejAUsrW1OrkyDSp7gfHn45fkeQclHRSz7UWLF4hqE1R/6INsVmIFu/amIApxfHed8h3m/Fm7g==
   dependencies:
     tslib "^2.1.0"
+
+"@capacitor/status-bar@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-4.0.1.tgz#d1320add5f4ef383394b94beae45a0c5af7250e1"
+  integrity sha512-BmEyOf3m/hAf8bO4hCX0m5gpQPSgd05mGYl+9E841WUZeJjcYlmiG/EBshAUb2uGCVtyNaG36yPXB0r0Ypg+rw==
 
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.3"
