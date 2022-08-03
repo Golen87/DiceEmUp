@@ -989,6 +989,11 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@hugotomazi/capacitor-navigation-bar@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@hugotomazi/capacitor-navigation-bar/-/capacitor-navigation-bar-1.1.1.tgz#f3125ac57d72ae12b55448e05573d9ed9de6490d"
+  integrity sha512-qZ6CmL6jBbaDcE//JSlq8z3eTVRfc9bpyMutPYOPONuqtNJ4PjkYpDi5BL3A0+9YAUJhXRntXPnLRLT3Y+6Ilg==
+
 "@ionic/cli-framework-output@^2.2.5":
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/@ionic/cli-framework-output/-/cli-framework-output-2.2.5.tgz#0db9fba7efe0c27bb5085b12ee01f22053e44152"

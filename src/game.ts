@@ -8,11 +8,16 @@ import { GameScene } from "./scripts/scenes/GameScene";
 import { Capacitor } from '@capacitor/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { SafeAreaController } from '@aashu-dubey/capacitor-statusbar-safe-area';
+import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar';
 
 /* Android specific features */
 if ( Capacitor.getPlatform() != 'web' ) {
 	StatusBar.setOverlaysWebView({ overlay: true });
 	StatusBar.setStyle({ style: Style.Dark });
+	NavigationBar.setColor({
+		color: "#000000",
+		darkButtons: false
+	});
 	SafeAreaController.injectCSSVariables();
 }
 

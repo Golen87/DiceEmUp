@@ -51,6 +51,7 @@
     "@capacitor/android": "^4.0.1",
     "@capacitor/core": "^4.0.1",
     "@capacitor/status-bar": "^4.0.1",
+    "@hugotomazi/capacitor-navigation-bar": "^1.1.1",
     "mathjs": "^9.4.1",
     "numeric": "^1.2.6",
     "phaser": "^3.54.0",
